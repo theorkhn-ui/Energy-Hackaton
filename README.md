@@ -40,7 +40,8 @@ logging; only performance analysis catches it.
 
 ### 4. Unreported fault: INV 01.03.018 — one year at 70%, zero tickets
 
-Peer ratio 0.70, below 0.95 on 272 of 317 days, ≈ €432/yr lost. No service ticket exists.
+Peer ratio 0.70, below 0.95 on 272 of 317 days, ≈ €500/yr lost (independently verified —
+our first estimate of €432 was conservative). No service ticket exists.
 Plant-wide: **€64,247 of underperformance across 444 material episodes (9.4 yrs) has no
 inverter-specific ticket** — only 33 of 477 episodes (7%) were ever ticketed.
 Data: [`runs/plant_a/flag_episodes_material.csv`](runs/plant_a/flag_episodes_material.csv), [`runs/plant_a/underperformers.csv`](runs/plant_a/underperformers.csv).

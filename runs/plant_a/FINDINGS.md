@@ -42,6 +42,11 @@ All five suggested challenge directions now covered: anomaly detection ✓ · so
 15. **Maintenance watchlist** (`WATCHLIST.md`): 3 CRITICAL + 10 MAJOR inverters today; 11 of 13 have no recent ticket.
 16. **Remotion video project scaffolded and compiling** (`video/`): 9 scenes, 3:50, captions from storyboard, tsc + bundle verified. Maxat: `cd video && npx remotion studio` to preview.
 
+## ✅ CLEAN-ROOM VERIFICATION (independent third implementation, no team code read)
+All three headlines CONFIRMED (`VERIFICATION.md`): 41-42/46 tickets, median lead 48-51.5d ✓ · outage hours reproduce within 2h (840/784/742) ✓ · 01.03.018 share of bad days ✓ BUT money corrected: **~€500/yr, not €432 (we understated)** — use "~€500/yr (independently verified)". Collapse wording: "2 inverters still <0.7 at end of data; 057 recovered May 2026" — say it honestly. Side-confirmation: 052/059 peer ratio 1.72 ≈ exactly the stale-kWp factor from kwp_audit (17→29 kWp).
+
+**The 4 missed tickets explained**: 3× Strangausfall (single-string outage) + 1 capacitor case, min ratios 0.81-0.94 → losses of 6-19% sit below our 0.8 inverter-level threshold. String-level detection (I_DC_SUM exists in data) catches these → roadmap item, and a prepared Q&A answer.
+
 ## Interactive dashboard
 `runs/plant_a/dashboard/index.html` — self-contained, dark theme, 65 clickable inverter tiles, per-inverter history + ticket markers. Screen-record 15-20s for the video product shot.
 

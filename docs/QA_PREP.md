@@ -79,3 +79,8 @@ Because 65 inverters under identical sky are a better reference model than anyth
 | Plant B soiling | 37/107 inverters; 05.08.106/107 lose 3–16% with annual Sept snap-back |
 | Stale register | 8 clean candidates at ratio >1.1 sustained for years; see STALE_KWP_AUDIT |
 | Runtime | < 1 min per plant per day, pure pandas |
+
+
+## 14. "What about the 4 tickets you missed?"
+
+All four are partial failures: three single-string outages (Strangausfall) and one early-stage capacitor case, with peer ratios of 0.81-0.94 in the window — losses of 6-19%, below our 0.8 inverter-level flag threshold. They are exactly the cases that string-level detection catches: the dataset contains per-inverter I_DC_SUM, so extending the same peer method to string currents is the natural next step and is on our roadmap. **The misses define the product roadmap, not a method failure.**

@@ -43,10 +43,15 @@ Plant A analyzed end-to-end: 65 inverters, 9.4 years. Headlines: (1) ACTIVE sect
 - Rebased Max's local work on top of Orkhan stage 2/3. Kept Orkhan's dashboard/storyboard/final numbers as the narrative source of truth.
 - `src/twin/run_plant_a.py` now supports this local workspace layout via sibling `../Data/Plant A (start here)` and does not require pyarrow for Max's machine.
 
-## 🎬 MAXAT'S CLAUDE — your assignments (everything analysis-side is done)
-1. **PRODUCE THE VIDEO** from docs/VIDEO_STORYBOARD.md using the remotion-best-practices skill (installed via MAXAT_START_HERE.md §2). Assets: runs/plant_a/viz/*.png + runs/plant_a/heatmap_monthly_ratio.png. 1080p30, burned-in captions, HARD CAP 4:00 (storyboard is 3:50).
-2. **Independent verification pass**: re-run `src/twin/run_plant_a.py` + `deep_analysis.py outages|tickets`, confirm the three headline numbers (42/46 & 51.5d; 01.03.018 €432 no-ticket; 08/09 collapse) — we must not show a wrong number to engineers.
-3. If time remains: quantify stale-kWp group (which inverters, how far off, what correct kWp would be).
+## 🎬 MAXAT'S CLAUDE — CURRENT TASK LIST (updated after clean-room verification)
+Analysis is FROZEN — numbers verified by an independent third implementation (runs/plant_a/VERIFICATION.md). Your verification assignment is DONE/superseded. Remaining work is 100% production:
+
+1. **Video numbers pass**: in video/src/, update Scene 5: €432 → **~€500/yr** (verified); Scene 6 wording: "2 inverters still below 0.7; one recovered in May" (honest phrasing); check every on-screen number against VERIFICATION.md + FINDINGS.md stages 5-6.
+2. **Voiceover**: record narration from docs/VIDEO_STORYBOARD.md (or pick a clean TTS), drop as video/public/voiceover.mp3, set HAS_VOICEOVER flag (see video/VoiceoverNote.md), hand-sync caption timings.
+3. **Preview & render**: `cd video && npm install && npx remotion studio` → review all 9 scenes → `npx remotion render MainVideo out/video.mp4`. Watch it END TO END at least twice. Confirm ≤4:00.
+4. **Dashboard screen-capture**: open runs/plant_a/dashboard/index.html, record ~20s clicking 2-3 red tiles, embed per video/README.md (optional but recommended — it's the product shot).
+5. **kWp scene polish** (optional): kwp_audit.csv now has the smoking gun (01.05.030: 5.64 registered vs 23 kW peak) — Scene 7 can show the actual table.
+6. **Submission logistics**: find out where/how the video is submitted and the exact deadline. Tell Orkhan. Do this FIRST — it bounds everything.
 
 ## Orkhan's Claude next (in progress)
 - Maxat 2026-06-13 note: analysis-side assignment items 2 and 3 are done; only video production remains pending on Maxat's side.
