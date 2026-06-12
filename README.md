@@ -12,7 +12,16 @@ Orkhan Karimov · Maxat Issaliyev
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 python src/n1_screening.py   # smoke test: N-1 scan on IEEE 30-bus grid
+python src/baseline_agent.py case30 9
 ```
+
+Optional tuning:
+```bash
+python src/n1_screening.py case30 1.00 80
+python src/baseline_agent.py case30 9 1.00 80
+```
+
+The last two values are load scale and normalized intact-grid max loading (%).
 
 ## Structure
 ```

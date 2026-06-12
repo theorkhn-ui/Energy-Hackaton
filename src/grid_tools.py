@@ -11,10 +11,27 @@ import pandapower.networks as pn
 LOADING_LIMIT = 100.0  # % line loading considered an overload
 
 
-def load_grid(case: str = "case30") -> pp.pandapowerNet:
-    """Load an IEEE test grid. case30 is a good demo size (30 buses, 41 lines)."""
+def load_grid(
+    case: str = "case30",
+    load_scale: float = 1.0,
+    target_base_loading_pct: float | None = None,
+) -> pp.pandapowerNet:
+    """Load an IEEE test grid and optionally make the base case demo-safe.
+
+    Some pandapower benchmark grids are already overloaded under their built-in
+    thermal limits. For a clean N-1 demo, normalize line ratings so the intact
+    grid starts below the limit, then apply any requested load stress.
+    """
     net = getattr(pn, case)()
     pp.runpp(net)
+    if target_base_loading_pct is not None:
+        base_max = float(net.res_line.loading_percent.max())
+        if base_max > 0:
+            net.line.max_i_ka *= base_max / target_base_loading_pct
+            pp.runpp(net)
+    if load_scale != 1.0:
+        net.load.p_mw *= load_scale
+        pp.runpp(net)
     return net
 
 

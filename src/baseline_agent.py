@@ -4,7 +4,7 @@ Strategy: while overloads exist, shift generation from the cheapest-to-reduce
 generator near the overload's receiving end to others with headroom; if that
 fails after N rounds, shed load at the overloaded corridor.
 
-Usage: python src/baseline_agent.py [case30] [line_to_trip]
+Usage: python src/baseline_agent.py [case30] [line_to_trip] [load_scale] [target_base_loading_pct]
 """
 import sys
 
@@ -50,13 +50,14 @@ def fix(net, log=print) -> bool:
 
 if __name__ == "__main__":
     case = sys.argv[1] if len(sys.argv) > 1 else "case30"
-    net = load_grid(case)
-    # stress the grid so contingencies actually hurt
-    net.load.p_mw *= 1.3
-    run_powerflow(net)
-
     line = int(sys.argv[2]) if len(sys.argv) > 2 else 0
-    print(f"=== Contingency: tripping line {line} on stressed {case} ===")
+    load_scale = float(sys.argv[3]) if len(sys.argv) > 3 else 1.0
+    target_base = float(sys.argv[4]) if len(sys.argv) > 4 else 80.0
+
+    net = load_grid(case, load_scale=load_scale,
+                    target_base_loading_pct=target_base)
+    print(f"=== Contingency: tripping line {line} on {case} ===")
+    print(f"base state: {run_powerflow(net)}")
     r = trip_line(net, line)
     print(f"after trip: {r}\n")
     ok = fix(net)

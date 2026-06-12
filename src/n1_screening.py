@@ -1,7 +1,7 @@
 """N-1 contingency screening: trip every line, see what breaks.
 
 Output: ranked list of dangerous outages -> pick demo scenarios from here.
-Usage: python src/n1_screening.py [case30|case39|case57|case118]
+Usage: python src/n1_screening.py [case30|case39|case57|case118] [load_scale] [target_base_loading_pct]
 """
 import sys
 
@@ -10,11 +10,16 @@ import pandapower as pp
 from grid_tools import load_grid, LOADING_LIMIT
 
 
-def screen(case: str = "case30"):
-    net = load_grid(case)
+def screen(
+    case: str = "case30",
+    load_scale: float = 1.0,
+    target_base_loading_pct: float | None = 80.0,
+):
+    net = load_grid(case, load_scale=load_scale,
+                    target_base_loading_pct=target_base_loading_pct)
     base_max = net.res_line.loading_percent.max()
     print(f"Grid: {case} | {len(net.bus)} buses, {len(net.line)} lines | "
-          f"base case max loading {base_max:.1f}%\n")
+          f"load scale {load_scale:.2f} | base case max loading {base_max:.1f}%\n")
 
     results = []
     for line in net.line.index:
@@ -46,4 +51,8 @@ def screen(case: str = "case30"):
 
 
 if __name__ == "__main__":
-    screen(sys.argv[1] if len(sys.argv) > 1 else "case30")
+    screen(
+        sys.argv[1] if len(sys.argv) > 1 else "case30",
+        float(sys.argv[2]) if len(sys.argv) > 2 else 1.0,
+        float(sys.argv[3]) if len(sys.argv) > 3 else 80.0,
+    )
