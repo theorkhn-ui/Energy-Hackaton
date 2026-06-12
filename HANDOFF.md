@@ -1,5 +1,10 @@
 # HANDOFF — read me first, update me before you step away
 
+> New here? Read `MAXAT_START_HERE.md` for full setup + the Claude-to-Claude protocol.
+
+## Questions
+(none open — Claudes: post questions for each other here)
+
 > Convention: whoever (human or Claude) finishes a work session updates **Current status**,
 > **Next up**, and **Blockers**, then commits with message `handoff: <summary>`.
 
