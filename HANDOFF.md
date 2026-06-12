@@ -18,17 +18,16 @@ Sheet recount: #3.1 ballooned to 5-6 teams (GridFlow.ai, Voltify, winsortf, Fero
 - Waiting on real Plant A data from Orkhan. First job when it lands: fix column regexes
   in data_loader.py, then rerun the same analysis.
 
-## Next up (when data arrives — claim by putting your name)
-- [ ] Load real Plant A, fix loader, run full pipeline
-- [ ] Cross-reference flags with Tickets.xlsx (predicted-the-ticket = killer finding)
-- [ ] Error-code joining (errorcodes.* + translation table) → fault classification
-- [ ] Per-inverter findings dashboard/plots for the video
-- [ ] Plant B soiling dataset (optional, only after Plant A complete)
+## 🔥 DATA IS IN — first results live (see runs/plant_a/FINDINGS.md)
+Plant A analyzed end-to-end: 65 inverters, 9.4 years. Headlines: (1) ACTIVE section failure 01.08-01.09 since Aug 2025, (2) unreported fault 01.03.018 (€432/yr, no ticket!), (3) our flags match their ticket history (058: 4 tickets, 062: 3). Pipeline: `src/twin/run_plant_a.py`. NOTE: raw data NOT in git (data/raw is gitignored, ~3GB) — Maxat: get the zips from Orkhan or the Drive link, extract to `data/raw/`.
 
-## Doable NOW (no data needed)
-- [ ] Video storyboard: 4-min cut (hook → plant problem → live findings → ticket prediction → close)
-- [ ] Plot templates with matplotlib skill: peer-ratio heatmap (inverter × day), soiling drift chart
-- [ ] Read Enerparc dataset slides in `Energy_Hack_Challenges_final.pdf` pp. 5-7
+## Next up (claim by putting your name)
+- [ ] Fix outage overstatement: mask NaN + pre-commissioning periods (Orkhan's Claude, started)
+- [ ] Ticket time-window overlap: did our flag precede each ticket? Lead-time table = killer video stat
+- [ ] Error-code integration (3. Errorcodes) → classify the 08/09 section failure
+- [ ] Investigate the ratio>1.1 group → stale kWp register finding
+- [ ] Video storyboard around the three headlines (Maxat?)
+- [ ] Polish heatmap + money table with matplotlib skill (Maxat?)
 
 ## Old status (#3.1, archived 2026-06-12)
 - LLM agent loop mock-verified; viz rendered; N-1 scan working.
