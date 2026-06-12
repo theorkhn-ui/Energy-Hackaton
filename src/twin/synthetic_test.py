@@ -54,4 +54,4 @@ print(out.to_string(index=False) if len(out) else "none")
 assert "01.01.005" in set(under.get("inverter", [])), "missed chronic underperformer"
 assert "01.01.003" in set(soil.get("inverter", [])), "missed soiling"
 assert "01.01.002" in set(out.get("inverter", [])), "missed outage"
-print("\nALL PLANTED FAULTS DETECTED ✓")
+print("\nALL PLANTED FAULTS DETECTED")

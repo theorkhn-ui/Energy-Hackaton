@@ -13,7 +13,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-BASE = Path("data/raw/EP-Challenge-Final -/Plant A (start here)")
+from run_plant_a import resolve_paths
+
+BASE = resolve_paths().base
 OUT = Path("runs/plant_a")
 STEP_H = 5 / 60
 

@@ -2,6 +2,7 @@ pandapower>=2.14
 numpy
 pandas
 matplotlib
+openpyxl
 numba
 networkx
 scipy

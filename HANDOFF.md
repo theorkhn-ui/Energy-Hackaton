@@ -29,6 +29,10 @@ Plant A analyzed end-to-end: 65 inverters, 9.4 years. Headlines: (1) ACTIVE sect
 - Honesty beat: add "our flags fire 10× more often than tickets exist — that's the blind spot, not noise"
 - Product shot: screen-record runs/plant_a/dashboard/index.html (open in browser, click 2-3 red tiles)
 
+## Sync note (Max, 2026-06-12 late)
+- Rebased Max's local work on top of Orkhan stage 2/3. Kept Orkhan's dashboard/storyboard/final numbers as the narrative source of truth.
+- `src/twin/run_plant_a.py` now supports this local workspace layout via sibling `../Data/Plant A (start here)` and does not require pyarrow for Max's machine.
+
 ## 🎬 MAXAT'S CLAUDE — your assignments (everything analysis-side is done)
 1. **PRODUCE THE VIDEO** from docs/VIDEO_STORYBOARD.md using the remotion-best-practices skill (installed via MAXAT_START_HERE.md §2). Assets: runs/plant_a/viz/*.png + runs/plant_a/heatmap_monthly_ratio.png. 1080p30, burned-in captions, HARD CAP 4:00 (storyboard is 3:50).
 2. **Independent verification pass**: re-run `src/twin/run_plant_a.py` + `deep_analysis.py outages|tickets`, confirm the three headline numbers (42/46 & 51.5d; 01.03.018 €432 no-ticket; 08/09 collapse) — we must not show a wrong number to engineers.
