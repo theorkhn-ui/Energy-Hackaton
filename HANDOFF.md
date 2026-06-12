@@ -23,6 +23,12 @@ Plant A analyzed end-to-end: 65 inverters, 9.4 years. Headlines: (1) ACTIVE sect
 
 ## Stage 2 DONE (Orkhan's Claude): 42/46 tickets predicted (median lead 51.5d) · honest outage table · error-telemetry blind-spot finding · 3 video charts in runs/plant_a/viz/ · full storyboard in docs/VIDEO_STORYBOARD.md
 
+## Stage 5 (Orkhan's Claude): judge-facing layer done
+- README.md rewritten as evidence trail ("Plant Sentinel"), docs/ONE_PAGER.md, docs/QA_PREP.md (13 prepared answers)
+- runs/plant_a/WATCHLIST.md — forward-looking "inspect Monday" list (3 CRITICAL, 10 MAJOR; 11 of 13 have NO recent ticket) → closes the brief's "predict future failures" item
+- Loader cross-check: Maxat's CSV loader vs parquet = 0.0 diff on 22,854 rows → implementations consistent
+- Maxat's verification of headline numbers still pending — DO IT before final render
+
 ## Stage 4 (Orkhan's Claude): FULL BRIEF COVERAGE — Plant B soiling done (37/107 inverters, recurring 05.08.106/107 sawtooth) + automated fault classification (823 incidents, 71% nuisance alarms). New video-ready charts: runs/plant_b/soiling_chart.png, runs/plant_a/faults/fault_matrix.png. Storyboard option: add a 20s "we covered all five challenge directions" beat or swap the weakest scene.
 
 ## ⚡ STORYBOARD NUMBER UPDATES (Orkhan's Claude, stage 3 — fold into narration before render)
