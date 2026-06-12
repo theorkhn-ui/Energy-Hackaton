@@ -1,0 +1,47 @@
+inverter,ticket_date,category,flag_lead_days,min_ratio_in_window
+01.07.045,2020-10-04,Strangausfall,,0.876
+01.04.024,2021-03-15,--,57.0,0.0
+01.09.060,2021-03-22,--,50.0,0.0
+01.07.046,2021-05-02,Strangausfall,,0.806
+01.07.047,2021-05-30,Strangausfall,,0.941
+01.02.014,2021-07-01,unbekannte Störung,12.0,0.0
+01.05.032,2021-07-01,unbekannte Störung,15.0,0.0
+01.02.012,2021-07-01,unbekannte Störung,14.0,0.0
+01.03.017,2021-07-19,unbekannte Störung,33.0,0.0
+01.01.007,2021-11-30,unbekannte Störung,59.0,0.0
+01.03.016,2021-12-31,unbekannte Störung,59.0,0.0
+01.03.016,2022-05-22,unbekannte Störung,54.0,0.0
+01.06.040,2022-07-24,unbekannte Störung,55.0,0.0
+01.01.006,2022-07-24,unbekannte Störung,46.0,0.0
+01.01.003,2022-07-24,unbekannte Störung,46.0,0.0
+01.01.004,2022-07-24,unbekannte Störung,47.0,0.0
+01.01.001,2022-09-30,unbekannte Störung,51.0,0.0
+01.05.030,2022-09-30,unbekannte Störung,58.0,0.0
+01.03.015,2023-06-18,unbekannte Störung,53.0,0.0
+01.01.002,2023-06-18,unbekannte Störung,24.0,0.0
+01.01.004,2023-06-18,unbekannte Störung,57.0,0.0
+01.01.004,2024-05-12,unbekannte Störung,55.0,0.0
+01.01.002,2024-05-12,unbekannte Störung,59.0,0.0
+01.09.062,2024-05-12,unbekannte Störung,59.0,0.0
+01.02.008,2024-05-12,unbekannte Störung,59.0,0.0
+01.01.006,2024-05-12,unbekannte Störung,55.0,0.0
+01.07.045,2024-05-13,unbekannte Störung,1.0,0.763
+01.08.058,2024-08-29,Fehlerursache konnte nicht ermittelt werden,0.0,0.663
+01.09.062,2025-05-31,Fehlerursache konnte nicht ermittelt werden,16.0,0.0
+01.02.012,2025-05-31,Kondensatoren defekt,59.0,0.0
+01.01.004,2025-05-31,Fehlerursache konnte nicht ermittelt werden,59.0,0.0
+01.08.058,2025-05-31,Isolationswerte,59.0,0.0
+01.09.065,2025-07-02,Initialisierung-Fehler,0.0,0.471
+01.08.057,2025-07-11,Platinen und mehr defekt,9.0,0.0
+01.06.036,2025-07-11,Kondensatoren defekt,,0.921
+01.05.035,2025-07-11,Com-Fehler,38.0,0.0
+01.08.058,2025-08-31,Fehlerursache konnte nicht ermittelt werden,59.0,0.0
+01.09.062,2025-08-31,Platinen und mehr defekt,59.0,0.0
+01.04.023,2025-08-31,4-LED Störung,59.0,0.0
+01.04.027,2025-08-31,4-LED Störung,32.0,0.0
+01.09.060,2025-08-31,Isolationswerte,16.0,0.0
+01.04.025,2026-02-23,Kondensatoren defekt,59.0,0.126
+01.08.052,2026-02-23,Fehlerursache konnte nicht ermittelt werden,39.0,0.0
+01.07.048,2026-02-23,Fehlerursache konnte nicht ermittelt werden,34.0,0.0
+01.08.053,2026-02-23,Initialisierung-Fehler,39.0,0.0
+01.08.058,2026-02-23,Fehlerursache konnte nicht ermittelt werden,52.0,0.0

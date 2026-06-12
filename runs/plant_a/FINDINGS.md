@@ -17,8 +17,17 @@ See `underperformers.csv`. Top: 01.03.018 €432 · 01.03.020 €320 · 01.04.02
 - `heatmap_monthly_ratio.png` — inverter × month peer ratio (the money shot for the video)
 - `underperformers.csv`, `outage_hours.csv`, `drift_365d.csv`, `daily_peer_ratio.csv`, `tickets_parsed.csv`
 
+## Stage 2 results (same evening)
+
+6. **Predictive power proven: 42/46 inverter tickets were preceded by our flag, median lead 51.5 days** (`ticket_leadtimes.csv`). Ticket causes: defective capacitors, boards, insulation faults.
+7. **Honest outage hours** (`outage_hours_honest.csv`, NaN+commissioning masked): worst last-365d: 01.08.053 840h, 01.08.057 784h, 01.08.058 743h — confirms the 08/09 active failure with clean numbers.
+8. **Monitoring blind spot: error-code telemetry ends Nov 2019 and NEVER covered sections 08/09** (9,211 real error events 2017-2019, zero after). The current collapse is invisible to their error logging — only performance analysis (ours) catches it. Top historic codes: Netzunterspannung/ENS (5,405), Störmeldung Leistungsteil (3,479).
+
+## Video assets ready
+- `viz/leadtime_chart.png`, `viz/section_collapse.png`, `viz/money_chart.png` (1080p, big fonts)
+- `docs/VIDEO_STORYBOARD.md` — full 3:50 scene-by-scene script with narration
+
 ## Known TODO / honesty list
-- Outage hours currently count NaN as outage and include pre-commissioning periods → numbers overstated; recompute with first-production masking (in progress)
-- Ticket time-window overlap analysis (flag date vs ticket startdate) not yet automated
-- Error codes (3. Errorcodes) not yet integrated → fault classification pending
-- Winter months have noisy ratios (low irradiation) → consider masking Dec/Jan or weighting by irradiation
+- Winter months noisy (low irradiation) → consider irradiation-weighted ratios
+- "Relative method can't see plant-wide degradation" — keep as the honest-limitation beat in the video
+- Stale-kWp group (ratio>1.1) not yet quantified per inverter

@@ -21,13 +21,16 @@ Sheet recount: #3.1 ballooned to 5-6 teams (GridFlow.ai, Voltify, winsortf, Fero
 ## 🔥 DATA IS IN — first results live (see runs/plant_a/FINDINGS.md)
 Plant A analyzed end-to-end: 65 inverters, 9.4 years. Headlines: (1) ACTIVE section failure 01.08-01.09 since Aug 2025, (2) unreported fault 01.03.018 (€432/yr, no ticket!), (3) our flags match their ticket history (058: 4 tickets, 062: 3). Pipeline: `src/twin/run_plant_a.py`. NOTE: raw data NOT in git (data/raw is gitignored, ~3GB) — Maxat: get the zips from Orkhan or the Drive link, extract to `data/raw/`.
 
-## Next up (claim by putting your name)
-- [ ] Fix outage overstatement: mask NaN + pre-commissioning periods (Orkhan's Claude, started)
-- [ ] Ticket time-window overlap: did our flag precede each ticket? Lead-time table = killer video stat
-- [ ] Error-code integration (3. Errorcodes) → classify the 08/09 section failure
-- [ ] Investigate the ratio>1.1 group → stale kWp register finding
-- [ ] Video storyboard around the three headlines (Maxat?)
-- [ ] Polish heatmap + money table with matplotlib skill (Maxat?)
+## Stage 2 DONE (Orkhan's Claude): 42/46 tickets predicted (median lead 51.5d) · honest outage table · error-telemetry blind-spot finding · 3 video charts in runs/plant_a/viz/ · full storyboard in docs/VIDEO_STORYBOARD.md
+
+## 🎬 MAXAT'S CLAUDE — your assignments (everything analysis-side is done)
+1. **PRODUCE THE VIDEO** from docs/VIDEO_STORYBOARD.md using the remotion-best-practices skill (installed via MAXAT_START_HERE.md §2). Assets: runs/plant_a/viz/*.png + runs/plant_a/heatmap_monthly_ratio.png. 1080p30, burned-in captions, HARD CAP 4:00 (storyboard is 3:50).
+2. **Independent verification pass**: re-run `src/twin/run_plant_a.py` + `deep_analysis.py outages|tickets`, confirm the three headline numbers (42/46 & 51.5d; 01.03.018 €432 no-ticket; 08/09 collapse) — we must not show a wrong number to engineers.
+3. If time remains: quantify stale-kWp group (which inverters, how far off, what correct kWp would be).
+
+## Orkhan's Claude next (in progress)
+- [ ] Findings one-pager for submission (if a written deliverable is allowed)
+- [ ] Optional: Plant B soiling quick-pass (only if video is on track)
 
 ## Old status (#3.1, archived 2026-06-12)
 - LLM agent loop mock-verified; viz rendered; N-1 scan working.
