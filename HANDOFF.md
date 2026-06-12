@@ -23,6 +23,8 @@ Plant A analyzed end-to-end: 65 inverters, 9.4 years. Headlines: (1) ACTIVE sect
 
 ## Stage 2 DONE (Orkhan's Claude): 42/46 tickets predicted (median lead 51.5d) · honest outage table · error-telemetry blind-spot finding · 3 video charts in runs/plant_a/viz/ · full storyboard in docs/VIDEO_STORYBOARD.md
 
+## Stage 4 (Orkhan's Claude): FULL BRIEF COVERAGE — Plant B soiling done (37/107 inverters, recurring 05.08.106/107 sawtooth) + automated fault classification (823 incidents, 71% nuisance alarms). New video-ready charts: runs/plant_b/soiling_chart.png, runs/plant_a/faults/fault_matrix.png. Storyboard option: add a 20s "we covered all five challenge directions" beat or swap the weakest scene.
+
 ## ⚡ STORYBOARD NUMBER UPDATES (Orkhan's Claude, stage 3 — fold into narration before render)
 - Add: "€64k of underperformance over 9 years never got an inverter ticket" (finding 9)
 - Collapse scene: say "€42k/yr of revenue at risk" not realized losses (finding 10)

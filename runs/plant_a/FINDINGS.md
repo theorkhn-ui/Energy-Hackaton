@@ -29,6 +29,13 @@ See `underperformers.csv`. Top: 01.03.018 €432 · 01.03.020 €320 · 01.04.02
 10. **08/09 collapse: ~€1,200/yr lost so far, but €42,325/yr of revenue at risk** (14 inverters, 368 kWp trending toward zero). Use "at-risk revenue", do NOT inflate realized losses. (`collapse_cost.csv`)
 11. Precision caveat (honesty beat): our flags fire 10× more often than tickets exist — consistent with the telemetry blind spot, but say it as "tickets are sparse, not flags wrong"; lead-time recall (42/46) is the defensible stat.
 
+## Stage 4 — full challenge-brief coverage
+
+12. **Plant B soiling (runs/plant_b/)**: 37/107 inverters with soiling-style sawtooths; INV 05.08.106/107 lose 3-16% spring→Aug with September snap-back every year (vegetation shading/edge soiling). Winter inter-row shading costs interior rows up to 25% Nov-Feb. Pyranometer validated vs pvlib clear-sky (+3% drift over 8.5 yrs).
+13. **Automated fault classification (runs/plant_a/faults/)**: 823 incidents from 9,211 error events → 25% TRIP / 4% DERATE / 71% NUISANCE. Grid-undervoltage (ENS) = costliest (~1.4 MWh); DC-link & insulation alarms ≈ pure noise → alarm-triage recommendation. Chart: fault_matrix.png.
+
+All five suggested challenge directions now covered: anomaly detection ✓ · soiling (Plant B) ✓ · fault classification ✓ · performance-ratio modelling ✓ · ticket intelligence ✓.
+
 ## Interactive dashboard
 `runs/plant_a/dashboard/index.html` — self-contained, dark theme, 65 clickable inverter tiles, per-inverter history + ticket markers. Screen-record 15-20s for the video product shot.
 

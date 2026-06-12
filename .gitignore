@@ -6,3 +6,5 @@ venv/
 *.egg-info/
 .ipynb_checkpoints/
 data/raw/
+runs/plant_b/cache_*
+runs/plant_a/faults/cache_*
