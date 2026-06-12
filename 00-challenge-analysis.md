@@ -1,5 +1,8 @@
 # Energy Hack — Challenge Selection (2026-06-12)
 
+> **FINAL DECISION (third and last): #2.1 Enerparc Digital Twin.** Organizer tally: 1.1=7, 1.2=4, 2.1+2.2=5, 2.3=4, 3.1=7, 3.2=4 (tracks: Invertix 11, Enerparc 9, E.ON 11). With everyone using Claude, generic builds (siting maps, grid agents) converge — differentiation comes from real-data judgment: curtailment-aware analysis (documented trap), ticket cross-validation, revenue-ranked findings. Smallest track + tested pipeline head start + 3 of 5 rivals are solos/duos. No more pivots; execute.
+
+
 Team: **Syz** (Orkhan Karimov, Maxat Issaliyev) · Prize: €1000 · Deliverable: **4-min video, hard cap**
 
 ## Competition snapshot (registration sheet)
