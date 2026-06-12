@@ -7,11 +7,17 @@ stage1 builds daily/outage caches; stage2 (default if cache exists) prints verdi
 import os
 import re
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
-RAW = "data/raw/EP-Challenge-Final -/Plant A (start here)"
+RAW_CANDIDATES = [
+    Path(os.environ["PLANT_A_BASE"]) if os.environ.get("PLANT_A_BASE") else None,
+    Path("data/raw/EP-Challenge-Final -/Plant A (start here)"),
+    Path("../Data/Plant A (start here)"),
+]
+RAW = next((p for p in RAW_CANDIDATES if p and p.exists()), RAW_CANDIDATES[1])
 CACHE_DAILY = "runs/plant_a/verify_cache.parquet"          # daily energy + irr
 CACHE_OUTAGE = "runs/plant_a/verify_cache_outage.parquet"  # 5-min outage flags, daily agg
 
@@ -20,7 +26,7 @@ TARIFF = 0.115         # EUR/kWh
 
 
 def load_kwp():
-    so = pd.read_excel(f"{RAW}/2. Additional Data/System_Overview.xlsx", header=2)
+    so = pd.read_excel(RAW / "2. Additional Data/System_Overview.xlsx", header=2)
     so = so[so["Description"].astype(str).str.strip().str.startswith("WR")]
     kwp = {}
     for _, r in so.iterrows():
@@ -35,7 +41,7 @@ def load_kwp():
 
 
 def stage1():
-    df = pd.read_parquet(f"{RAW}/1. Main-monitoring-data/main_monitoring_data.parquet")
+    df = pd.read_parquet(RAW / "1. Main-monitoring-data/main_monitoring_data.parquet")
     ts = pd.to_datetime(df.index, format="%Y.%m.%d %H:%M")
     inv_cols = [c for c in df.columns if c.startswith("INV") and "P_AC" in c]
     ids = [c.split(" / ")[0].replace("INV ", "") for c in inv_cols]
@@ -89,7 +95,7 @@ def stage2():
     assert kwp.notna().all(), "kWp missing for some inverters"
     last_day = e.index.max()
 
-    t = pd.read_excel(f"{RAW}/2. Additional Data/Tickets.xlsx", sheet_name="2020-2026")
+    t = pd.read_excel(RAW / "2. Additional Data/Tickets.xlsx", sheet_name="2020-2026")
     t = t[t["component"].astype(str).str.startswith("INV")].copy()
     t["start"] = (pd.to_datetime(t["startdate"], utc=True, errors="coerce")
                   .dt.tz_convert("Europe/Berlin").dt.normalize().dt.tz_localize(None))

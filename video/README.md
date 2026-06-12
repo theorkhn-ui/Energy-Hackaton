@@ -39,7 +39,7 @@ npm run typecheck
 | 2 | 0:10–0:35 | 300–1049 | `src/scenes/Scene2Problem.tsx` — heatmap zoom-out, team badge |
 | 3 | 0:35–1:10 | 1050–2099 | `src/scenes/Scene3Method.tsx` — native method animation (bars, cloud, curtailment trap) |
 | 4 | 1:10–1:45 | 2100–3149 | `src/scenes/Scene4Leadtime.tsx` — full lollipop chart + stats |
-| 5 | 1:45–2:15 | 3150–4049 | `src/scenes/Scene5InvisibleFault.tsx` — INV 01.03.018 flat line, 0 tickets, €432 |
+| 5 | 1:45–2:15 | 3150–4049 | `src/scenes/Scene5InvisibleFault.tsx` — INV 01.03.018 flat line, 0 tickets, ~EUR500 |
 | 6 | 2:15–2:50 | 4050–5099 | `src/scenes/Scene6ActiveCollapse.tsx` — sections 01.08/01.09, outage counter, fault matrix |
 | 7 | 2:50–3:10 | 5100–5699 | `src/scenes/Scene7StaleRegister.tsx` — >1.1 ratio = stale kWp |
 | 8 | 3:10–3:20 | 5700–5999 | `src/scenes/Scene8Limitation.tsx` — honest limitation, static |
@@ -48,7 +48,7 @@ npm run typecheck
 ## What to tweak
 
 - **Numbers / on-screen stats** — they are plain JSX text inside each scene
-  file (search for the number, e.g. `432` or `51.5`). The narration text
+  file (search for the number, e.g. `500` or `51.5`). The narration text
   lives in ONE place: `src/Captions.tsx` (`SCENE_NARRATION`, verbatim from
   the storyboard).
 - **Scene durations** — `src/timing.ts` → `SCENES[].durationSec`. Scenes,

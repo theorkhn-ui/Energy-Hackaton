@@ -1,6 +1,7 @@
 pandapower>=2.14
 numpy
 pandas
+pyarrow
 matplotlib
 openpyxl
 numba

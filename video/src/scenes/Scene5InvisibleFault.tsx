@@ -16,7 +16,7 @@ import { sec } from "../timing";
  * Scene 5 (1:45–2:15) — Finding 2: the invisible fault.
  * Part A (0–15s): a flat peer-ratio line at ~0.70 for INV 01.03.018 drawn
  * in natively, then a ticket-log search animation returning "0 results".
- * Part B (15–30s): the money bar chart with the €432/yr highlight.
+ * Part B (15–30s): the money bar chart with the verified ~EUR500/yr highlight.
  */
 
 const PART_A = sec(15);
@@ -204,7 +204,7 @@ export const Scene5InvisibleFault: React.FC = () => {
             }}
           >
             <StatPill delay={sec(2)} big color={COLORS.warn}>
-              ≈ €432 / year lost
+              ~EUR 500 / year lost
             </StatPill>
             <StatPill delay={sec(4)} color={COLORS.textDim}>
               from a single inverter — caught from data alone

@@ -86,7 +86,7 @@ export const Scene6ActiveCollapse: React.FC = () => {
 
       <div style={{ position: "absolute", top: 160, left: 64 }}>
         <StatPill delay={sec(7)} color={COLORS.warn}>
-          inverters at 35–50% of peers
+          2 still below 0.7; one recovered in May
         </StatPill>
       </div>
 
