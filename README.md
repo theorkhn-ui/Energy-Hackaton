@@ -72,9 +72,11 @@ Details: [`runs/plant_a/faults/FAULT_CLASSIFICATION.md`](runs/plant_a/faults/FAU
 
 ![Fault classification matrix: code family x TRIP/DERATE/NUISANCE](runs/plant_a/faults/fault_matrix.png)
 
-**Bonus:** ~8 inverters sit permanently above 1.1 peer ratio (01.04.026/27, 01.05.030/31,
-01.07.048–051, …). That is not overperformance — it is a stale kWp value in the asset
-register. Fixing the master data sharpens every yield calculation on the plant.
+**Bonus — stale asset register, quantified:** 11 inverters output far more than their
+registered kWp allows. Smoking gun: **INV 01.05.030 is registered at 5.64 kWp but peaks
+at 23 kW — 4× off**; the 01.07.048–051 / 01.08.052/059 group should read ≈28.9 kWp, not
+16.5–23.5. Suggested corrections: [`runs/plant_a/kwp_audit.csv`](runs/plant_a/kwp_audit.csv).
+Fixing the master data sharpens every yield calculation on the plant.
 
 ---
 

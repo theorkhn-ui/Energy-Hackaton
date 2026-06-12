@@ -8,3 +8,4 @@ venv/
 data/raw/
 runs/plant_b/cache_*
 runs/plant_a/faults/cache_*
+video/node_modules/

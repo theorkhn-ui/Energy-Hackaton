@@ -36,6 +36,12 @@ See `underperformers.csv`. Top: 01.03.018 €432 · 01.03.020 €320 · 01.04.02
 
 All five suggested challenge directions now covered: anomaly detection ✓ · soiling (Plant B) ✓ · fault classification ✓ · performance-ratio modelling ✓ · ticket intelligence ✓.
 
+## Stage 5/6 additions
+
+14. **Stale kWp register QUANTIFIED** (`kwp_audit.csv`): 11 inverters where near-STC peak output exceeds plant norm vs registered kWp. Smoking gun: **INV 01.05.030 registered 5.64 kWp, observed 23 kW peak (4×)**; the 01.07.048-051 / 01.08.052/059 / 01.04.026/27 group should read ≈28.9 kWp not 16.5-23.5. Suggested corrections included — hand Enerparc a fixed asset register.
+15. **Maintenance watchlist** (`WATCHLIST.md`): 3 CRITICAL + 10 MAJOR inverters today; 11 of 13 have no recent ticket.
+16. **Remotion video project scaffolded and compiling** (`video/`): 9 scenes, 3:50, captions from storyboard, tsc + bundle verified. Maxat: `cd video && npx remotion studio` to preview.
+
 ## Interactive dashboard
 `runs/plant_a/dashboard/index.html` — self-contained, dark theme, 65 clickable inverter tiles, per-inverter history + ticket markers. Screen-record 15-20s for the video product shot.
 
