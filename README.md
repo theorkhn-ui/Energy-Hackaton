@@ -82,6 +82,11 @@ Fixing the master data sharpens every yield calculation on the plant.
 
 ## Method in 30 seconds
 
+Stale-register cross-check: the near-STC peak audit finds 11 suspected kWp entries;
+the stricter peer-ratio audit confirms 8 clean candidates plus 2 operationally
+confounded 08/09 units. See [`runs/plant_a/kwp_audit.csv`](runs/plant_a/kwp_audit.csv)
+and [`runs/plant_a/STALE_KWP_AUDIT.md`](runs/plant_a/STALE_KWP_AUDIT.md).
+
 - **Peer-normalized performance index.** Every 5 minutes, each inverter's kWp-normalized
   output is divided by the plant median at that exact timestamp. Clouds, seasons, and rain
   hit all inverters at once and cancel out. 1.0 = healthy; below = trouble.
@@ -142,7 +147,8 @@ reproducible line by line.
   consistent with the measured telemetry blind spot, so flag precision cannot be fully
   scored. The defensible stat is lead-time recall: 42/46.
 - **Winter months are noisy** (low irradiation) — irradiation-weighted ratios are the next step.
-- ~8 inverters with ratio >1.1 are flagged as suspected stale kWp, not yet field-verified.
+- 11 suspected stale-kWp entries are flagged by near-STC peak output; 8 are confirmed by
+  a stricter sustained peer-ratio audit. These are not yet field-verified.
 
 ---
 

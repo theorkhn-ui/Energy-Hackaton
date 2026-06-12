@@ -31,6 +31,13 @@ Honestly: possible, and we'd want a joint audit of the asset register against as
 
 ## 7. "Winter performance ratios are notoriously noisy at low irradiation. How much of your flagging is winter noise?"
 
+Stale-register audit backup for Q6: `runs/plant_a/STALE_KWP_AUDIT.md` lists 8 clean
+register candidates (`01.05.030`, `01.07.049`, `01.07.051`, `01.04.026`,
+`01.07.048`, `01.07.050`, `01.06.040`, `01.04.027`) with registered kWp, median
+peer ratio, implied kWp, and gap. It separates 2 high-ratio units in 01.08/01.09 as
+operationally confounded, so we are not mixing the active-collapse section into the
+clean master-data claim.
+
 We handle it at two stages. First, low-irradiation days are down-weighted via minimum-energy thresholds — a day has to produce enough fleet energy for the peer ratio to be statistically meaningful before it can contribute to a flag. Second, the money and validation numbers only count *material episodes*: sustained, multi-day deviations with quantifiable energy loss, not single noisy days. The headline findings survive this filter — the 08/09 collapse spans **August 2025 to now** across all seasons, and 01.03.018 was below 0.95 on 272 of 317 evaluated days. Irradiation-weighted ratios are on our roadmap as a further refinement and we list that openly in FINDINGS.md.
 
 ## 8. "Nice hackathon analysis — but would this actually scale and run live?"
@@ -70,5 +77,5 @@ Because 65 inverters under identical sky are a better reference model than anyth
 | Telemetry blind spot | error codes dead since Nov 2019; never covered sections 08/09 |
 | Fault classification | 823 incidents: 25% TRIP / 4% DERATE / 71% nuisance |
 | Plant B soiling | 37/107 inverters; 05.08.106/107 lose 3–16% with annual Sept snap-back |
-| Stale register | ~8 inverters at ratio >1.1 sustained for years |
+| Stale register | 8 clean candidates at ratio >1.1 sustained for years; see STALE_KWP_AUDIT |
 | Runtime | < 1 min per plant per day, pure pandas |

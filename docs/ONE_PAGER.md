@@ -35,6 +35,9 @@ plant-wide degradation; tickets are sparse ground truth — recall (42/46) is th
 
 ## What Enerparc should do next Monday
 
+Stale-register audit backup: the quantified pass found 8 clean candidates and gives
+implied kWp values in `runs/plant_a/STALE_KWP_AUDIT.md`.
+
 1. **Dispatch to sections 01.08/01.09** — the collapse is active, €42,325/yr at risk;
    restore error telemetry coverage for these sections while the crew is there.
 2. **Open a ticket for INV 01.03.018** — one year at 70% output, never reported.

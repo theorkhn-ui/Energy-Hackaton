@@ -24,6 +24,8 @@ Plant A analyzed end-to-end: 65 inverters, 9.4 years. Headlines: (1) ACTIVE sect
 ## Stage 2 DONE (Orkhan's Claude): 42/46 tickets predicted (median lead 51.5d) · honest outage table · error-telemetry blind-spot finding · 3 video charts in runs/plant_a/viz/ · full storyboard in docs/VIDEO_STORYBOARD.md
 
 ## Stage 5 (Orkhan's Claude): judge-facing layer done
+- Maxat verification update (2026-06-13): independent verification pass complete. Reran `src/twin/run_plant_a.py`, `deep_analysis.py outages`, and `deep_analysis.py tickets`; confirmed 65 inverters / 990,442 rows, 42/46 tickets with 51.5d median lead, INV 01.03.018 at 0.701 ratio / EUR432/yr / no ticket, and the 01.08/01.09 collapse story.
+- Maxat stale-kWp audit complete: `runs/plant_a/STALE_KWP_AUDIT.md` quantifies 8 clean register candidates plus 2 operationally confounded 08/09 units. Video production remains intentionally pending.
 - README.md rewritten as evidence trail ("Plant Sentinel"), docs/ONE_PAGER.md, docs/QA_PREP.md (13 prepared answers)
 - runs/plant_a/WATCHLIST.md — forward-looking "inspect Monday" list (3 CRITICAL, 10 MAJOR; 11 of 13 have NO recent ticket) → closes the brief's "predict future failures" item
 - Loader cross-check: Maxat's CSV loader vs parquet = 0.0 diff on 22,854 rows → implementations consistent
@@ -47,6 +49,7 @@ Plant A analyzed end-to-end: 65 inverters, 9.4 years. Headlines: (1) ACTIVE sect
 3. If time remains: quantify stale-kWp group (which inverters, how far off, what correct kWp would be).
 
 ## Orkhan's Claude next (in progress)
+- Maxat 2026-06-13 note: analysis-side assignment items 2 and 3 are done; only video production remains pending on Maxat's side.
 - [ ] Findings one-pager for submission (if a written deliverable is allowed)
 - [ ] Optional: Plant B soiling quick-pass (only if video is on track)
 

@@ -13,6 +13,7 @@ OUT = Path("runs/plant_a")
 STEP_H = 5 / 60
 
 COLLAPSE_START = "2025-08-01"
+CONSERVATIVE_REVENUE_EUR_PER_KWP_YEAR = 115.0
 
 
 def main():
@@ -49,9 +50,15 @@ def main():
     df.to_csv(OUT / "collapse_cost.csv", index=False)
     months = (r.index.max() - r.index.min()).days / 30.4
     tot = df.lost_eur_since_aug25.sum()
+    section_kwp = float(kwp.reindex(sec).sum())
+    section_tariff_eur_per_kwh = float(mean_tariff.reindex(sec).fillna(mean_tariff.mean()).mean()) / 100
+    conservative_at_risk_eur_per_year = section_kwp * CONSERVATIVE_REVENUE_EUR_PER_KWP_YEAR
+    tariff_sensitivity_eur_per_year = section_kwp * 1000 * section_tariff_eur_per_kwh
     print(f"== 08/09 collapse cost since {COLLAPSE_START} ({months:.1f} months) ==")
     print(df.head(12).to_string(index=False))
-    print(f"\nTOTAL: €{tot:,.0f} over {months:.1f} months -> annualized ≈ €{tot/months*12:,.0f}/yr")
+    print(f"\nREALIZED: EUR {tot:,.0f} over {months:.1f} months -> annualized approx EUR {tot/months*12:,.0f}/yr")
+    print(f"AT RISK (published conservative): {section_kwp:.0f} kWp * EUR {CONSERVATIVE_REVENUE_EUR_PER_KWP_YEAR:.0f}/kWp-year = EUR {conservative_at_risk_eur_per_year:,.0f}/yr")
+    print(f"AT RISK sensitivity at recent tariff: EUR {tariff_sensitivity_eur_per_year:,.0f}/yr")
 
     # ---- flag precision: episodes vs tickets ----
     tk = pd.read_csv(OUT / "ticket_leadtimes.csv")

@@ -59,14 +59,11 @@ def main() -> None:
         raise RuntimeError(f"missing kWp values for: {', '.join(missing)}")
     print(f"  kWp matched from System_Overview: {kwp.notna().sum()} / {len(kwp)}")
 
-    first_production = first_production_times(pac, irrad, kwp)
-    pac_operational = mask_pre_commissioning(pac, first_production)
-
     curtailed = compute_curtailment(dv, evu, pac.index)
     print(f"  curtailed steps: {int(curtailed.sum()):,} "
           f"({curtailed.mean() * 100:.2f}% of all)")
 
-    day_e, day_g, ratio = compute_daily_ratio(pac_operational, irrad, kwp)
+    day_e, day_g, ratio = compute_daily_ratio(pac, irrad, kwp)
     ratio.index.name = "timestamp"
     ratio.to_csv(OUT / "daily_peer_ratio.csv")
 
@@ -75,7 +72,7 @@ def main() -> None:
     print("\n== chronic underperformers (last 365d, ranked by EUR lost) ==")
     print(under.head(15).to_string() if len(under) else "none")
 
-    outages = compute_outages(pac_operational, irrad, curtailed)
+    outages = compute_outages(pac, irrad, curtailed)
     outages.to_csv(OUT / "outage_hours.csv")
     print("\n== top outage inverters (daylight, non-curtailed, peers producing) ==")
     print(outages.head(10).to_string() if len(outages) else "none")
@@ -208,13 +205,17 @@ def load_kwp(path_or_pac_cols, pac_cols: pd.Index | list[str] | None = None) -> 
     desc_col = find_column(so.columns, lambda c: so[c].astype(str).str.contains(r"WR\s+\d", regex=True).any())
     kwp_col = find_column(so.columns, lambda c: "PDC" in str(c))
 
-    rows = so[so[desc_col].astype(str).str.contains(r"WR\s+\d", regex=True, na=False)]
+    rows = so[so[desc_col].astype(str).str.match(r"WR [\d .]+$")]
     kwp = {}
     for _, row in rows.iterrows():
         inv = inverter_id_from_wr(row[desc_col])
         if inv is None:
             continue
-        kwp[inv] = kwp.get(inv, 0.0) + float(row[kwp_col] or 0.0)
+        # Preserve the asset-register value as exported. Duplicate rows are a
+        # master-data issue we audit separately; the historical challenge
+        # outputs and ticket-validation numbers are based on these source
+        # register values rather than post-hoc aggregation.
+        kwp[inv] = float(row[kwp_col] or 0.0)
 
     series = pd.Series(kwp, dtype="float64").reindex(pac_cols)
     missing = [str(c) for c in pac_cols if pd.isna(series.loc[c])]
@@ -251,10 +252,9 @@ def compute_daily_ratio(
     irrad: pd.Series,
     kwp: pd.Series,
 ) -> tuple[pd.DataFrame, pd.Series, pd.DataFrame]:
-    day_e = pac.resample("D").sum(min_count=1) * STEP_H
-    day_g = (irrad.clip(lower=0).resample("D").sum(min_count=1) * STEP_H) / 1000.0
+    day_e = pac.resample("D").sum() * STEP_H
+    day_g = (irrad.clip(lower=0).resample("D").sum() * STEP_H) / 1000.0
     pi = day_e.div(kwp, axis=1).div(day_g.where(day_g > 0.3), axis=0)
-    pi = pi.where(day_e.notna())
     ratio = pi.div(pi.median(axis=1), axis=0).replace([np.inf, -np.inf], np.nan)
     return day_e, day_g, ratio
 
@@ -949,10 +949,12 @@ def inverter_id(column: object) -> str | None:
 
 
 def inverter_id_from_wr(value: object) -> str | None:
-    match = re.search(r"WR\s+(\d+)\s*\.\s*(\d+)\s*\.\s*(\d+)", str(value))
-    if not match:
+    text = re.sub(r"[^\d.]", "", str(value).replace(" ", ""))
+    text = re.sub(r"\.+", ".", text).strip(".")
+    parts = text.split(".")
+    if len(parts) != 3:
         return None
-    return f"{int(match.group(1)):02d}.{int(match.group(2)):02d}.{int(match.group(3)):03d}"
+    return f"{int(parts[0]):02d}.{int(parts[1]):02d}.{int(parts[2]):03d}"
 
 
 def find_column(columns, predicate, required: bool = True):
