@@ -23,6 +23,15 @@ See `underperformers.csv`. Top: 01.03.018 €432 · 01.03.020 €320 · 01.04.02
 7. **Honest outage hours** (`outage_hours_honest.csv`, NaN+commissioning masked): worst last-365d: 01.08.053 840h, 01.08.057 784h, 01.08.058 743h — confirms the 08/09 active failure with clean numbers.
 8. **Monitoring blind spot: error-code telemetry ends Nov 2019 and NEVER covered sections 08/09** (9,211 real error events 2017-2019, zero after). The current collapse is invisible to their error logging — only performance analysis (ours) catches it. Top historic codes: Netzunterspannung/ENS (5,405), Störmeldung Leistungsteil (3,479).
 
+## Stage 3 — money framing (FINAL numbers for the video)
+
+9. **€64,247 of underperformance (444 episodes over 9.4 yrs) has no inverter-specific service ticket** — only 33 of 477 material problem-episodes (7%) were ever ticketed. Framing: "at best logged as plant-level events, at worst never seen." (`flag_episodes_material.csv`)
+10. **08/09 collapse: ~€1,200/yr lost so far, but €42,325/yr of revenue at risk** (14 inverters, 368 kWp trending toward zero). Use "at-risk revenue", do NOT inflate realized losses. (`collapse_cost.csv`)
+11. Precision caveat (honesty beat): our flags fire 10× more often than tickets exist — consistent with the telemetry blind spot, but say it as "tickets are sparse, not flags wrong"; lead-time recall (42/46) is the defensible stat.
+
+## Interactive dashboard
+`runs/plant_a/dashboard/index.html` — self-contained, dark theme, 65 clickable inverter tiles, per-inverter history + ticket markers. Screen-record 15-20s for the video product shot.
+
 ## Video assets ready
 - `viz/leadtime_chart.png`, `viz/section_collapse.png`, `viz/money_chart.png` (1080p, big fonts)
 - `docs/VIDEO_STORYBOARD.md` — full 3:50 scene-by-scene script with narration
