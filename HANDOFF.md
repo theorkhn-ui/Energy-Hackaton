@@ -3,36 +3,45 @@
 > New here? Read `MAXAT_START_HERE.md` for full setup + the Claude-to-Claude protocol.
 
 ## Questions
-(none open - Claudes: post questions for each other here)
+- **To Maxat's Claude (from Orkhan's Claude):** sorry — your normalize-scenario work landed mid-pivot (good work, it's preserved in `archive/grid-agent-3.1/` with your changes intact). We are NOT on #3.1 anymore, see below. Please `git pull`, read the pivot note, and pick a task from the new "Next up".
 
 > Convention: whoever (human or Claude) finishes a work session updates **Current status**,
 > **Next up**, and **Blockers**, then commits with message `handoff: <summary>`.
 
-## Current status (2026-06-12 evening)
-- Challenge **#3.1 E.ON Grid Operation Agents** CONFIRMED FINAL (recount of sheet: #1.1 has 5 teams, #3.1 has 2-4 -> see `00-challenge-analysis.md`).
-- `src/grid_tools.py`: agent tool functions (powerflow, overloads, switch line, redispatch, shed).
-- `src/n1_screening.py`: N-1 scan works. Demo line remains `case30` line 9.
-- `src/baseline_agent.py`: rule-based fixer is the comparison target.
-- `src/agent.py`: **LLM agent loop done** (Anthropic tool-use, narrated transcript saved to runs/). `--mock` mode tests plumbing without API key - verified working. Real LLM run still untested (needs `ANTHROPIC_API_KEY`).
-- `src/viz.py`: grid plots, overloads red with percentage labels, tripped lines dotted - rendered, looks good (see `runs/*.png`).
-- Maxat confirmed local setup works with Python 3.12.10.
-- Scripts can now normalize the intact grid to a safe loading level before screening contingencies. Default clean demo: `python src/baseline_agent.py case30 9` starts safe at 80.0%, trips line 9, creates one overload at 109.7%, and the baseline clears it after load shedding.
-- For a harsher strawman comparison, use Orkhan's stressed line-9 scenario where loading reaches ~153-183% and the baseline fails.
+## ⚠️ PIVOT (2026-06-12 late evening): challenge is now **#2.1 Enerparc Digital Twin**
+Sheet recount: #3.1 ballooned to 5-6 teams (GridFlow.ai, Voltify, winsortf, Fero, mahanc); Enerparc digital twin has only 2 (StealthDetection.Ai 4p + solo Pyra). Fewer rivals + real-data analysis suits a 2p Claude-assisted team → switched. Orkhan confirmed "whatever optimizes winning".
 
-## Next up (Maxat / Maxat's Claude - pick any, update this file)
-- [ ] Run real LLM agent: `ANTHROPIC_API_KEY=... python src/agent.py --trip 9` - iterate on system prompt until it reliably clears overloads with minimal load shed.
-- [ ] Benchmark script: agent vs baseline across ALL dangerous N-1 outages (table: cleared? actions? MW shed?) - this is our "honest eval" judges love.
-- [ ] Try case118 (bigger grid = more impressive).
-- [ ] Video plan: storyboard 4-min cut (hook -> problem -> agent demo with narration -> eval table -> close).
-- [ ] Useful skills to install (vetted): Power-Agent/PowerSkills (pandapower mitigation playbooks), remotion-dev/skills (video), tvhahn/matplotlib-skill.
+- 3.1 code moved to `archive/grid-agent-3.1/` (incl. Maxat's scenario-normalization improvements — reusable if anything changes)
+- NEW `src/twin/`: data_loader.py (Enerparc schema per dataset slides), analysis.py
+  (performance index → peer-normalized ratio → underperformer / soiling / outage flags),
+  synthetic_test.py — **all 3 planted fault types detected ✓**
+- Waiting on real Plant A data from Orkhan. First job when it lands: fix column regexes
+  in data_loader.py, then rerun the same analysis.
 
-## Task split (proposal - Maxat, edit!)
-- Orkhan: agent loop + prompts + narration output.
-- Maxat: benchmark eval, bigger grid, visualization polish.
+## Next up (when data arrives — claim by putting your name)
+- [ ] Load real Plant A, fix loader, run full pipeline
+- [ ] Cross-reference flags with Tickets.xlsx (predicted-the-ticket = killer finding)
+- [ ] Error-code joining (errorcodes.* + translation table) → fault classification
+- [ ] Per-inverter findings dashboard/plots for the video
+- [ ] Plant B soiling dataset (optional, only after Plant A complete)
+
+## Doable NOW (no data needed)
+- [ ] Video storyboard: 4-min cut (hook → plant problem → live findings → ticket prediction → close)
+- [ ] Plot templates with matplotlib skill: peer-ratio heatmap (inverter × day), soiling drift chart
+- [ ] Read Enerparc dataset slides in `Energy_Hack_Challenges_final.pdf` pp. 5-7
+
+## Old status (#3.1, archived 2026-06-12)
+- LLM agent loop mock-verified; viz rendered; N-1 scan working.
+- Maxat: setup confirmed (Python 3.12.10); added grid normalization — clean demo starts safe at 80%, line-9 trip → 109.7% overload, baseline clears it; Orkhan's stressed variant (153-183%) makes the baseline fail.
+
+## Task split (proposal — edit!)
+- Orkhan's Claude: data pipeline, real-data analysis when it lands
+- Maxat's Claude: video storyboard + plot templates (doable now), then tickets/errorcode cross-ref
 
 ## Blockers
-- Real LLM run needs `ANTHROPIC_API_KEY`.
+- Real Plant A data not yet received (Orkhan fetching).
 
 ## Decisions log
-- 2026-06-12: Switched from #1.1 (crowded, 3+ teams) to #3.1 (least competition, best demo). Need to update registration sheet!
-- 2026-06-12: Normalize line ratings for clean demo runs because pandapower `case30` is overloaded under its built-in ratings before any contingency.
+- 2026-06-12: #1.1 → #3.1 (competition).
+- 2026-06-12: Normalize line ratings for clean demo runs (case30 overloaded under built-in ratings).
+- 2026-06-12 late: #3.1 → **#2.1 Enerparc Digital Twin** (competition recount; FINAL — sheet updated by Orkhan? VERIFY).
