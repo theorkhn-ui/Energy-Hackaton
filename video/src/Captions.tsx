@@ -1,8 +1,29 @@
 import React from "react";
 import type { Caption } from "@remotion/captions";
 import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { COLORS, FONT } from "./theme";
+import { COLORS, FONT, FONT_MONO } from "./theme";
 import { FPS, SCENE_DURATIONS, SCENE_STARTS } from "./timing";
+
+/** Who is speaking; drives the small speaker tag on the caption bar. */
+type Speaker = "ORKHAN" | "MAXAT";
+type SpeakerCaption = Caption & { speaker: Speaker };
+
+/**
+ * Speaker per scene, matching video/VOICEOVER_SCRIPT.md. A single value applies
+ * to every caption in the scene; an array assigns per caption chunk (Scene 9
+ * hands off from Orkhan to Maxat mid-scene).
+ */
+const SCENE_SPEAKERS: (Speaker | Speaker[])[] = [
+  "ORKHAN", // 1 cold open
+  "MAXAT", // 2 the problem
+  "ORKHAN", // 3 method
+  "MAXAT", // 4 finding 1
+  "ORKHAN", // 5 finding 2
+  "MAXAT", // 6 finding 3
+  "ORKHAN", // 7 bonus
+  "MAXAT", // 8 limit + fix
+  ["ORKHAN", "ORKHAN", "MAXAT", "MAXAT", "MAXAT"], // 9 close (Orkhan -> Maxat)
+];
 
 /**
  * Burned-in captions, always on (judges may watch muted).
@@ -90,8 +111,8 @@ const SCENE_NARRATION: string[][] = [
   ],
 ];
 
-const buildCaptions = (): Caption[] => {
-  const all: Caption[] = [];
+const buildCaptions = (): SpeakerCaption[] => {
+  const all: SpeakerCaption[] = [];
   SCENE_NARRATION.forEach((chunks, sceneIdx) => {
     const sceneStartMs = (SCENE_STARTS[sceneIdx] / FPS) * 1000;
     const sceneDurMs = (SCENE_DURATIONS[sceneIdx] / FPS) * 1000;
@@ -99,16 +120,21 @@ const buildCaptions = (): Caption[] => {
     const usableMs = sceneDurMs * 0.96;
     const wordCounts = chunks.map((c) => c.split(/\s+/).length);
     const totalWords = wordCounts.reduce((a, b) => a + b, 0);
+    const sceneSpeaker = SCENE_SPEAKERS[sceneIdx];
 
     let cursor = sceneStartMs;
     chunks.forEach((text, i) => {
       const durMs = (wordCounts[i] / totalWords) * usableMs;
+      const speaker = Array.isArray(sceneSpeaker)
+        ? (sceneSpeaker[i] ?? sceneSpeaker[sceneSpeaker.length - 1])
+        : sceneSpeaker;
       all.push({
         text,
         startMs: cursor,
         endMs: cursor + durMs,
         timestampMs: null,
         confidence: null,
+        speaker,
       });
       cursor += durMs;
     });
@@ -116,7 +142,7 @@ const buildCaptions = (): Caption[] => {
   return all;
 };
 
-export const captions: Caption[] = buildCaptions();
+export const captions: SpeakerCaption[] = buildCaptions();
 
 /**
  * Neo-Grid Bold caption bar: bottom-center ink band, paper text, zero
@@ -136,6 +162,7 @@ export const Captions: React.FC = () => {
     <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center" }}>
       <div
         style={{
+          position: "relative",
           marginBottom: 44,
           maxWidth: 1560,
           display: "flex",
@@ -156,6 +183,30 @@ export const Captions: React.FC = () => {
           }}
         >
           {active.text}
+        </div>
+
+        {/* Small speaker tag, riveted to the bottom-right corner of the bar.
+            Muted graphite (deliberately understated, not a bright accent) so it
+            reads as a label, not a highlight. */}
+        <div
+          style={{
+            position: "absolute",
+            right: 0,
+            bottom: -27,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            background: COLORS.muted,
+            color: COLORS.ink,
+            border: `1.5px solid ${COLORS.ink}`,
+            fontFamily: FONT_MONO,
+            fontSize: 15,
+            letterSpacing: "0.12em",
+            padding: "4px 12px",
+          }}
+        >
+          <div style={{ width: 8, height: 8, background: COLORS.ink }} />
+          {active.speaker}
         </div>
       </div>
     </AbsoluteFill>
