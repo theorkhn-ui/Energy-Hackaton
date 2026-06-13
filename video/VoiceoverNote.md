@@ -1,4 +1,4 @@
-# Voiceover — where it goes and how it syncs
+# Voiceover, where it goes and how it syncs
 
 ## Drop the file here
 
@@ -6,7 +6,7 @@
 video/public/voiceover.mp3
 ```
 
-(`.wav` also works — then change `VOICEOVER_FILE` in `src/timing.ts`.)
+(`.wav` also works, then change `VOICEOVER_FILE` in `src/timing.ts`.)
 
 Then open `src/timing.ts` and flip:
 
@@ -14,13 +14,13 @@ Then open `src/timing.ts` and flip:
 export const HAS_VOICEOVER = true;
 ```
 
-That's it — `src/MainVideo.tsx` already contains the `<Audio>` tag, gated by
+That's it, `src/MainVideo.tsx` already contains the `<Audio>` tag, gated by
 that flag, so the project compiles and previews fine with no audio file
 present.
 
 ## Recording checklist (from the storyboard)
 
-- ~540 words total, ~140 wpm. Record **scene by scene** — one take per scene
+- ~540 words total, ~140 wpm. Record **scene by scene**, one take per scene
   is fine. Quiet room; phone mic in a closet beats laptop mic in a hall.
 - Speak the numbers as written in the narration column ("fifty-one and a half
   days"), don't read digits.
@@ -39,7 +39,7 @@ The voiceover must hit those same boundaries:
    Example with ffmpeg: pad each clip to its scene duration
    (`-af apad=whole_dur=25` for Scene 2), then concat.
 3. If a take runs long for its slot, either re-record tighter or adjust that
-   scene's `durationSec` in `src/timing.ts` — scenes AND captions retime
+   scene's `durationSec` in `src/timing.ts`, scenes AND captions retime
    automatically. Keep the total at ≤ 230s (4:00 hard cap minus buffer).
 
 ## Caption fine-tuning
