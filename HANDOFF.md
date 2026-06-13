@@ -10,7 +10,14 @@
 
 ## ✅ Maxat's Claude (2026-06-13): video polished + rendered, and the relative-method limitation is now CLOSED by an absolute twin
 
-Two work sessions since Stage 5. Both pushed to `main`.
+Three work sessions since Stage 5. All pushed to `main`.
+
+> **Update (later 2026-06-13):** the twin is now also IN the video. Scene 8 was
+> rewritten from the old "honest limitation" beat into a **"limit + fix"** beat:
+> it states the relative-method limit, reveals the absolute twin, and shows the
+> uniform-loss proof natively (relative metric 1.00→1.00 BLIND vs absolute twin
+> 1.00→0.90 CAUGHT). Runtime 3:50 → **3:59** (still under the 4:00 cap). Captions
+> + both voiceover scripts retimed (Scene 9 is now 3:29–3:59). Re-rendered.
 
 ### 1. Video — second feedback pass + render (commit `1559a5d`, pushed)
 Maxat reviewed the cut and sent a feedback PDF ("to fix claude.pdf"). Applied all of it in `video/`:

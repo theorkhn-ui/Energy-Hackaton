@@ -3,8 +3,9 @@
 Final narration, word for word identical to the burned-in captions in
 `video/src/Captions.tsx`, so the subtitles and the voice line up exactly.
 Speakers alternate at scene boundaries; Scene 9 is shared so the word counts
-come out roughly even (Orkhan ~246 words, Maxat ~274 words). Timestamps come
-from `video/src/timing.ts`. Total runtime 3:50 at 30 fps, 1920x1080.
+come out roughly even (Orkhan ~246 words, Maxat ~315 words after the Scene 8
+twin beat). Timestamps come from `video/src/timing.ts`. Total runtime 3:59 at
+30 fps, 1920x1080.
 
 Recording tip: read it like you are explaining it to a friend, not
 presenting. Short pauses at the periods. The captions auto-pace by word
@@ -69,12 +70,15 @@ one point one. That is not better hardware. That is a stale kilowatt peak
 value in the asset register. We also sorted the old alarms. Seventy one
 percent of them were nuisance.
 
-## Scene 8: Honest limit (3:10-3:20): MAXAT
+## Scene 8: The limit, and how we close it (3:10-3:29): MAXAT
 
-One honest limit. We compare inverters to each other. A loss that hits all
-of them equally would be invisible to us.
+One honest limit, and how we close it. Our peer ratio is relative, so a loss
+that hits every inverter equally could slip through. So we also built an
+absolute twin. Each inverter against its own healthy baseline, from irradiance
+and temperature. We tested it. We dimmed every inverter by ten percent. The
+peer ratio never moved. The twin caught all of it.
 
-## Scene 9: Close (3:20-3:50): ORKHAN, then MAXAT
+## Scene 9: Close (3:29-3:59): ORKHAN, then MAXAT
 
 **ORKHAN:** We are Orkhan and Maxat, team Syz. In one day, with your data,
 we found a failure in progress, a fault nobody had noticed, and a seven week

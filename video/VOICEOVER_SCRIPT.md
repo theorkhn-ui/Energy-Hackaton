@@ -127,15 +127,22 @@ Legend: 🟦 **ORKHAN**  ·  🟧 **MAXAT**
 
 ---
 
-## Scene 8 — Honest limit (3:10–3:20) · 🟧 MAXAT
+## Scene 8 — The limit, and how we close it (3:10–3:29) · 🟧 MAXAT
 
-> One honest limit. We compare inverters to each other.
+> One honest limit, and how we close it.
 >
-> A loss that hits all of them equally would be invisible to us.
+> Our peer ratio is relative, so a loss that hits every inverter equally could
+> slip through.
+>
+> So we also built an absolute twin. Each inverter against its own healthy
+> baseline, from irradiance and temperature.
+>
+> We tested it. We dimmed every inverter by ten percent. The peer ratio never
+> moved. The twin caught all of it.
 
 ---
 
-## Scene 9 — Close (3:20–3:50) · 🟦 ORKHAN → 🟧 MAXAT
+## Scene 9 — Close (3:29–3:59) · 🟦 ORKHAN → 🟧 MAXAT
 
 **🟦 ORKHAN:**
 

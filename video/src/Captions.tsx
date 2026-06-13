@@ -73,10 +73,12 @@ const SCENE_NARRATION: string[][] = [
     "That is not better hardware. That is a stale kilowatt peak value in the asset register.",
     "We also sorted the old alarms. Seventy one percent of them were nuisance.",
   ],
-  // Scene 8: honest limitation (10s)
+  // Scene 8: the limit, and how we close it (19s)
   [
-    "One honest limit. We compare inverters to each other.",
-    "A loss that hits all of them equally would be invisible to us.",
+    "One honest limit, and how we close it.",
+    "Our peer ratio is relative, so a loss that hits every inverter equally could slip through.",
+    "So we also built an absolute twin. Each inverter against its own healthy baseline, from irradiance and temperature.",
+    "We tested it. We dimmed every inverter by ten percent. The peer ratio never moved. The twin caught all of it.",
   ],
   // Scene 9: close (30s)
   [

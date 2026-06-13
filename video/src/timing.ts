@@ -24,7 +24,7 @@ export const SCENES: readonly SceneDef[] = [
   { key: "scene5", title: "Finding 2: the invisible fault", durationSec: 30 },
   { key: "scene6", title: "Finding 3: failure in progress", durationSec: 35 },
   { key: "scene7", title: "Bonus: stale asset register", durationSec: 20 },
-  { key: "scene8", title: "Honest limitation", durationSec: 10 },
+  { key: "scene8", title: "The limit, and how we close it", durationSec: 19 },
   { key: "scene9", title: "Close: team + next steps", durationSec: 30 },
 ] as const;
 
@@ -41,7 +41,8 @@ export const SCENE_STARTS: readonly number[] = SCENE_DURATIONS.reduce<number[]>(
 );
 
 export const TOTAL_FRAMES: number = SCENE_DURATIONS.reduce((a, b) => a + b, 0);
-// 6900 frames = 230 s = 3:50. The 4:00 hard cap is enforced by construction.
+// 7170 frames = 239 s = 3:59. Still under the 4:00 hard cap (Scene 8 grew from
+// 10s to 19s to add the absolute-twin "limit + fix" beat).
 
 /**
  * Voiceover: drop the narration file at video/public/voiceover.mp3 and flip
