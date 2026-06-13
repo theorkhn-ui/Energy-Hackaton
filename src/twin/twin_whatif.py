@@ -137,7 +137,7 @@ def make_chart(coh, horizon, loss_by_delay, realized_total, at_risk_total):
         ax1.text(r["at_risk_eur_yr"] + 30, yi, f"HI {r['recent_HI']:.2f}",
                  va="center", fontsize=12, color=INK)
     ax1.set_xlabel("EUR / year")
-    ax1.set_title("Active 01.08 / 01.09 collapse — revenue at risk per inverter",
+    ax1.set_title("Active 01.08 / 01.09 collapse: revenue at risk per inverter",
                   fontweight="bold", fontsize=15)
     ax1.legend(frameon=False, loc="lower right")
     for s in ("top", "right"):
@@ -153,7 +153,7 @@ def make_chart(coh, horizon, loss_by_delay, realized_total, at_risk_total):
                      xytext=(d + 6, val), fontsize=12, va="center")
     ax2.set_xlabel("repair dispatched in N days")
     ax2.set_ylabel("cumulative lost revenue (EUR)")
-    ax2.set_title("Cost of delay — the price of waiting",
+    ax2.set_title("Cost of delay: the price of waiting",
                   fontweight="bold", fontsize=15)
     for s in ("top", "right"):
         ax2.spines[s].set_visible(False)

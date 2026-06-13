@@ -195,9 +195,9 @@ def write_outputs(res, smooth, ratio, plant_vs_model, plant_anom, plant_eps, sen
     ax.plot(plant_vs_model.index, plant_vs_model, ".", ms=2, color="#bbbbbb", label="daily (clear-sky days)")
     ax.plot(plant_anom.index, plant_anom * plant_vs_model.median(), lw=2, color="#1f77b4",
             label="de-seasonalized 14d trend")
-    ax.set_ylabel("Plant PI vs clear-sky\nmodel (–)")
+    ax.set_ylabel("Plant PI vs clear-sky\nmodel (-)")
     ax.set_ylim(plant_vs_model.quantile(0.02) * 0.9, plant_vs_model.quantile(0.98) * 1.1)
-    ax.set_title("Plant B — plant-wide performance vs pvlib clear-sky model")
+    ax.set_title("Plant B: plant-wide performance vs pvlib clear-sky model")
     ax.legend(loc="lower left", fontsize=12)
     ax.grid(alpha=0.3)
 
@@ -209,7 +209,7 @@ def write_outputs(res, smooth, ratio, plant_vs_model, plant_anom, plant_eps, sen
                    color="#ff7f0e", alpha=0.25)
     ax.axhline(1.0, color="k", lw=0.8, ls="--")
     ax.set_ylim(0.85, 1.1)
-    ax.set_ylabel(f"INV {best}\npeer ratio (–)")
+    ax.set_ylabel(f"INV {best}\npeer ratio (-)")
     ax.set_title(f"Most sawtooth-like inverter: INV {best} "
                  f"({int(res.loc[best, 'n_episodes'])} episodes flagged, shaded)")
     ax.legend(loc="lower left", fontsize=12)
@@ -227,14 +227,14 @@ def write_outputs(res, smooth, ratio, plant_vs_model, plant_anom, plant_eps, sen
     winter_gain = monthly.loc[[1, 2, 11]].mean()  # Dec has no clear-sky days at 53N
     top_winter = winter_gain.nlargest(5)
 
-    md = f"""# Plant B — Soiling Findings
+    md = f"""# Plant B: Soiling Findings
 
-**Data**: 5-min monitoring 2018-01 .. 2026-06, 107 inverters (55–74 kWp each, 7.87 MWp total),
+**Data**: 5-min monitoring 2018-01 .. 2026-06, 107 inverters (55-74 kWp each, 7.87 MWp total),
 on-site pyranometer `Plant / Irradiation_average` present. Timestamps are **UTC** (verified against
 the recorded sun-altitude column). Location 53.269N 12.121E (Silmersdorf, DE) from Coordinate.txt.
 
 ## Method
-- Clear-sky candidates: pvlib Ineichen GHI > 200 W/m², measured/modelled ratio 0.85–1.15,
+- Clear-sky candidates: pvlib Ineichen GHI > 200 W/m², measured/modelled ratio 0.85-1.15,
   grid curtailment (EVU < 99 %) removed, inverter clipping (>97 % of P99.9) and outages excluded.
 - Performance index PI = P_AC / (kWp x G_meas/1000) per inverter, daily median (>=1 h of samples).
 - Peer ratio = inverter PI / plant-median PI -> cancels weather, season and sensor drift.
@@ -249,17 +249,17 @@ the recorded sun-altitude column). Location 53.269N 12.121E (Silmersdorf, DE) fr
   Fastest-degrading vs peers: {', '.join(f'INV {i} ({v:+.2f} %/mo)' for i, v in worst_drift.items())}.
 - **Plant-wide pattern**: plant PI vs the (sensor-independent) clear-sky model shows
   {len(plant_eps)} de-seasonalized decline/recovery episodes: {'; '.join(f"{e['peak_date']}->{e['recovery_date']} -{e['decline_pct']}%" for e in plant_eps) or 'none'}.
-- **Winter shading fingerprint**: peer ratios fan out strongly in Nov–Feb. Edge inverters
+- **Winter shading fingerprint**: peer ratios fan out strongly in Nov-Feb. Edge inverters
   outperform the plant median by up to {100 * (top_winter.iloc[0] - 1):.0f} % in winter
-  ({', '.join(f'INV {i} {100 * (v - 1):+.0f}%' for i, v in top_winter.items())}) — i.e. the *typical*
+  ({', '.join(f'INV {i} {100 * (v - 1):+.0f}%' for i, v in top_winter.items())}), i.e. the *typical*
   row loses that much to low-sun inter-row shading. December has no clear-sky qualifying days at 53 N.
 - **Interpretation of the headline case**: INV 05.08.106/107 are the last row (C.003, west edge).
-  Their decline starts each spring, deepens through July/August and snaps back every September —
+  Their decline starts each spring, deepens through July/August and snaps back every September,
   consistent with seasonal vegetation growth shading (or edge-of-field soiling) cleared in early
   autumn, repeating every year of the 8.5-year record. This is the clearest sawtooth in the plant.
 - **Pyranometer health**: measured/model clear-sky ratio drifted from
-  {sensor_trend.dropna().iloc[0]:.3f} (2018) to {sensor_trend.dropna().iloc[-1]:.3f} (2026)
-  — keep in mind when reading absolute PI levels (peer ratios are immune to this).
+  {sensor_trend.dropna().iloc[0]:.3f} (2018) to {sensor_trend.dropna().iloc[-1]:.3f} (2026),
+  so keep this in mind when reading absolute PI levels (peer ratios are immune to this).
 
 See `soiling_per_inverter.csv` for all inverters and `soiling_chart.png` for the headline chart.
 """

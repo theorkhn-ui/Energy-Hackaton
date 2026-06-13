@@ -1,4 +1,4 @@
-# Maintenance Watchlist — generated 2026-06-01
+# Maintenance Watchlist (generated 2026-06-01)
 
 Inverters currently below 0.93 peer ratio (60-day mean). 35 flagged; 31 have NO ticket in the last 120 days.
 

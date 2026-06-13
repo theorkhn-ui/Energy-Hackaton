@@ -1,4 +1,4 @@
-"""Forward-looking maintenance watchlist — 'inspect these on Monday'.
+"""Forward-looking maintenance watchlist: 'inspect these on Monday'.
 
 Run: PYTHONPATH=src/twin .venv/bin/python src/twin/watchlist.py
 """
@@ -47,7 +47,7 @@ def main():
           .sort_values(["severity", "ratio_last60d"]) )
     wl.to_csv(OUT / "watchlist.csv", index=False)
 
-    md = ["# Maintenance Watchlist — generated " + str(end.date()),
+    md = ["# Maintenance Watchlist (generated " + str(end.date()) + ")",
           "",
           f"Inverters currently below 0.93 peer ratio (60-day mean). "
           f"{len(wl)} flagged; {int((~wl.ticket_last_120d).sum())} have NO ticket in the last 120 days.",

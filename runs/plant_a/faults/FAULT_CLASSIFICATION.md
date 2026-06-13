@@ -1,4 +1,4 @@
-# Fault classification — Plant A
+# Fault classification: Plant A
 
 Source: 9211 raw error events (2017-01 .. 2019-11), merged into **823 incidents** (same inverter + code, gaps <= 2 h).
 

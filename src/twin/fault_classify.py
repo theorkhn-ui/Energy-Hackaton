@@ -202,8 +202,8 @@ def make_chart(inc: pd.DataFrame, path: str) -> None:
     ax.set_xticklabels([FAMILY_EN[f].replace(" (", "\n(") for f in fams],
                        fontsize=15)
     ax.set_ylabel("Incidents", fontsize=16)
-    ax.set_title("Plant A fault classification — incidents by code family "
-                 "(2017–2019)", fontsize=19, fontweight="bold", pad=14)
+    ax.set_title("Plant A fault classification: incidents by code family "
+                 "(2017-2019)", fontsize=19, fontweight="bold", pad=14)
     ax.tick_params(axis="y", labelsize=14)
     ax.legend(fontsize=15, title="Power impact", title_fontsize=14)
     ax.spines[["top", "right"]].set_visible(False)
@@ -220,7 +220,7 @@ def write_md(inc: pd.DataFrame, path: str) -> None:
     fams = [f for f in order if f in inc["family"].unique()]
 
     lines = [
-        "# Fault classification — Plant A",
+        "# Fault classification: Plant A",
         "",
         f"Source: {len(pd.read_csv(EVENTS_CSV))} raw error events "
         f"(2017-01 .. 2019-11), merged into **{len(inc)} incidents** "

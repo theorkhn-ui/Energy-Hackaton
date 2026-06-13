@@ -1,4 +1,4 @@
-"""Stage 2 analysis: honest outages, ticket lead-times, error-code classification.
+"""Follow-up analysis: honest outages, ticket lead-times, error-code classification.
 
 Run:  python src/twin/deep_analysis.py outages
       python src/twin/deep_analysis.py tickets

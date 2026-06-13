@@ -96,7 +96,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Plant A Digital Twin — Team Syz</title>
+<title>Plant A Digital Twin · Team Syz</title>
 <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 <style>
   :root {
@@ -189,27 +189,27 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <body>
 
 <header>
-  <h1>Plant A Digital Twin — <span class="team">Team Syz</span></h1>
-  <div class="sub">65 inverters · 5-minute telemetry 2017–2026 · peer-normalized performance ratio (1.0 = plant median)</div>
+  <h1>Plant A Digital Twin · <span class="team">Team Syz</span></h1>
+  <div class="sub">65 inverters · 5-minute telemetry 2017-2026 · peer-normalized performance ratio (1.0 = plant median)</div>
 </header>
 
 <div class="kpis">
   <div class="kpi"><div class="big">65 inverters · 9.4 years</div><div class="lbl">Fleet under digital twin</div></div>
   <div class="kpi good"><div class="big">42/46 tickets predicted</div><div class="lbl">Median 51.5 days early warning</div></div>
-  <div class="kpi alert"><div class="big">8 inverters failing NOW</div><div class="lbl">Sections 08–09 · active collapse</div></div>
+  <div class="kpi alert"><div class="big">8 inverters failing NOW</div><div class="lbl">Sections 08-09 · active collapse</div></div>
   <div class="kpi"><div class="big">€-losses ranked live</div><div class="lbl">Chronic drag quantified per inverter</div></div>
 </div>
 
-<h2>Plant grid — mean peer ratio, last 90 days (click a tile)</h2>
+<h2>Plant grid: mean peer ratio, last 90 days (click a tile)</h2>
 <div class="plant" id="plant"></div>
 <div class="legend">
   <span><span class="sw" style="background:var(--green)"></span>&ge; 0.97 healthy</span>
-  <span><span class="sw" style="background:var(--yellow)"></span>0.80 – 0.97 degraded</span>
+  <span><span class="sw" style="background:var(--yellow)"></span>0.80 to 0.97 degraded</span>
   <span><span class="sw" style="background:var(--red)"></span>&lt; 0.80 failing</span>
   <span><span class="sw" style="background:var(--gray)"></span>no data</span>
 </div>
 
-<h2>Inverter detail — full history (30-day rolling mean, weekly)</h2>
+<h2>Inverter detail: full history (30-day rolling mean, weekly)</h2>
 <div class="detail">
   <div class="chartbox"><div id="chart" style="width:100%;height:420px"></div></div>
   <div class="statbox" id="stats"></div>
@@ -219,18 +219,18 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <div class="findings">
   <div class="finding red">
     <h3>Sections 08/09: active collapse</h3>
-    <p>Eight inverters degrading since Aug 2025 — 01.08.057 at 0.35, 01.09.065 at 0.38 peer ratio.
+    <p>Eight inverters degrading since Aug 2025: 01.08.057 at 0.35, 01.09.065 at 0.38 peer ratio.
        Worst outage hours last 365&nbsp;d: 01.08.053 (840&nbsp;h), 01.08.057 (784&nbsp;h). Happening right now.</p>
   </div>
   <div class="finding yellow">
     <h3>01.03.018: unreported fault, €432/yr</h3>
-    <p>272 of 317 days below 0.95 peer ratio, ≈ €432 lost per year — and <b>no service ticket exists</b>.
+    <p>272 of 317 days below 0.95 peer ratio, ≈ €432 lost per year, and <b>no service ticket exists</b>.
        Their monitoring missed it; the digital twin didn't.</p>
   </div>
   <div class="finding">
     <h3>Error telemetry blind since 2019</h3>
     <p>Error-code logging ended Nov 2019 and never covered sections 08/09. The current collapse is
-       invisible to plant error logs — only performance analysis catches it.</p>
+       invisible to plant error logs; only performance analysis catches it.</p>
   </div>
 </div>
 
@@ -278,7 +278,7 @@ Object.keys(sections).sort().forEach(sec => {
     t.className = 'tile ' + bucket(v);
     t.id = 'tile-' + inv;
     t.textContent = inv.split('.')[2];
-    t.title = inv + ' — 90d mean ratio: ' + (v === null ? 'n/a' : v.toFixed(2));
+    t.title = inv + ', 90d mean ratio: ' + (v === null ? 'n/a' : v.toFixed(2));
     t.addEventListener('click', () => select(inv));
     tiles.appendChild(t);
   });
@@ -332,7 +332,7 @@ function drawChart(inv) {
     });
   }
   Plotly.react('chart', traces, {
-    title: { text: inv + ' — peer-normalized performance ratio', font: { size: 15, color: C.text } },
+    title: { text: inv + ': peer-normalized performance ratio', font: { size: 15, color: C.text } },
     paper_bgcolor: 'rgba(0,0,0,0)', plot_bgcolor: 'rgba(0,0,0,0)',
     font: { color: C.muted, size: 11 },
     margin: { l: 50, r: 20, t: 46, b: 40 },
@@ -390,7 +390,7 @@ function drawStats(inv) {
     });
   } else {
     html += '<div style="color:var(--muted);font-size:12px">none on record' +
-            (u ? ' — <b style="color:var(--yellow)">losing ' + fmtEur(u.lost_eur_365d) + '/yr unreported</b>' : '') +
+            (u ? ', <b style="color:var(--yellow)">losing ' + fmtEur(u.lost_eur_365d) + '/yr unreported</b>' : '') +
             '</div>';
   }
   html += '</div>';

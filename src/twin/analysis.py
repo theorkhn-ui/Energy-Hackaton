@@ -1,6 +1,6 @@
 """Digital-twin analytics: expected power, underperformance, soiling drift.
 
-Core idea (robust + explainable, judges can verify):
+Core idea (simple and explainable, judges can verify):
 1. Performance index per inverter = P_AC / (kWp * irradiation/1000)  [~performance ratio]
 2. Peer-normalize: inverter PI / plant median PI at each timestamp
    -> removes weather, curtailment, seasonal effects entirely.

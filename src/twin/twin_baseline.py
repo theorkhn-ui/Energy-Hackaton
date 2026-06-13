@@ -5,7 +5,7 @@ every inverter equally is invisible to a relative (cross-sectional) metric.
 Here each inverter is modelled against ITS OWN healthy history from physical
 drivers (irradiance + module temperature), giving an ABSOLUTE health index.
 
-Model, per inverter i (kWp-free, so it is robust to the stale-kWp register):
+Model, per inverter i (kWp-free, so it is immune to the stale-kWp register):
 
     P_exp[i,t] = k_i * G_t * (1 + gamma * (T_mod_t - 25))
 
@@ -160,7 +160,7 @@ def fit_gamma(pac, g, t, curt, starts) -> float:
         return GAMMA_DEFAULT
     x = np.concatenate(xs)
     y = np.concatenate(ys)
-    # robust-ish: clip absurd ratios, least squares slope through the cloud
+    # noise-tolerant: clip absurd ratios, least squares slope through the cloud
     keep = (y > 0.3) & (y < 1.7)
     x, y = x[keep], y[keep]
     gamma = float(np.polyfit(x, y, 1)[0])

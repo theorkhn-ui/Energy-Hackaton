@@ -1,7 +1,7 @@
 """Synthetic-data smoke test for the twin pipeline (until real Enerparc data arrives).
 
 Builds 30 days of 15-min data for 6 inverters with planted faults:
-- INV 01.01.003: soiling — 8% linear decline
+- INV 01.01.003: soiling, 8% linear decline
 - INV 01.01.005: chronic underperformer (-10%)
 - INV 01.01.002: 2-day total outage mid-month
 Then checks the pipeline finds exactly these.

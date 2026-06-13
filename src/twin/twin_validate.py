@@ -179,7 +179,7 @@ def make_charts(hi, starts, ctrls, peer_before, peer_after, twin_before, twin_af
     ax.axhline(1.0, color=GRID, lw=1.5, zorder=0)
     ax.set_xticks(x); ax.set_xticklabels(groups, fontsize=14)
     ax.set_ylim(0, 1.32); ax.set_ylabel("metric value (1.0 = healthy)")
-    ax.set_title("A plant-wide loss is invisible to a relative metric — the absolute twin catches it",
+    ax.set_title("A plant-wide loss is invisible to a relative metric, but the absolute twin catches it",
                  fontweight="bold", fontsize=16, pad=30)
     ax.legend(frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.11), ncol=2,
               fontsize=13)
@@ -200,7 +200,7 @@ def make_charts(hi, starts, ctrls, peer_before, peer_after, twin_before, twin_af
     ax.plot(sm.index, sm.median(axis=1), color=INK, lw=2.0, ls="--", label="plant median")
     ax.axhline(1.0, color=GRID, lw=1.5, zorder=0)
     ax.set_ylim(0, 1.25); ax.set_ylabel("absolute health index (1.0 = commissioned baseline)")
-    ax.set_title("Absolute twin health over time — anchored to each inverter's healthy youth",
+    ax.set_title("Absolute twin health over time, anchored to each inverter's healthy youth",
                  fontweight="bold", fontsize=16)
     ax.legend(frameon=False, loc="lower left", ncol=2)
     for s in ("top", "right"):

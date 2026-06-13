@@ -1,15 +1,15 @@
 """Load Enerparc plant data (schema per the Dataset Information Slides).
 
 Expected inputs (folder '1. Main-monitoring-data' + '2. Additional Data' + '3. Errorcodes'):
-- main_monitoring_data.{csv,parquet,xlsb} — wide table, columns like:
+- main_monitoring_data.{csv,parquet,xlsb}: wide table, columns like:
     'INV 01.01.001 / P_AC (kW)', 'INV 01.01.001 / I_DC_SUM (A)', 'INV 01.01.001 / U_DC (V)',
     'Plant / Irradiation_average (W/m²)', 'Plant / Altitude (°)',
     'DRD11A / DV (%)', 'DRD11A / EVU (%)', 'Temperature Sensor / Ambient (°C)', ...
-- System_Overview.xlsx — module type + installed kWp per inverter
-- Tickets.xlsx — service tickets
-- errorcodes_description.xlsx + errorcodes.* — error log + translation table
+- System_Overview.xlsx: module type + installed kWp per inverter
+- Tickets.xlsx: service tickets
+- errorcodes_description.xlsx + errorcodes.*: error log + translation table
 
-Column names WILL differ slightly in the real data — fix the regexes here first.
+Column names WILL differ slightly in the real data, so fix the regexes here first.
 """
 from __future__ import annotations
 

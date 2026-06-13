@@ -1,4 +1,4 @@
-# Voiceover script — Team Syz submission video
+# Voiceover script: Team Syz submission video
 
 Read-aloud script for the narration, split line by line between **Orkhan** and
 **Maxat**. The wording is word-for-word identical to the burned-in subtitles in
@@ -8,7 +8,7 @@ Read-aloud script for the narration, split line by line between **Orkhan** and
 - **Speakers alternate at scene boundaries.** Scene 9 is shared.
 - **Delivery:** read it like you are explaining it to a friend, not presenting.
   Short pause at each period. The captions auto-pace by word count, so don't
-  rush — every scene has a little slack at the end.
+  rush, every scene has a little slack at the end.
 - **Numbers stay exact:** 42/46, 51.5 days, ~€500/yr (INV 01.03.018),
   €42k/yr at risk, 9.4 years, 65 inverters, 71% nuisance, telemetry dead
   since 2019.
@@ -17,7 +17,7 @@ Legend: 🟦 **ORKHAN**  ·  🟧 **MAXAT**
 
 ---
 
-## Scene 1 — Cold open (0:00–0:10) · 🟦 ORKHAN
+## Scene 1: Cold open (0:00-0:10) · 🟦 ORKHAN
 
 > Forty two of the last forty six inverter failures here were visible in the
 > data first.
@@ -26,7 +26,7 @@ Legend: 🟦 **ORKHAN**  ·  🟧 **MAXAT**
 
 ---
 
-## Scene 2 — The problem (0:10–0:35) · 🟧 MAXAT
+## Scene 2: The problem (0:10-0:35) · 🟧 MAXAT
 
 > This is nine point four years of real monitoring data from a solar plant
 > with sixty five inverters.
@@ -40,7 +40,7 @@ Legend: 🟦 **ORKHAN**  ·  🟧 **MAXAT**
 
 ---
 
-## Scene 3 — The method (0:35–1:10) · 🟦 ORKHAN
+## Scene 3: The method (0:35-1:10) · 🟦 ORKHAN
 
 > Our method is simple on purpose.
 >
@@ -60,7 +60,7 @@ Legend: 🟦 **ORKHAN**  ·  🟧 **MAXAT**
 
 ---
 
-## Scene 4 — Finding 1: it works (1:10–1:45) · 🟧 MAXAT
+## Scene 4: Finding 1: it works (1:10-1:45) · 🟧 MAXAT
 
 > Does it actually work? We back tested it against the plant's real service
 > history.
@@ -79,7 +79,7 @@ Legend: 🟦 **ORKHAN**  ·  🟧 **MAXAT**
 
 ---
 
-## Scene 5 — Finding 2: the invisible fault (1:45–2:15) · 🟦 ORKHAN
+## Scene 5: Finding 2: the invisible fault (1:45-2:15) · 🟦 ORKHAN
 
 > Sometimes there is no ticket at all.
 >
@@ -94,7 +94,7 @@ Legend: 🟦 **ORKHAN**  ·  🟧 **MAXAT**
 
 ---
 
-## Scene 6 — Finding 3: failure in progress (2:15–2:50) · 🟧 MAXAT
+## Scene 6: Finding 3: failure in progress (2:15-2:50) · 🟧 MAXAT
 
 > This one is not history. It is happening right now.
 >
@@ -114,7 +114,7 @@ Legend: 🟦 **ORKHAN**  ·  🟧 **MAXAT**
 
 ---
 
-## Scene 7 — Bonus findings (2:50–3:10) · 🟦 ORKHAN
+## Scene 7: Bonus findings (2:50-3:10) · 🟦 ORKHAN
 
 > Two bonus findings.
 >
@@ -127,7 +127,7 @@ Legend: 🟦 **ORKHAN**  ·  🟧 **MAXAT**
 
 ---
 
-## Scene 8 — The limit, and how we close it (3:10–3:29) · 🟧 MAXAT
+## Scene 8: The limit, and how we close it (3:10-3:29) · 🟧 MAXAT
 
 > One honest limit, and how we close it.
 >
@@ -142,7 +142,7 @@ Legend: 🟦 **ORKHAN**  ·  🟧 **MAXAT**
 
 ---
 
-## Scene 9 — Close (3:29–3:59) · 🟦 ORKHAN → 🟧 MAXAT
+## Scene 9: Close (3:29-3:59) · 🟦 ORKHAN, then 🟧 MAXAT
 
 **🟦 ORKHAN:**
 

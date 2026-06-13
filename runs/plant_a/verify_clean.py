@@ -1,6 +1,6 @@
-"""Clean-room verification of three headline statistics for Plant A.
+"""Independent verification of three headline statistics for Plant A.
 
-Recomputed independently from raw data only (no team analysis code consulted).
+Recomputed from raw data only (this pass does not reuse the main analysis code).
 Run from repo root: .venv/bin/python runs/plant_a/verify_clean.py [stage1|stage2]
 stage1 builds daily/outage caches; stage2 (default if cache exists) prints verdicts.
 """
