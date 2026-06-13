@@ -30,8 +30,12 @@ an alarm. The data to catch all of it was already being recorded — every 5 min
 | 6 | Plant B soiling/shading | 37/107 inverters sawtooth; worst case 21 episodes, −16.5%; winter inter-row shading up to −25% | cleaning/vegetation schedule per inverter |
 | 7 | Stale asset register | ~8 inverters at ratio >1.1 → wrong kWp on file | every yield calc on the plant off |
 
-All €: lost energy × feed-in tariff (estimates). Honest limits: relative method cannot see
-plant-wide degradation; tickets are sparse ground truth — recall (42/46) is the defensible stat.
+All €: lost energy × feed-in tariff (estimates). Honest limits: tickets are sparse ground
+truth — recall (42/46) is the defensible stat. The relative method's one blind spot —
+plant-wide degradation that hits every inverter equally — is now closed by an absolute-baseline
+twin (`runs/plant_a/twin/TWIN.md`): R² 0.957 on healthy output, and on a synthetic uniform −10%
+the peer metric stays 1.00 (blind) while the twin drops to 0.81 (detected); it also flags a real
+~7–10% plant-wide gap and runs the 08/09 collapse forward (cost-of-delay).
 
 ## What Enerparc should do next Monday
 
