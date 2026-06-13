@@ -16,7 +16,7 @@ import { COLORS, FONT_MONO, label } from "../theme";
 import { sec } from "../timing";
 
 /**
- * Scene 5 (1:45-2:15) — Finding 2: the invisible fault.
+ * Scene 5 (1:45-2:15), Finding 2: the invisible fault.
  * Part A (0-15s): flat peer-ratio line at ~0.70 for INV 01.03.018 draws in
  * on a paper panel, then a ticket-log search types itself and returns 0.
  * Part B (15-30s): the money chart wipes in with a bold ellipse around the

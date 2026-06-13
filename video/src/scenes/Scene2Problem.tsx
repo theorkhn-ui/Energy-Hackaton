@@ -6,7 +6,7 @@ import { StatPill } from "../components/StatPill";
 import { sec } from "../timing";
 
 /**
- * Scene 2 (0:10-0:35) — The problem.
+ * Scene 2 (0:10-0:35), The problem.
  * Monthly heatmap (65 inverters x 113 months) wipes in from the top and
  * holds still; a bold fault-red rectangle draws itself around the failure
  * streaks; the dataset chips stagger in along the top. The heatmap stops

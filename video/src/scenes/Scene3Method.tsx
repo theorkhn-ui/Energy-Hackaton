@@ -14,7 +14,7 @@ import { COLORS, display, FONT_MONO, label } from "../theme";
 import { sec } from "../timing";
 
 /**
- * Scene 3 (0:35-1:10) — Method, no math jargon. Native Remotion. Beats:
+ * Scene 3 (0:35-1:10), Method, no math jargon. Native Remotion. Beats:
  *   1. 65 inverter bars rise in (ink on paper), median line draws across.
  *   2. One bar dips below the median and turns red (a real fault).
  *   3. THE BIG BEAT (10.5s-16s): everything freezes and dims, the bad bar
@@ -34,7 +34,7 @@ const LEFT = (1920 - PLOT_W) / 2;
 const BASELINE_Y = 720;
 const MAX_H = 330;
 
-// Deterministic pseudo-random heights (no Math.random — render must be pure).
+// Deterministic pseudo-random heights (no Math.random, render must be pure).
 const rand = (i: number): number => {
   const x = Math.sin((i + 1) * 12.9898) * 43758.5453;
   return x - Math.floor(x);

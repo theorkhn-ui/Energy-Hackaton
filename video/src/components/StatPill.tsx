@@ -25,7 +25,7 @@ const fills: Record<ChipVariant, { bg: string; fg: string; border: string }> = {
 /**
  * Neo-Grid Bold stat chip: blocky zero-radius rectangle, Space Grotesk 700
  * uppercase, 1.5px ink border, hard offset ink shadow (a solid block, not a
- * blur — see DESIGN_NOTES.md deviations). Springs in with overshoot.
+ * blur, see DESIGN_NOTES.md deviations). Springs in with overshoot.
  */
 export const StatPill: React.FC<Props> = ({
   delay,

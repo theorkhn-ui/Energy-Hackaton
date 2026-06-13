@@ -1,6 +1,6 @@
 /**
  * Single source of truth for all scene timings.
- * Storyboard: docs/VIDEO_STORYBOARD.md — total 230s = 3:50 (hard cap 4:00).
+ * Storyboard: docs/VIDEO_STORYBOARD.md, total 230s = 3:50 (hard cap 4:00).
  * Scenes and captions are BOTH driven by these constants, so retiming a scene
  * automatically retimes its captions.
  */

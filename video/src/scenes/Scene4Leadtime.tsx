@@ -9,7 +9,7 @@ import { COLORS, display, label } from "../theme";
 import { sec } from "../timing";
 
 /**
- * Scene 4 (1:10-1:45) — Finding 1: predictive power.
+ * Scene 4 (1:10-1:45), Finding 1: predictive power.
  * Lead-time chart wipes in from the bottom and holds still on the LEFT edge;
  * a fault-red ellipse draws around the long-lead cluster near the median
  * line (the payload of the scene); the oversized 42/46 numeral, ticket

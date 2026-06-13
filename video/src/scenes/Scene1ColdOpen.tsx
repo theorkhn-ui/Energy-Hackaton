@@ -8,7 +8,7 @@ import { COLORS, label } from "../theme";
 import { sec } from "../timing";
 
 /**
- * Scene 1 (0:00-0:10) — Cold open on the stage-black frame.
+ * Scene 1 (0:00-0:10), Cold open on the stage-black frame.
  * Oversized "42/46" slams in, the lead-time chart wipes in beside it,
  * the lemon "51.5 days" chip lands last. No logo, straight to the stat.
  * Left column ends well before the chart edge so nothing ever overlaps.

@@ -34,7 +34,7 @@ const SCENE_COMPONENTS: React.FC[] = [
 ];
 
 /**
- * MainVideo — 1920x1080 @ 30fps, 6900 frames = 230s = 3:50.
+ * MainVideo, 1920x1080 @ 30fps, 6900 frames = 230s = 3:50.
  * Scene order/durations come from timing.ts (single source of truth);
  * captions are driven by the same constants.
  */

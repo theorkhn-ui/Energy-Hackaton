@@ -8,7 +8,7 @@ import { COLORS } from "../theme";
 import { sec } from "../timing";
 
 /**
- * Scene 7 (2:50-3:10) — Bonus findings.
+ * Scene 7 (2:50-3:10), Bonus findings.
  * Heatmap zoomed on the top rows with an ink rectangle drawn around the
  * permanently->1.1 band; stale-kWp punchline chips plus the 71%-nuisance
  * alarm stat as a second bonus.

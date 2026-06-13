@@ -9,7 +9,7 @@ import { COLORS, display, FONT, label } from "../theme";
 import { sec } from "../timing";
 
 /**
- * Scene 6 (2:15-2:50) — Finding 3: failure in progress.
+ * Scene 6 (2:15-2:50), Finding 3: failure in progress.
  * Section-collapse chart wipes in with a bold rectangle drawn around the
  * collapse region; pulsing ACTIVE tag; outage-hours counter ticks to 840;
  * €42k/yr-at-risk lemon chip; dead-telemetry ink chip; fault-matrix panel

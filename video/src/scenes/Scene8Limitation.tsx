@@ -12,7 +12,7 @@ import { COLORS, display, label } from "../theme";
 import { sec } from "../timing";
 
 /**
- * Scene 8 (3:10-3:29) — The limit, and how we close it.
+ * Scene 8 (3:10-3:29), The limit, and how we close it.
  * First the honest limitation (our peer ratio is relative). Then the reveal:
  * an absolute twin, each inverter vs its own healthy baseline. Then the proof,
  * built natively: dim EVERY inverter by 10% and the relative metric never
@@ -196,7 +196,7 @@ export const Scene8Limitation: React.FC = () => {
             opacity: refDraw,
           }}
         >
-          Stress test — dim{" "}
+          Stress test, dim{" "}
           <span style={{ background: COLORS.fault, color: COLORS.paper, padding: "2px 8px" }}>
             every inverter -10%
           </span>
@@ -241,17 +241,17 @@ export const Scene8Limitation: React.FC = () => {
           }}
         />
 
-        {/* Group A: relative peer metric — both bars 1.00 (blind). */}
+        {/* Group A: relative peer metric, both bars 1.00 (blind). */}
         <Bar x={GROUP_A_X} value={1.0} delay={sec(6)} color={COLORS.ink} valueLabel="1.00" />
         <Bar x={GROUP_A_X + BAR_W + IN_GAP} value={1.0} delay={sec(9)} color={COLORS.fault} valueLabel="1.00" />
         <GroupLabel centerX={groupCenterA} top1="Relative" top2="peer metric" delay={sec(6)} />
-        <Verdict centerX={groupCenterA} text="UNCHANGED — BLIND" delay={sec(12)} />
+        <Verdict centerX={groupCenterA} text="UNCHANGED, BLIND" delay={sec(12)} />
 
-        {/* Group B: absolute twin — after-bar drops to 0.90 (caught). */}
+        {/* Group B: absolute twin, after-bar drops to 0.90 (caught). */}
         <Bar x={GROUP_B_X} value={1.0} delay={sec(6.4)} color={COLORS.ink} valueLabel="1.00" />
         <Bar x={GROUP_B_X + BAR_W + IN_GAP} value={0.9} delay={sec(9.4)} color={COLORS.fault} valueLabel="0.90" />
         <GroupLabel centerX={groupCenterB} top1="Absolute" top2="twin" delay={sec(6.4)} />
-        <Verdict centerX={groupCenterB} text="DROPS 10% — CAUGHT" delay={sec(12.6)} lemon />
+        <Verdict centerX={groupCenterB} text="DROPS 10%, CAUGHT" delay={sec(12.6)} lemon />
       </AbsoluteFill>
     </NeoFrame>
   );

@@ -14,7 +14,7 @@ import { COLORS, display, FONT_MONO, label } from "../theme";
 import { sec } from "../timing";
 
 /**
- * Scene 9 (3:20-3:50) — Close: team + next steps.
+ * Scene 9 (3:20-3:50), Close: team + next steps.
  * Real photos (public/orkhan.png, public/maxat.jpg) in bold ink-framed
  * blocks. If a file is missing at render time, <Img onError> flips the card
  * to the initial-block fallback so the render never breaks (see README).
