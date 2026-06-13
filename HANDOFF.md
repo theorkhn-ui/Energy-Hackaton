@@ -8,6 +8,30 @@
 > Convention: whoever (human or Claude) finishes a work session updates **Current status**,
 > **Next up**, and **Blockers**, then commits with message `handoff: <summary>`.
 
+## ✅ Maxat's Claude (2026-06-13): video polished + rendered, and the relative-method limitation is now CLOSED by an absolute twin
+
+Two work sessions since Stage 5. Both pushed to `main`.
+
+### 1. Video — second feedback pass + render (commit `1559a5d`, pushed)
+Maxat reviewed the cut and sent a feedback PDF ("to fix claude.pdf"). Applied all of it in `video/`:
+- **Root-cause bug:** `AbsoluteFill` defaults to `flex-direction: column`, so every `ChartBlock`'s placement props were on swapped axes (charts landed bottom/centre instead of left/right). Forced `flexDirection: row` in `ChartBlock` → fixed Scenes 1/4/5/7 placement in one line.
+- Charts are now **static** (removed the drifting zoom/pan "wobble"); removed the `01/09` page tag (that strip is the caption's now); fixed all per-scene overlaps; Scene 2 heatmap centred + `TEAM SYZ` removed; Scene 3 `BELOW 1.0` raised above the flagged bar + grey scrim dims bars under THE TRAP; Scene 4 black rect → fault-red ellipse on the median cluster.
+- **Scene 9 fix:** it loaded `orkhan.jpg` but the file is `orkhan.png` (case/ext) — Orkhan's photo now renders. Both PFPs (`video/public/orkhan.png`, `maxat.jpg`) are tracked.
+- Designy/animated pass (Neo-Grid Bold): drawn-in lemon header rule per scene + count-up on hero numerals.
+- Rendered `video/out/video.mp4` (3:50, **silent** — `HAS_VOICEOVER=false`, gitignored). Added `video/VOICEOVER_SCRIPT.md` = the narration split line-by-line between **Orkhan** and **Maxat**, word-for-word matched to the burned-in captions.
+
+### 2. Absolute-baseline digital twin — closes our one honest limitation (commit `3f90e60`)
+The peer ratio is *relative*, so a loss hitting every inverter equally is invisible — the exact limit in the video and `README` "Limitations". Built the fix in `src/twin/`:
+- `twin_baseline.py` — per-inverter `P_exp = k_i·G·(1+γ(T_module−25))`, `k_i` energy-weighted on each inverter's first ~365 production days. **kWp-free / self-referential** → immune to the stale-register issue.
+- `twin_validate.py` — healthy-output **R²=0.957**, out-of-sample MAPE 7.2%, baseline self-check ≈1.0; independently re-finds 01.08.053 (HI 0.34) and 01.03.018 (HI 0.88). **PROOF:** inject a uniform −10% on every inverter → relative peer metric stays **1.00 (blind)**, absolute twin drops to **0.81 (detected)** → `runs/plant_a/twin/twin_uniform_loss.png`. Also surfaces a real **~7–10% plant-wide gap** (degradation/soiling/possible sensor drift) the peer method can't see.
+- `twin_whatif.py` — runs the 08/09 collapse forward: ~€1,550/yr bleeding now, up to ~€29k/yr section ceiling, cost-of-delay curve.
+- Write-up `runs/plant_a/twin/TWIN.md`; `README.md` + `docs/ONE_PAGER.md` updated (the limitation they listed as unsolved is now closed).
+- Env: scientific stack (numpy/pandas/matplotlib/pyarrow/scipy) installed in pyenv 3.12.10. **110MB twin input cache is gitignored** (`runs/plant_a/twin/twin_input_cache.parquet`); first run rebuilds it from the parquet (~1 min).
+
+### For Orkhan's Claude — two remaining "next steps" (neither blocks submission)
+1. **Voiceover:** record from `video/VOICEOVER_SCRIPT.md`, drop `video/public/voiceover.mp3`, set `HAS_VOICEOVER=true` in `video/src/timing.ts`, hand-sync caption timings, re-render. (Maxat will likely do this with Orkhan.)
+2. **Twin = live next:** the twin is the absolute-baseline core + a what-if engine, but still **historical replay**, not live-streaming. Wiring it to live telemetry is now a small job on a proven engine — the honest "what we'd do next" for the judges.
+
 ## ⚠️ PIVOT (2026-06-12 late evening): challenge is now **#2.1 Enerparc Digital Twin**
 Sheet recount: #3.1 ballooned to 5-6 teams (GridFlow.ai, Voltify, winsortf, Fero, mahanc); Enerparc digital twin has only 2 (StealthDetection.Ai 4p + solo Pyra). Fewer rivals + real-data analysis suits a 2p Claude-assisted team → switched. Orkhan confirmed "whatever optimizes winning".
 
