@@ -6,106 +6,84 @@ import { FPS, SCENE_DURATIONS, SCENE_STARTS } from "./timing";
 
 /**
  * Burned-in captions, always on (judges may watch muted).
- * Narration text is VERBATIM from docs/VIDEO_STORYBOARD.md, pre-split into
- * max-2-line chunks. Timing within each scene is distributed proportionally
- * to word count at ~140 wpm, anchored to the same SCENE_STARTS constants the
- * scenes use — retime a scene and its captions follow.
+ * Plain student tone, short sentences, no em dashes. Verified numbers are
+ * kept exactly: 42/46, 51.5 days, ~EUR 500/yr (INV 01.03.018), EUR 42k/yr at
+ * risk, 9.4 years, 65 inverters, 71% nuisance, telemetry dead since 2019.
  *
- * Once the real voiceover is recorded, fine-tune by replacing
- * buildCaptions() with hand-timed Caption[] (see VoiceoverNote.md).
+ * Timing within each scene is distributed proportionally to word count,
+ * anchored to the same SCENE_STARTS constants the scenes use. Retime a scene
+ * and its captions follow. The full speaker-split transcript lives in
+ * docs/VOICEOVER_TRANSCRIPT.md and matches this text word for word.
  */
 const SCENE_NARRATION: string[][] = [
-  // Scene 1 — cold open (10s)
+  // Scene 1: cold open (10s)
   [
-    "Forty-two of the last forty-six inverter failures at this solar plant",
-    "were visible in the data — a median of fifty-one days",
-    "before anyone opened a ticket.",
+    "Forty two of the last forty six inverter failures here were visible in the data first.",
+    "A median of fifty one and a half days before anyone opened a ticket.",
   ],
-  // Scene 2 — the problem (25s)
+  // Scene 2: the problem (25s)
   [
-    "This is nine point four years of real monitoring data",
-    "from a sixty-five-inverter PV plant.",
+    "This is nine point four years of real monitoring data from a solar plant with sixty five inverters.",
     "A reading every five minutes, from every inverter.",
-    "And hidden inside it: failures the operator's own monitoring never caught.",
-    "We're team Syz, and for Enerparc's digital twin challenge,",
-    "we built the layer that catches them.",
+    "Hidden inside it are failures the plant's own monitoring never caught.",
+    "We are team Syz. For Enerparc's digital twin challenge, we built the layer that catches them.",
   ],
-  // Scene 3 — method (35s)
+  // Scene 3: method (35s). Caption order tracks the animation beats:
+  // bars + median first, then the big 0.55 freeze, then the cloud, then the trap.
   [
-    "Our method is deliberately simple.",
-    "Every five minutes, we compare each inverter",
-    "to the plant median at that exact moment.",
-    "Clouds, seasons, soiling rain — they hit every inverter at once,",
-    "so they cancel out.",
-    "What's left is a clean peer ratio:",
-    "one point zero means healthy, anything below means trouble.",
-    "One trap, though: grid curtailment looks exactly like a fault.",
-    "We filter the EVU and DV curtailment signals out explicitly —",
-    "skip that step, and you'll flag perfectly healthy inverters all day.",
+    "Our method is simple on purpose.",
+    "Every five minutes, we compare each inverter to the plant median.",
+    "What is left is a peer ratio. One point zero means healthy.",
+    "This one just dropped to zero point five five. Below one point zero means trouble.",
+    "Clouds and seasons hit every inverter at once, so they cancel out.",
+    "One trap though. Grid curtailment looks exactly like a fault.",
+    "So we filter the EVU and DV signals out, or we would flag healthy inverters all day.",
   ],
-  // Scene 4 — finding 1: predictive power (35s)
+  // Scene 4: finding 1, predictive power (35s)
   [
-    "But does it actually work?",
-    "We back-tested against the plant's real service history.",
-    "Of forty-six inverter-specific tickets — defective capacitors,",
-    "defective boards, insulation faults —",
-    "forty-two were preceded by our performance flag.",
-    "Median lead time: fifty-one and a half days.",
-    "That's seven weeks of warning.",
-    "Seven weeks to order the part, schedule the crew,",
-    "and fix it on your terms instead of the inverter's.",
+    "Does it actually work? We back tested it against the plant's real service history.",
+    "Of forty six inverter specific tickets, things like broken capacitors, boards and insulation faults,",
+    "forty two were flagged by our method in advance.",
+    "The median lead time was fifty one and a half days.",
+    "That is seven weeks of warning.",
+    "Seven weeks to order the part, schedule the crew, and fix it on your terms instead of the inverter's.",
   ],
-  // Scene 5 — finding 2: the invisible fault (30s)
+  // Scene 5: finding 2, the invisible fault (30s)
   [
-    "And sometimes there is no ticket at all.",
-    "Inverter zero-one — zero-three — zero-one-eight",
-    "has been running at seventy percent of its peers for a full year.",
+    "Sometimes there is no ticket at all.",
+    "Inverter zero one, zero three, zero one eight has been running at seventy percent of its peers for a full year.",
     "No service ticket exists. Nobody noticed.",
-    "That's roughly five hundred euros a year",
-    "quietly evaporating — from a single inverter.",
+    "That is roughly five hundred euros a year, gone, from one inverter.",
     "Our flag caught it from the data alone.",
   ],
-  // Scene 6 — finding 3: failure in progress (35s)
+  // Scene 6: finding 3, failure in progress (35s)
   [
-    "This one isn't history — it's happening right now.",
-    "Sections one-oh-eight and one-oh-nine",
-    "started collapsing in August twenty twenty-five.",
-    "Today, two inverters are still below seventy percent,",
-    "and one of the worst units recovered in May,",
-    "each with roughly seven hundred fifty to eight hundred forty",
-    "outage hours in the last twelve months.",
-    "We're classifying the error codes to pin down the root cause.",
+    "This one is not history. It is happening right now.",
+    "Sections one zero eight and one zero nine started collapsing in August twenty twenty five.",
+    "Two inverters are still below seventy percent of their peers.",
+    "The worst unit lost around eight hundred forty hours in the last year.",
+    "In total, about forty two thousand euros of yearly revenue is at risk.",
+    "And no alarm fired, because the plant's error telemetry has been dead since twenty nineteen.",
     "If we were on call, this would be ticket number one, written today.",
   ],
-  // Scene 7 — bonus: stale asset register (20s)
+  // Scene 7: bonus findings (20s)
   [
-    "One bonus finding: about eight inverters",
-    "sit permanently above a ratio of one point one.",
-    "That's not overperformance — that's a stale kilowatt-peak value",
-    "in the asset register.",
-    "Fix the master data, and every yield calculation",
-    "on this plant gets sharper.",
+    "Two bonus findings.",
+    "About eight inverters sit permanently above a ratio of one point one.",
+    "That is not better hardware. That is a stale kilowatt peak value in the asset register.",
+    "We also sorted the old alarms. Seventy one percent of them were nuisance.",
   ],
-  // Scene 8 — honest limitation (10s)
+  // Scene 8: honest limitation (10s)
   [
-    "To be fully honest about the limits:",
-    "because we measure inverters against each other,",
-    "a plant-wide degradation that hits every inverter equally",
-    "would be invisible to this method.",
+    "One honest limit. We compare inverters to each other.",
+    "A loss that hits all of them equally would be invisible to us.",
   ],
-  // Scene 9 — close (30s)
+  // Scene 9: close (30s)
   [
-    "We're Orkhan and Maxat — team Syz.",
-    "In one weekend, with your data, we found one failure in progress,",
-    "one failure nobody had noticed,",
-    "and a seven-week early-warning signal",
-    "validated against your own ticket history.",
-    "With Enerparc, our next steps are clear:",
-    "wire this into live monitoring,",
-    "finish error-code root-cause classification,",
-    "and auto-draft the service tickets.",
-    "Less downtime, caught earlier —",
-    "with math your engineers can audit line by line.",
+    "We are Orkhan and Maxat, team Syz.",
+    "In one day, with your data, we found a failure in progress, a fault nobody had noticed, and a seven week warning signal checked against your own tickets.",
+    "Next, we want to wire this into live monitoring, finish the root cause work, and auto draft the service tickets.",
+    "Less downtime, caught earlier, with math your engineers can check line by line.",
     "Thanks for watching.",
   ],
 ];
@@ -139,9 +117,9 @@ const buildCaptions = (): Caption[] => {
 export const captions: Caption[] = buildCaptions();
 
 /**
- * Bottom-center, max 2 lines, white on a 60%-opacity dark band
- * (storyboard tech spec). Stat overlays stay in the upper two-thirds,
- * so the bottom band is reserved for these.
+ * Neo-Grid Bold caption bar: bottom-center ink band, paper text, zero
+ * radius, a lemon block riveted to the left edge. Max two lines. Stat
+ * overlays stay in the upper two-thirds, so this strip owns the bottom.
  */
 export const Captions: React.FC = () => {
   const frame = useCurrentFrame();
@@ -153,25 +131,30 @@ export const Captions: React.FC = () => {
   }
 
   return (
-    <AbsoluteFill
-      style={{ justifyContent: "flex-end", alignItems: "center" }}
-    >
+    <AbsoluteFill style={{ justifyContent: "flex-end", alignItems: "center" }}>
       <div
         style={{
-          marginBottom: 48,
+          marginBottom: 44,
           maxWidth: 1560,
-          background: COLORS.captionBg,
-          color: "#ffffff",
-          fontFamily: FONT,
-          fontWeight: 600,
-          fontSize: 42,
-          lineHeight: 1.3,
-          textAlign: "center",
-          padding: "14px 38px",
-          borderRadius: 10,
+          display: "flex",
+          alignItems: "stretch",
         }}
       >
-        {active.text}
+        <div style={{ width: 18, background: COLORS.lemon, flexShrink: 0 }} />
+        <div
+          style={{
+            background: COLORS.ink,
+            color: COLORS.paper,
+            fontFamily: FONT,
+            fontWeight: 500,
+            fontSize: 40,
+            lineHeight: 1.3,
+            textAlign: "left",
+            padding: "14px 36px",
+          }}
+        >
+          {active.text}
+        </div>
       </div>
     </AbsoluteFill>
   );

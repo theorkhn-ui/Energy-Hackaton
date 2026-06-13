@@ -7,16 +7,20 @@ import {
   staticFile,
   useCurrentFrame,
 } from "remotion";
-import { KenBurnsImage } from "../components/KenBurnsImage";
+import { BigNumeral } from "../components/BigNumeral";
+import { ChartBlock } from "../components/ChartBlock";
+import { NeoFrame } from "../components/NeoFrame";
+import { Panel } from "../components/Panel";
 import { StatPill } from "../components/StatPill";
-import { COLORS, FONT, FONT_MONO } from "../theme";
+import { COLORS, FONT_MONO, label } from "../theme";
 import { sec } from "../timing";
 
 /**
- * Scene 5 (1:45–2:15) — Finding 2: the invisible fault.
- * Part A (0–15s): a flat peer-ratio line at ~0.70 for INV 01.03.018 drawn
- * in natively, then a ticket-log search animation returning "0 results".
- * Part B (15–30s): the money bar chart with the verified ~EUR500/yr highlight.
+ * Scene 5 (1:45-2:15) — Finding 2: the invisible fault.
+ * Part A (0-15s): flat peer-ratio line at ~0.70 for INV 01.03.018 draws in
+ * on a paper panel, then a ticket-log search types itself and returns 0.
+ * Part B (15-30s): the money chart wipes in with a bold ellipse around the
+ * verified ~EUR 500/yr bar.
  */
 
 const PART_A = sec(15);
@@ -28,8 +32,8 @@ const noise = (i: number): number => {
   return x - Math.floor(x);
 };
 
-const CHART_W = 1320;
-const CHART_H = 440;
+const CHART_W = 1280;
+const CHART_H = 420;
 const POINTS = 48;
 
 const RatioLine: React.FC = () => {
@@ -60,31 +64,33 @@ const RatioLine: React.FC = () => {
   );
 
   return (
-    <AbsoluteFill
-      style={{ justifyContent: "center", alignItems: "center", fontFamily: FONT }}
-    >
-      <div
+    <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+      <Panel
+        variant="paper"
+        delay={0}
+        from="scale"
         style={{
-          background: COLORS.bgPanel,
-          border: `1px solid ${COLORS.bgPanelBorder}`,
-          borderRadius: 16,
-          padding: "30px 40px 20px",
-          boxShadow: "0 20px 70px rgba(0,0,0,0.5)",
+          border: `3px solid ${COLORS.ink}`,
+          padding: "34px 44px 26px",
         }}
       >
-        <div
-          style={{
-            color: COLORS.text,
-            fontSize: 34,
-            fontWeight: 800,
-            marginBottom: 12,
-            fontFamily: FONT_MONO,
-          }}
-        >
-          INV 01.03.018{" "}
-          <span style={{ color: COLORS.textDim, fontWeight: 600, fontSize: 26 }}>
-            — peer ratio, last 12 months
-          </span>
+        {/* Block title bar */}
+        <div style={{ display: "flex", alignItems: "center", gap: 18, marginBottom: 18 }}>
+          <div
+            style={{
+              background: COLORS.ink,
+              color: COLORS.paper,
+              fontFamily: FONT_MONO,
+              fontSize: 30,
+              letterSpacing: "0.06em",
+              padding: "8px 18px",
+            }}
+          >
+            INV 01.03.018
+          </div>
+          <div style={{ ...label(20), color: COLORS.ink, opacity: 0.7 }}>
+            Peer ratio, last 12 months
+          </div>
         </div>
 
         <svg width={CHART_W} height={CHART_H}>
@@ -94,20 +100,21 @@ const RatioLine: React.FC = () => {
             x2={CHART_W}
             y1={y(1.0)}
             y2={y(1.0)}
-            stroke={COLORS.healthy}
+            stroke={COLORS.ink}
             strokeWidth={3}
             strokeDasharray="14 10"
-            opacity={0.8}
+            opacity={0.7}
           />
+          <rect x={CHART_W - 250} y={y(1.0) - 44} width={242} height={34} fill={COLORS.lemon} />
           <text
-            x={CHART_W - 8}
-            y={y(1.0) - 12}
-            fill={COLORS.healthy}
-            fontSize={26}
-            fontFamily={FONT}
-            textAnchor="end"
+            x={CHART_W - 238}
+            y={y(1.0) - 20}
+            fill={COLORS.ink}
+            fontSize={20}
+            fontFamily={FONT_MONO}
+            letterSpacing="0.08em"
           >
-            healthy = 1.0
+            HEALTHY = 1.0
           </text>
 
           {/* the flat 0.70 line, revealed left-to-right */}
@@ -116,7 +123,7 @@ const RatioLine: React.FC = () => {
               points={pts}
               fill="none"
               stroke={COLORS.fault}
-              strokeWidth={5}
+              strokeWidth={6}
               strokeLinejoin="round"
             />
           </g>
@@ -127,17 +134,19 @@ const RatioLine: React.FC = () => {
           </defs>
 
           {draw > 0.97 ? (
-            <text
-              x={CHART_W - 8}
-              y={y(0.7) + 40}
-              fill={COLORS.fault}
-              fontSize={30}
-              fontWeight={800}
-              fontFamily={FONT}
-              textAnchor="end"
-            >
-              0.70 — flat for 12 months
-            </text>
+            <g>
+              <rect x={CHART_W - 420} y={y(0.7) + 16} width={412} height={40} fill={COLORS.fault} />
+              <text
+                x={CHART_W - 404}
+                y={y(0.7) + 44}
+                fill={COLORS.paper}
+                fontSize={22}
+                fontFamily={FONT_MONO}
+                letterSpacing="0.06em"
+              >
+                0.70 FLAT FOR 12 MONTHS
+              </text>
+            </g>
           ) : null}
         </svg>
 
@@ -146,72 +155,94 @@ const RatioLine: React.FC = () => {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 24,
-            marginTop: 16,
+            gap: 28,
+            marginTop: 20,
             opacity: frame >= sec(6) ? 1 : 0,
           }}
         >
           <div
             style={{
-              background: "#0a0f1c",
-              border: `1px solid ${COLORS.bgPanelBorder}`,
-              borderRadius: 8,
-              padding: "10px 20px",
+              background: COLORS.ink,
+              color: COLORS.paper,
+              padding: "12px 22px",
               fontFamily: FONT_MONO,
               fontSize: 28,
-              color: COLORS.text,
-              minWidth: 460,
+              minWidth: 480,
             }}
           >
-            <span style={{ color: COLORS.textDim }}>ticket log ▸ </span>
+            <span style={{ opacity: 0.55 }}>TICKET LOG &gt; </span>
             {query.slice(0, typedLen)}
-            <span style={{ opacity: frame % 20 < 10 ? 1 : 0 }}>▌</span>
+            <span style={{ opacity: frame % 20 < 10 ? 1 : 0 }}>█</span>
           </div>
-          <StatPill delay={sec(9.5)} color={COLORS.fault}>
-            Service tickets found: 0
+          <StatPill delay={sec(9.5)} variant="fault" kicker="Search result">
+            0 tickets found
           </StatPill>
         </div>
-      </div>
+      </Panel>
     </AbsoluteFill>
   );
 };
 
 export const Scene5InvisibleFault: React.FC = () => {
   return (
-    <AbsoluteFill>
-      <Sequence durationInFrames={PART_A} name="5a — ratio line + 0 tickets">
+    <NeoFrame index={5} tag="Finding 2: invisible">
+      <Sequence durationInFrames={PART_A} name="5a: ratio line + 0 tickets">
         <RatioLine />
       </Sequence>
 
-      <Sequence from={PART_A} durationInFrames={PART_B} name="5b — money chart">
+      <Sequence from={PART_A} durationInFrames={PART_B} name="5b: money chart">
         <AbsoluteFill>
-          <KenBurnsImage
+          <ChartBlock
             src={staticFile("money_chart.png")}
             durationInFrames={PART_B}
+            wipeFrom="left"
+            wipeDuration={26}
             startScale={1.02}
-            endScale={1.12}
-            maxHeight={760}
-          />
-          <div
+            endScale={1.1}
+            width={1200}
+            height={700}
+            caption="Lost revenue per inverter"
+            highlights={[
+              {
+                shape: "ellipse",
+                x: 0.06,
+                y: 0.1,
+                w: 0.22,
+                h: 0.3,
+                at: sec(4),
+                tag: "INV 01.03.018",
+              },
+            ]}
             style={{
-              position: "absolute",
-              top: 60,
-              left: 0,
-              right: 0,
-              display: "flex",
-              justifyContent: "center",
-              gap: 36,
+              justifyContent: "flex-start",
+              alignItems: "center",
+              paddingLeft: 90,
+              paddingTop: 20,
             }}
-          >
-            <StatPill delay={sec(2)} big color={COLORS.warn}>
-              ~EUR 500 / year lost
-            </StatPill>
-            <StatPill delay={sec(4)} color={COLORS.textDim}>
-              from a single inverter — caught from data alone
-            </StatPill>
+          />
+
+          {/* Right rail: the money stat. */}
+          <div style={{ position: "absolute", right: 96, top: 170, width: 500 }}>
+            <BigNumeral
+              delay={sec(2)}
+              value="~€500"
+              size={150}
+              color={COLORS.ink}
+              sub="Per year, one inverter"
+            />
+            <div style={{ marginTop: 40 }}>
+              <StatPill delay={sec(5)} big variant="lemon" kicker="How we found it">
+                Data alone
+              </StatPill>
+            </div>
+            <div style={{ marginTop: 36 }}>
+              <StatPill delay={sec(7)} variant="ink">
+                No ticket. Nobody noticed.
+              </StatPill>
+            </div>
           </div>
         </AbsoluteFill>
       </Sequence>
-    </AbsoluteFill>
+    </NeoFrame>
   );
 };

@@ -1,6 +1,8 @@
 import React from "react";
 import { AbsoluteFill, staticFile } from "remotion";
-import { KenBurnsImage } from "../components/KenBurnsImage";
+import { BigNumeral } from "../components/BigNumeral";
+import { ChartBlock } from "../components/ChartBlock";
+import { NeoFrame } from "../components/NeoFrame";
 import { StatPill } from "../components/StatPill";
 import { COLORS } from "../theme";
 import { sec } from "../timing";
@@ -8,42 +10,67 @@ import { sec } from "../timing";
 const DURATION = sec(20);
 
 /**
- * Scene 7 (2:50–3:10) — Bonus: stale asset register.
- * Heatmap pushed in (zoomed view standing in for the ">1.1 filtered" export,
- * which does not exist as a separate asset yet — see README), with the
- * stale-kWp punchline as overlays.
+ * Scene 7 (2:50-3:10) — Bonus findings.
+ * Heatmap zoomed on the top rows with an ink rectangle drawn around the
+ * permanently->1.1 band; stale-kWp punchline chips plus the 71%-nuisance
+ * alarm stat as a second bonus.
  */
 export const Scene7StaleRegister: React.FC = () => {
   return (
-    <AbsoluteFill>
-      <KenBurnsImage
-        src={staticFile("heatmap_monthly_ratio.png")}
-        durationInFrames={DURATION}
-        startScale={1.45}
-        endScale={1.6}
-        panY={60}
-        maxHeight={780}
-      />
+    <NeoFrame index={7} tag="Bonus findings">
+      <AbsoluteFill>
+        <ChartBlock
+          src={staticFile("heatmap_monthly_ratio.png")}
+          durationInFrames={DURATION}
+          wipeFrom="right"
+          wipeDuration={26}
+          startScale={1.35}
+          endScale={1.5}
+          panY={40}
+          width={1150}
+          height={660}
+          caption="Permanently above 1.1"
+          highlights={[
+            {
+              shape: "rect",
+              x: 0.12,
+              y: 0.08,
+              w: 0.74,
+              h: 0.22,
+              at: sec(4),
+              color: COLORS.ink,
+              tag: "Always 'overperforming'",
+            },
+          ]}
+          style={{
+            justifyContent: "flex-start",
+            alignItems: "center",
+            paddingLeft: 90,
+            paddingTop: 20,
+          }}
+        />
 
-      <div
-        style={{
-          position: "absolute",
-          top: 56,
-          left: 0,
-          right: 0,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 24,
-        }}
-      >
-        <StatPill delay={sec(2)} big color={COLORS.accent}>
-          ~8 inverters permanently &gt; 1.1 ratio
-        </StatPill>
-        <StatPill delay={sec(8)} big color={COLORS.warn}>
-          → stale kWp register, not magic panels
-        </StatPill>
-      </div>
-    </AbsoluteFill>
+        {/* Right rail. */}
+        <div style={{ position: "absolute", right: 96, top: 140, width: 540 }}>
+          <BigNumeral
+            delay={sec(2)}
+            value="~8"
+            size={170}
+            color={COLORS.ink}
+            sub="Inverters always above ratio 1.1"
+          />
+          <div style={{ marginTop: 40 }}>
+            <StatPill delay={sec(7)} big variant="lemon" kicker="The real reason">
+              Stale kWp register
+            </StatPill>
+          </div>
+          <div style={{ marginTop: 30 }}>
+            <StatPill delay={sec(12)} variant="ink" kicker="Bonus #2: alarm triage">
+              71% of alarms = nuisance
+            </StatPill>
+          </div>
+        </div>
+      </AbsoluteFill>
+    </NeoFrame>
   );
 };

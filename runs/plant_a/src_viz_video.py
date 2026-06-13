@@ -84,42 +84,66 @@ def chart_leadtimes():
     median_lead = df["flag_lead_days"].median()
 
     fig, ax = plt.subplots(figsize=FIGSIZE, dpi=DPI)
-    y = range(len(df))
+    n = len(df)
+    y = range(n)
     colors = df["group"].map(GROUP_COLORS)
 
-    ax.hlines(y, 0, df["flag_lead_days"], color=colors, linewidth=2.2, alpha=0.85)
-    ax.scatter(df["flag_lead_days"], list(y), s=70, c=colors, zorder=3,
+    ax.hlines(y, 0, df["flag_lead_days"], color=colors, linewidth=2.0, alpha=0.85)
+    ax.scatter(df["flag_lead_days"], list(y), s=60, c=colors, zorder=3,
                edgecolors="white", linewidths=0.8)
 
-    # ticket-opened reference line
-    ax.axvline(0, color="#333333", linewidth=2)
-    ax.text(0, len(df) + 0.6, "ticket opened", ha="center", va="bottom",
+    # clean axis: no per-row tick labels
+    ax.set_yticks([])
+    ax.set_ylim(-1.5, n + 3.4)
+    ax.set_xlim(-23, 70)
+    ax.set_xticks([0, 10, 20, 30, 40, 50, 60])
+
+    # ticket-opened reference line; label above the lollipop field, line stops below it
+    ax.vlines(0, -1.5, n + 0.7, color="#333333", linewidth=2)
+    ax.text(0, n + 1.1, "ticket opened", ha="center", va="bottom",
             fontsize=14, fontweight="bold", color="#333333")
 
-    # median annotation
-    ax.axvline(median_lead, color=OI["blue"], linewidth=1.6, linestyle="--", alpha=0.8)
-    ax.annotate(
-        f"median lead: {median_lead:.1f} days",
-        xy=(median_lead, len(df) * 0.30),
-        xytext=(median_lead + 18, len(df) * 0.18),
-        fontsize=15, fontweight="bold", color=OI["blue"],
-        arrowprops=dict(arrowstyle="->", color=OI["blue"], lw=1.6),
-    )
+    # median line; label above the field too (no arrow -> nothing to cross);
+    # line starts above the legend block in the lower-right corner
+    ax.vlines(median_lead, 14, n + 0.7, color=OI["blue"], linewidth=1.6,
+              linestyle="--", alpha=0.8)
+    ax.text(median_lead, n + 1.1, f"median lead: {median_lead:.1f} days",
+            ha="center", va="bottom", fontsize=14, fontweight="bold", color=OI["blue"])
 
-    labels = [f"{r.inverter}  ({r.ticket_date})" for r in df.itertuples()]
-    ax.set_yticks(list(y))
-    ax.set_yticklabels(labels, fontsize=10)
-    ax.set_ylim(-1, len(df) + 1.8)
+    # inline labels for a handful of notable rows, placed in the empty left margin
+    chosen = [0, n - 1]  # shortest and longest lead
+    covered = {df.at[i, "group"] for i in chosen}
+    for g in GROUP_COLORS:
+        if g in covered:
+            continue
+        idxs = [i for i in range(n) if df.at[i, "group"] == g]
+        if not idxs:
+            continue
+        mid = idxs[len(idxs) // 2]
+        for cand in sorted(idxs, key=lambda i: abs(i - mid)):
+            if all(abs(cand - k) >= 3 for k in chosen):
+                chosen.append(cand)
+                covered.add(g)
+                break
+    for i in sorted(chosen):
+        r = df.loc[i]
+        ax.text(-1.8, i, f"{r['inverter']}  ({r['ticket_date']})", ha="right",
+                va="center", fontsize=12, fontweight="bold",
+                color=GROUP_COLORS[r["group"]])
+
     ax.set_xlabel("days our flag fired before the ticket")
     ax.set_title(
         f"We saw it coming: flags fired before {n_flagged} of {n_total} service tickets",
         pad=18,
     )
+    ax.text(1.0, 1.01, f"n = {n_flagged} tickets", transform=ax.transAxes,
+            ha="right", va="bottom", fontsize=13, color="#555555")
 
+    present = [g for g in GROUP_COLORS if (df["group"] == g).any()]
     handles = [
-        plt.Line2D([], [], color=c, marker="o", linestyle="-", markersize=9, linewidth=2.5,
-                   label=g)
-        for g, c in GROUP_COLORS.items()
+        plt.Line2D([], [], color=GROUP_COLORS[g], marker="o", linestyle="-",
+                   markersize=9, linewidth=2.5, label=g)
+        for g in present
     ]
     ax.legend(handles=handles, loc="lower right", frameon=False, fontsize=13,
               title="ticket category", title_fontsize=13)
@@ -200,25 +224,36 @@ def chart_money():
         v = bar.get_width()
         weight = "bold" if inv == highlight else "normal"
         color = OI["vermillion"] if inv == highlight else "#333333"
-        ax.text(v + 6, bar.get_y() + bar.get_height() / 2, f"€{v:,.0f}",
+        suffix = "*" if inv == highlight else ""
+        ax.text(v + 6, bar.get_y() + bar.get_height() / 2, f"€{v:,.0f}{suffix}",
                 va="center", fontsize=15, fontweight=weight, color=color)
 
-    # annotation for the never-reported top loser
+    xmax = top["lost_eur_365d"].max() * 1.18
+    ax.set_xlim(0, xmax)
+    ax.set_ylim(-0.6, len(top) + 1.5)
+
+    # annotation for the never-reported top loser: text fully above the bar field,
+    # arrow drops onto the top bar from above (crosses no bars or labels)
     top_bar = bars[list(top.index).index(highlight)]
+    bar_top = top_bar.get_y() + top_bar.get_height()
     ax.annotate(
-        "never reported — found by our model",
-        xy=(top_bar.get_width() * 0.55, top_bar.get_y() + top_bar.get_height() / 2),
-        xytext=(top_bar.get_width() * 0.45, top_bar.get_y() - 2.4),
+        "never reported, found by our model",
+        xy=(top_bar.get_width() * 0.80, bar_top + 0.06),
+        xytext=(xmax * 0.99, len(top) + 0.65),
+        ha="right", va="center",
         fontsize=16, fontweight="bold", color=OI["vermillion"],
-        arrowprops=dict(arrowstyle="->", color=OI["vermillion"], lw=2),
+        arrowprops=dict(arrowstyle="->", color=OI["vermillion"], lw=2,
+                        connectionstyle="arc3,rad=-0.15"),
     )
 
     ax.set_xlabel("estimated lost revenue per year (EUR)")
-    ax.set_xlim(0, top["lost_eur_365d"].max() * 1.18)
     ax.set_title("What chronic underperformance costs per year", pad=18)
     ax.tick_params(axis="y", labelsize=15)
 
-    fig.tight_layout()
+    fig.text(0.012, 0.012,
+             "*conservative estimate; independent verification puts it at up to €523/yr",
+             fontsize=12, color="#555555", style="italic")
+    fig.tight_layout(rect=(0, 0.04, 1, 1))
     fig.savefig(VIZ / "money_chart.png", dpi=DPI)
     plt.close(fig)
     print("wrote money_chart.png")

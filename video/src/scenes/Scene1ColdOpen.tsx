@@ -1,70 +1,72 @@
 import React from "react";
-import {
-  AbsoluteFill,
-  Easing,
-  Img,
-  interpolate,
-  staticFile,
-  useCurrentFrame,
-} from "remotion";
+import { AbsoluteFill, staticFile } from "remotion";
+import { BigNumeral } from "../components/BigNumeral";
+import { ChartBlock } from "../components/ChartBlock";
+import { NeoFrame } from "../components/NeoFrame";
 import { StatPill } from "../components/StatPill";
-import { COLORS } from "../theme";
+import { COLORS, label } from "../theme";
+import { sec } from "../timing";
+
+const DURATION = sec(10);
 
 /**
- * Scene 1 (0:00–0:10) — Cold open: the hook.
- * Black screen → lead-time lollipop chart snaps in, one lollipop at a time
- * (stepped left-to-right wipe). No logo, no title — straight to the stat.
+ * Scene 1 (0:00-0:10) — Cold open on the stage-black frame.
+ * Oversized "42/46" slams in, the lead-time chart wipes in beside it,
+ * the lemon "51.5 days" chip lands last. No logo, straight to the stat.
  */
 export const Scene1ColdOpen: React.FC = () => {
-  const frame = useCurrentFrame();
-
-  // Stepped reveal: quantized into 12 "snaps" so lollipops pop in in groups.
-  const reveal = interpolate(frame, [8, 75], [0, 1], {
-    easing: Easing.bezier(0.16, 1, 0.3, 1),
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const stepped = Math.ceil(reveal * 12) / 12;
-
   return (
-    <AbsoluteFill style={{ backgroundColor: "#000000" }}>
-      <AbsoluteFill
-        style={{ justifyContent: "center", alignItems: "center" }}
-      >
-        <Img
+    <NeoFrame index={1} tag="The hook" mode="ink">
+      <AbsoluteFill>
+        {/* Oversized numeral block, left. */}
+        <div style={{ position: "absolute", left: 96, top: 200 }}>
+          <BigNumeral
+            delay={6}
+            value="42/46"
+            size={220}
+            color={COLORS.paper}
+            sub="Failures visible in the data first"
+            subColor={COLORS.paper}
+          />
+          <div style={{ marginTop: 48 }}>
+            <StatPill delay={sec(5)} big variant="lemon" kicker="Median warning">
+              51.5 days before a ticket
+            </StatPill>
+          </div>
+        </div>
+
+        {/* Lead-time chart wipes in, right. */}
+        <ChartBlock
           src={staticFile("leadtime_chart.png")}
+          durationInFrames={DURATION}
+          wipeFrom="left"
+          wipeDuration={40}
+          startScale={1.0}
+          endScale={1.05}
+          width={880}
+          height={600}
+          caption="Lead time per ticket"
           style={{
-            maxWidth: 1640,
-            maxHeight: 720,
-            objectFit: "contain",
-            background: "#ffffff",
-            padding: 16,
-            borderRadius: 14,
-            boxShadow: "0 24px 90px rgba(0, 0, 0, 0.6)",
-            clipPath: `inset(0 ${(1 - stepped) * 100}% 0 0)`,
+            justifyContent: "flex-end",
+            alignItems: "center",
+            paddingRight: 90,
           }}
         />
-      </AbsoluteFill>
 
-      {/* Stat overlays — upper third, never colliding with captions. */}
-      <div
-        style={{
-          position: "absolute",
-          top: 60,
-          left: 0,
-          right: 0,
-          display: "flex",
-          justifyContent: "center",
-          gap: 40,
-        }}
-      >
-        <StatPill delay={140} big color={COLORS.fault}>
-          42 / 46 failures predicted
-        </StatPill>
-        <StatPill delay={200} big color={COLORS.accent}>
-          51.5 days median lead time
-        </StatPill>
-      </div>
-    </AbsoluteFill>
+        {/* Mono context line, top-left. */}
+        <div
+          style={{
+            position: "absolute",
+            left: 96,
+            top: 84,
+            ...label(20),
+            color: COLORS.paper,
+            opacity: 0.7,
+          }}
+        >
+          Real solar plant / real service tickets
+        </div>
+      </AbsoluteFill>
+    </NeoFrame>
   );
 };

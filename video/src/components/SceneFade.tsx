@@ -10,8 +10,8 @@ type Props = {
 };
 
 /**
- * Gentle fade at scene boundaries so cuts between full-screen charts do not
- * flash. Uses interpolate with clamping (remotion-best-practices).
+ * Short fade at scene boundaries so cuts between full-frame compositions do
+ * not flash. Uses interpolate with clamping (remotion-best-practices).
  */
 export const SceneFade: React.FC<Props> = ({
   durationInFrames,

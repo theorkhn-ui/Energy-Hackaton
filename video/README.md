@@ -4,6 +4,12 @@
 twin). 1920×1080 @ 30 fps, 6900 frames — the 4:00 hard cap is enforced by
 construction. Storyboard: `../docs/VIDEO_STORYBOARD.md`.
 
+Visual style: **Neo-Grid Bold** (paper/ink/neon-lemon editorial poster
+system) — tokens and the scene-by-scene design map are in
+`DESIGN_NOTES.md`. The speaker-split narration script is in
+`../docs/VOICEOVER_TRANSCRIPT.md` and matches `src/Captions.tsx` word for
+word.
+
 ## Quick start (Maxat: this is for you)
 
 ```bash
@@ -59,9 +65,12 @@ npm run typecheck
 - **Caption timings** — auto-distributed by word count inside each scene
   (`buildCaptions()` in `src/Captions.tsx`). After the voice is recorded,
   hand-time any lines that drift (instructions in `VoiceoverNote.md`).
-- **Team photos (Scene 9)** — currently placeholder initial circles. Put
-  `orkhan.jpg` / `maxat.jpg` into `public/` and swap the avatar `<div>` in
-  `Scene9Close.tsx` for `<Img src={staticFile("orkhan.jpg")} />`.
+- **Team photos (Scene 9)** — REQUIRED: drop `orkhan.jpg` and `maxat.jpg`
+  into `public/` before the final render. `Scene9Close.tsx` loads them via
+  `staticFile()`; if a file is missing at render time the card automatically
+  falls back to the bold initial block (`<Img onError>` flips the state), so
+  the render never breaks — but the real photos look much better. Any
+  portrait-ish crop works; the block is 380×420 with `object-fit: cover`.
 - **Dashboard screen recordings** (storyboard "hybrid" recommendation) —
   optional: drop an `.mp4` in `public/` and embed with `<OffthreadVideo>`
   inside Scene 2 or Scene 6.

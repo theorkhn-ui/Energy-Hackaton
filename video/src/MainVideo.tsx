@@ -40,13 +40,13 @@ const SCENE_COMPONENTS: React.FC[] = [
  */
 export const MainVideo: React.FC = () => {
   return (
-    <AbsoluteFill style={{ backgroundColor: COLORS.bg, fontFamily: FONT }}>
+    <AbsoluteFill style={{ backgroundColor: COLORS.stage, fontFamily: FONT }}>
       {SCENE_COMPONENTS.map((SceneComponent, i) => (
         <Sequence
           key={SCENES[i].key}
           from={SCENE_STARTS[i]}
           durationInFrames={SCENE_DURATIONS[i]}
-          name={`${i + 1} — ${SCENES[i].title}`}
+          name={`${i + 1}: ${SCENES[i].title}`}
         >
           <SceneFade
             durationInFrames={SCENE_DURATIONS[i]}
