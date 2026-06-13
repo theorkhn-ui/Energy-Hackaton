@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Plant Sentinel — Presenter Notes (Team Syz)</title>
+<style>
+  :root{
+    --bg:#FAF9F4; --paper:#FFFFFF; --ink:#0E0E10; --muted:#6B6B66;
+    --lemon:#FFF36B; --lemonDeep:#E6D200;
+    --say:#0E66D0; --sayBg:#E7F0FE;
+    --warn:#B23B14; --warnBg:#FDECE3;
+    --q:#1F7A4A; --qBg:#E6F4EC;
+    --line:#E2E2D8;
+    --code:#F2F2EC;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  header.top{
+    background:var(--ink); color:#fff; padding:28px 24px;
+    border-bottom:6px solid var(--lemon);
+  }
+  header.top h1{ margin:0; font-size:28px; letter-spacing:-.01em }
+  header.top p{ margin:8px 0 0; color:#CFCFCA; font-size:15px; max-width:60ch }
+  .layout{ display:grid; grid-template-columns: 260px 1fr; gap:0; max-width:1280px; margin:0 auto; }
+  @media (max-width:900px){ .layout{ grid-template-columns:1fr; } }
+  nav.toc{
+    position:sticky; top:0; align-self:start;
+    background:var(--paper); border-right:1px solid var(--line);
+    padding:20px 18px; max-height:100vh; overflow:auto;
+    font-size:14px;
+  }
+  @media (max-width:900px){
+    nav.toc{ position:sticky; top:0; max-height:none; border-right:none;
+             border-bottom:1px solid var(--line); }
+  }
+  nav.toc h2{ margin:0 0 10px; font-size:12px; text-transform:uppercase;
+              letter-spacing:.12em; color:var(--muted); }
+  nav.toc ol{ margin:0; padding:0; list-style:none; counter-reset:s; }
+  nav.toc ol li{ counter-increment:s; margin:0; }
+  nav.toc ol li a{
+    display:block; padding:8px 10px; color:var(--ink);
+    text-decoration:none; border-radius:6px;
+    border-left:3px solid transparent;
+  }
+  nav.toc ol li a::before{
+    content: counter(s,decimal-leading-zero);
+    color:var(--muted); font-variant-numeric:tabular-nums;
+    margin-right:10px; font-size:12px;
+  }
+  nav.toc ol li a:hover{ background:var(--bg); border-left-color:var(--lemon); }
+  main{ padding:28px 28px 80px; min-width:0; }
+  @media (max-width:900px){ main{ padding:20px 18px 60px; } }
+  section.slide{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:26px 28px;
+    margin-bottom:34px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+  }
+  section.slide > .badge{
+    display:inline-block; background:var(--lemon); color:var(--ink);
+    font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+    padding:4px 10px; border-radius:999px; font-weight:600;
+  }
+  section.slide h2{
+    margin:10px 0 4px; font-size:24px; letter-spacing:-.01em;
+  }
+  section.slide .sublabel{
+    color:var(--muted); font-size:14px; margin-bottom:18px;
+  }
+  section.slide h3{
+    margin:18px 0 8px; font-size:14px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  section.slide p, section.slide li{ font-size:16px; }
+  section.slide ul{ margin:6px 0 0 22px; padding:0; }
+  section.slide li{ margin-bottom:6px; }
+  .callout{
+    border-radius:10px; padding:14px 16px; margin:10px 0;
+    border:1px solid var(--line); background:var(--paper);
+  }
+  .callout .tag{
+    display:inline-block; font-size:11px; letter-spacing:.12em;
+    text-transform:uppercase; padding:2px 8px; border-radius:6px;
+    font-weight:700; margin-bottom:6px;
+  }
+  .say{ background:var(--sayBg); border-color:#C9DCF7; }
+  .say .tag{ background:var(--say); color:#fff; }
+  .warn{ background:var(--warnBg); border-color:#F2C5AC; }
+  .warn .tag{ background:var(--warn); color:#fff; }
+  .qa{ background:var(--qBg); border-color:#BFE2CB; }
+  .qa .tag{ background:var(--q); color:#fff; }
+  .why{
+    background:var(--lemon); border:1px solid var(--lemonDeep);
+    padding:12px 16px; border-radius:10px; margin:8px 0 4px;
+    font-weight:600;
+  }
+  .transition{
+    border-top:2px dashed var(--line); margin-top:18px; padding-top:12px;
+    color:var(--muted); font-style:italic; font-size:15px;
+  }
+  .transition::before{
+    content:"→ Transition  "; font-style:normal; font-weight:700;
+    color:var(--ink); letter-spacing:.04em; font-size:12px; text-transform:uppercase;
+    margin-right:6px;
+  }
+  code, .mono{ font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+               background:var(--code); padding:1px 6px; border-radius:4px; font-size:14px; }
+  .qa ul{ list-style:none; margin-left:0; padding-left:0; }
+  .qa li{ margin-bottom:10px; }
+  .qa li b{ display:block; }
+  .meta{ display:flex; flex-wrap:wrap; gap:8px; margin:6px 0 14px; }
+  .meta span{ font-size:12px; background:var(--code); padding:4px 10px;
+              border-radius:999px; color:var(--ink); border:1px solid var(--line); }
+  details{ margin-top:10px; }
+  details > summary{
+    cursor:pointer; font-size:13px; color:var(--muted);
+    letter-spacing:.06em; text-transform:uppercase;
+  }
+  footer{ color:var(--muted); font-size:13px; text-align:center; padding:30px 20px; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <h1>Plant Sentinel — Presenter Notes</h1>
+  <p>Team Syz · Challenge #2.1 (Enerparc Digital Twin) · Energy Hack Munich 2026.
+     One section per slide of <code>presentation/index.html</code>. Read top-to-bottom or jump via the table of contents.
+     <strong>Audience for these notes:</strong> a teammate presenting the deck cold — assume zero prior knowledge of inverters, kWp, peer ratios, or the data.</p>
+</header>
+
+<div class="layout">
+
+<nav class="toc">
+  <h2>Slides</h2>
+  <ol>
+    <li><a href="#s0">Cover — Plant Sentinel</a></li>
+    <li><a href="#s1">The Hook — 42/46</a></li>
+    <li><a href="#s2">The Problem</a></li>
+    <li><a href="#s3">The Method</a></li>
+    <li><a href="#s4">Finding 1 — It Works</a></li>
+    <li><a href="#s5">Finding 2 — Invisible Fault</a></li>
+    <li><a href="#s6">Finding 3 — Live Collapse</a></li>
+    <li><a href="#s7">Bonus Findings</a></li>
+    <li><a href="#s8">The Twin (Differentiator)</a></li>
+    <li><a href="#s9">Challenge Coverage</a></li>
+    <li><a href="#s10">Roadmap + Team</a></li>
+    <li><a href="#glossary">Glossary &amp; Numbers Cheatsheet</a></li>
+  </ol>
+</nav>
+
+<main>
+
+<!-- ============================== SLIDE 0 ============================== -->
+<section class="slide" id="s0">
+  <span class="badge">Slide 01 · Cover</span>
+  <h2>Plant Sentinel — &ldquo;A digital twin that pays for itself.&rdquo;</h2>
+  <div class="sublabel">Section id <code>s-cover</code> · dark "ink" background.</div>
+
+  <h3>What this slide is showing</h3>
+  <p>The title page. Black background with a yellow accent. The headline is the product name we gave our work — <strong>Plant Sentinel</strong>. The tagline reads: <em>&ldquo;A digital twin that pays for itself.&rdquo;</em> Below it, the proof teaser: <strong>42 of the last 46</strong> inverter service tickets were visible in the performance data <em>before</em> the ticket was opened, with a median <strong>51.5 days</strong> of warning. Two yellow chips at the bottom show the team (<strong>SYZ</strong>) and what we ran it on (<strong>Plant A — 9.4 years × 65 inverters</strong>).</p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;We&rsquo;re Team Syz. We built <strong>Plant Sentinel</strong> — a digital twin for solar plants that earns back its keep. We ran it on Enerparc&rsquo;s real Plant A data: nine and a half years of five-minute readings from sixty-five inverters. The headline result is that <strong>forty-two out of the last forty-six</strong> service tickets at this plant were already visible in the performance data before anyone called a technician — on average about <strong>seven weeks earlier</strong>. That&rsquo;s the bet of the next ten minutes.&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: We&rsquo;re not pitching a model. We&rsquo;re pitching a method that already back-tested against real maintenance history at <strong>91% (42/46)</strong> hit-rate with seven-week lead time.
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>What is an &ldquo;inverter&rdquo;?</b> The box that converts a string of solar panels&rsquo; DC current into AC current the grid can use. A big plant has dozens — here, 65. Each one is a maintenance unit.</li>
+      <li><b>What does &ldquo;digital twin&rdquo; mean in your version?</b> Two layers: (1) a peer comparison — each inverter vs the rest of the plant in real time; (2) an absolute physics baseline — each inverter vs what irradiance and temperature say it <em>should</em> produce. Together they catch both individual faults and plant-wide losses.</li>
+      <li><b>Why &ldquo;Plant Sentinel&rdquo;?</b> Because it watches the plant and raises a flag before the alarm system does. The 51.5-day median lead time is the &ldquo;sentinel&rdquo; payoff.</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;Let me show you that 42-out-of-46 number on a real chart.&rdquo;</div>
+</section>
+
+<!-- ============================== SLIDE 1 ============================== -->
+<section class="slide" id="s1">
+  <span class="badge">Slide 02 · The Hook</span>
+  <h2>42 of 46 tickets — flagged in advance</h2>
+  <div class="sublabel">Section id <code>s-hook</code> · dark background. Image: <code>assets/leadtime.png</code> (lead time per ticket).</div>
+
+  <h3>What this slide is showing</h3>
+  <p>A massive number on the left: <strong>42/46</strong>. Underneath, the line &ldquo;Failures visible in the data first.&rdquo; A yellow chip shows the median warning before a ticket: <strong>51.5 days</strong>. On the right, a chart labelled <em>&ldquo;Lead time per ticket&rdquo;</em> — each ticket the operator opened in real life is plotted against how many days <em>earlier</em> our method had already flagged that inverter as underperforming.</p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;The plant&rsquo;s logbook has 46 inverter-specific service tickets in the dataset — real broken capacitors, dead boards, insulation faults. We took our method, ran it blind on the data, and asked: would we have flagged this inverter before the ticket was written? The answer was yes for <strong>forty-two</strong> of them. The median warning was <strong>fifty-one and a half days</strong>. That&rsquo;s a back-test against a real maintenance log, not a forecast.&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: 51.5 days is the difference between an emergency truck roll and a planned visit. Planned visits are roughly an order of magnitude cheaper than reactive ones.
+  </div>
+
+  <div class="callout warn">
+    <span class="tag">Watch out</span>
+    <p>If anyone asks about the four we missed (46 − 42 = 4): they were partial single-string outages below our 0.8 alert threshold. Our roadmap answer is string-level detection via the DC current signal (<code>I_DC_SUM</code>) — already written up in <code>docs/QA_PREP.md</code>. Don&rsquo;t pretend the 4 don&rsquo;t exist.</p>
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>Is 51.5 days the average or the median?</b> Median. The average would be skewed by a few tickets we caught months in advance. Median is the honest middle.</li>
+      <li><b>How do you know you&rsquo;re not just &ldquo;flagging&rdquo; every inverter all the time?</b> The method only flags inverters that drop persistently below the peer plant — not transient dips. We filter curtailment (grid-side throttling) so it doesn&rsquo;t cause false alarms. And the back-test is against tickets the operator actually wrote, so noise wouldn&rsquo;t produce a 42/46 alignment.</li>
+      <li><b>What kinds of failures were these 46 tickets?</b> Broken capacitors, control boards, insulation faults — the usual inverter mortality.</li>
+      <li><b>How did you decide a ticket counted as &ldquo;flagged&rdquo;?</b> If our peer-ratio crossed below the alert threshold any time before the ticket date for that specific inverter, it counts as flagged.</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;So how did we find them? Start with what the data even looks like.&rdquo;</div>
+</section>
+
+<!-- ============================== SLIDE 2 ============================== -->
+<section class="slide" id="s2">
+  <span class="badge">Slide 03 · The Problem</span>
+  <h2>Failures their monitoring never caught</h2>
+  <div class="sublabel">Section id <code>s-problem</code> · light background. Image: <code>assets/heatmap.png</code> (monthly peer ratio heatmap).</div>
+
+  <h3>What this slide is showing</h3>
+  <p>Headline: <em>&ldquo;Failures their monitoring never caught.&rdquo;</em> Three black chips spell out the dataset: <strong>9.4 years</strong>, <strong>65 inverters</strong>, <strong>5-minute readings</strong>. The body text restates that — a reading every five minutes from every inverter for almost a decade. The image on the right is a heatmap: rows are inverters, columns are months, colour is each inverter&rsquo;s peer-ratio. Dark bands = healthy. Bright/light bands = persistent underperformance. The visual point: anyone can <em>see</em> the trouble in the heatmap, but the plant&rsquo;s own error log never recorded most of it.</p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;What we got from Enerparc is huge but simple: every five minutes, for nine and a half years, every one of the sixty-five inverters reports its power output. That&rsquo;s almost a million rows of data. And what we found in it — this heatmap shows it clearly — is that several inverters spend long stretches significantly underperforming their peers. The error-code log doesn&rsquo;t mention any of it. The performance data does.&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: This is the entire pitch in one image — silent losses sitting in the data for years. The error-code system the plant relies on simply doesn&rsquo;t see them.
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>What is &ldquo;peer ratio&rdquo;?</b> Just one inverter divided by the plant median at the same five-minute timestamp. 1.0 means &ldquo;same as everyone else.&rdquo; 0.5 means &ldquo;half as much as the typical inverter.&rdquo; Sun, clouds and seasons hit everyone the same way and cancel out. We explain this on the next slide.</li>
+      <li><b>Why doesn&rsquo;t the existing monitoring catch this?</b> Because the existing monitoring is alarm-based — it&rsquo;s waiting for an inverter to throw an error code. If the inverter is just running quietly at 50% of what it should, no code fires. Several of these failures simply never tripped an alarm.</li>
+      <li><b>9.4 years × 65 inverters × five minute samples — how many rows?</b> About 990,000 timestamped records of full plant state. Verified.</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;So here&rsquo;s the trick — the one formula that runs underneath all of this.&rdquo;</div>
+</section>
+
+<!-- ============================== SLIDE 3 ============================== -->
+<section class="slide" id="s3">
+  <span class="badge">Slide 04 · The Method</span>
+  <h2>Simple on purpose — peer ratio</h2>
+  <div class="sublabel">Section id <code>s-method</code> · light background. Big formula. A red &ldquo;0.55&rdquo; example value.</div>
+
+  <h3>What this slide is showing</h3>
+  <p>A black box with the formula in monospace:</p>
+  <p><code>PEER RATIO = INVERTER ÷ PLANT MEDIAN  (same timestamp)</code></p>
+  <p>To the left, the body text explains: every five minutes, divide each inverter by the median across the plant. Clouds, seasons, rain — they hit every inverter the same way, so they cancel out. <strong>1.0 = healthy</strong>. Below 1.0 = something&rsquo;s wrong. A massive red <strong>0.55</strong> on the right gives an example reading. A panel reminds the eye: <em>&ldquo;Below 1.0 = trouble.&rdquo;</em> The body warns about one trap — grid <em>curtailment</em> (the grid operator telling the plant to throttle down) looks exactly like a fault, so we explicitly filter it out.</p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;Our core method is deliberately simple. For every five-minute snapshot we divide each inverter by the median of the rest of the plant. Weather, time of day, season — everything that hits all inverters together — cancels out. <strong>One-point-zero means healthy.</strong> Anything well below one means that one inverter is producing less than its siblings under the same sun. Here, a real example: zero-point-five-five — about half of normal. The one trap we have to handle is when the grid operator orders the plant to curtail output. That looks identical to a fault, so we filter those periods explicitly. Without that filter, you flag healthy inverters all day.&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: The method is one line of math. That&rsquo;s the point — it&rsquo;s defensible, auditable, and runs on data Enerparc already has.
+  </div>
+
+  <div class="callout warn">
+    <span class="tag">Watch out</span>
+    <p>&ldquo;Curtailment&rdquo; is jargon. If a non-technical juror is in the room, explain it once: <em>&ldquo;the grid operator tells the plant to dial down output because the local grid can&rsquo;t take more — Germany does this often when it&rsquo;s sunny.&rdquo;</em> The signals in the data are EVU and DV codes; only ~0.27% of time steps. Small footprint, but if you skip the filter, peer ratio drops uniformly and looks like a fault.</p>
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>Why median, not mean?</b> Median is robust to the outliers we&rsquo;re trying to catch. If three inverters are at 50% and 62 are healthy, the mean drags down; the median stays at &ldquo;healthy&rdquo; so the broken ones stand out clearly.</li>
+      <li><b>Doesn&rsquo;t that mean a uniform fault — say dust on everything — would be invisible?</b> Yes, and that&rsquo;s exactly the honest limitation. We&rsquo;ll show how we close it three slides from now with the absolute twin.</li>
+      <li><b>How sensitive is &ldquo;below 1.0&rdquo; — is that the alert threshold?</b> Our actual alert threshold is 0.8 for persistent drops. We use 1.0 in the explanation because it&rsquo;s the &ldquo;healthy&rdquo; reference. The 0.55 example shown here is well into the &ldquo;definitely broken&rdquo; zone.</li>
+      <li><b>Does it work with only 65 inverters? What about a plant with 4?</b> Peer-ratio gets stronger as the peer group grows. For very small plants you fall back on the absolute twin instead — same physics, no peers needed.</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;Now let me show you what that method actually found.&rdquo;</div>
+</section>
+
+<!-- ============================== SLIDE 4 ============================== -->
+<section class="slide" id="s4">
+  <span class="badge">Slide 05 · Finding 1</span>
+  <h2>It works — 42/46 with 7 weeks of warning</h2>
+  <div class="sublabel">Section id <code>s-f1</code> · light background. Image: <code>assets/leadtime.png</code> again, this time as the proof figure.</div>
+
+  <h3>What this slide is showing</h3>
+  <p>This is the back-test result, called out properly. Big number: <strong>42/46 tickets flagged in advance.</strong> Median lead: <strong>51.5 days.</strong> A yellow callout reframes that as <em>&ldquo;= 7 weeks of warning.&rdquo;</em> Body line at the bottom: caught against the real log — broken capacitors, boards, insulation faults — not a projection.</p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;Finding number one: the method works. Against the operator&rsquo;s real maintenance log — every inverter ticket they wrote in nine and a half years — we caught <strong>forty-two out of forty-six</strong>, with a <strong>median seven weeks</strong> of advance notice. These aren&rsquo;t synthetic faults. They&rsquo;re real capacitor failures, control boards, insulation faults. That&rsquo;s what the seven weeks buys you — you stop responding to outages and start scheduling visits.&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: This is the line that converts a clever idea into something operations would buy. Lead time = planned maintenance = lower truck-roll cost + less lost energy.
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>Did you know the tickets when you tuned the model?</b> The flag rule is the same threshold (peer ratio below 0.8 for a persistent window). It wasn&rsquo;t fitted per-ticket. The back-test was run after the rule was fixed.</li>
+      <li><b>How many false alarms?</b> The complementary number to talk about: in <code>VERIFICATION.md</code> we re-checked it independently. Flags do occasionally fire on inverters that recovered — we treat that as &ldquo;watchlist, not dispatch.&rdquo; The triage is the second roadmap item.</li>
+      <li><b>What about the 4 you missed?</b> Partial single-string outages — only one DC string out, total output stayed above the threshold. Roadmap fix is string-level monitoring using <code>I_DC_SUM</code>.</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;Now the part that surprised us — a failure their system <em>never</em> caught.&rdquo;</div>
+</section>
+
+<!-- ============================== SLIDE 5 ============================== -->
+<section class="slide" id="s5">
+  <span class="badge">Slide 06 · Finding 2</span>
+  <h2>INV 01.03.018 — ~€500/yr, zero tickets</h2>
+  <div class="sublabel">Section id <code>s-f2</code> · light background. Image: <code>assets/money.png</code> (lost revenue per inverter, this one highlighted).</div>
+
+  <h3>What this slide is showing</h3>
+  <p>The label calls out one specific inverter: <strong>INV 01.03.018 · zero tickets</strong>. The big stat reads <strong>~€500/yr</strong>. Subline: &ldquo;One inverter, one year at 70% output, zero service tickets.&rdquo; Two chips: &ldquo;How we found it: data alone&rdquo; and &ldquo;Independently verified.&rdquo; The chart on the right ranks lost revenue per inverter, with this one circled.</p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;This is the kind of thing that makes the case for a digital twin. Inverter zero-one-zero-three-zero-one-eight ran at <strong>about 70% of its peers for a full year</strong>. Nobody ever wrote a ticket for it. Our method found it from the data alone, and we re-checked it independently — same answer. The money is small per inverter — roughly <strong>five hundred euros a year</strong> — but plant-wide, more than <strong>sixty-four thousand euros</strong> of underperformance over the dataset had no inverter ticket at all. Only seven percent of underperforming inverter-years were ticketed. This is the silent kind of loss the existing system never sees.&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: A digital twin that finds money the existing alarms miss is the entire commercial argument. €500/yr per silent inverter × dozens × Enerparc&rsquo;s whole fleet = recurring revenue uplift, not a one-off.
+  </div>
+
+  <div class="callout warn">
+    <span class="tag">Watch out — known number mismatch</span>
+    <p>The slide says <strong>~€500/yr</strong>. The chart file <code>money.png</code> and <code>underperformers.csv</code> in the repo show <strong>€432/yr</strong> for this inverter. <strong>This gap is on purpose.</strong> €432 was our conservative original number; the independent re-check came in at ~€500. We left both visible and there&rsquo;s a footnote in the README. If a juror points at the chart and asks &ldquo;why does it say 432?&rdquo;, the honest answer is: &ldquo;Two methods, both shown — €432 is the conservative band, €500 is the independent re-check.&rdquo; Do not paper over it. The chart is intentional honesty.</p>
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>The chart says €432 — what about that?</b> See above — both numbers are real; the slide states the independent re-check (~€500), the chart shows the conservative original (€432). Footnote in README. Pick whichever you want to defend, both are defensible.</li>
+      <li><b>Why didn&rsquo;t the operator catch it?</b> Because at 70% it never tripped an alarm threshold. It just produced less, quietly, for a year.</li>
+      <li><b>Plant-wide impact?</b> €64,247 of underperformance over the 9.4-year dataset had no inverter-level ticket — only 7% of underperforming events were ticketed.</li>
+      <li><b>How sure are you it&rsquo;s a real fault, not e.g. shading?</b> Persistent year-long peer-ratio at ~0.70 isn&rsquo;t shading — shading is seasonal. We discuss shading separately on Plant B (soiling slide).</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;Even better — there&rsquo;s a failure happening right now, on this plant, today.&rdquo;</div>
+</section>
+
+<!-- ============================== SLIDE 6 ============================== -->
+<section class="slide" id="s6">
+  <span class="badge">Slide 07 · Finding 3</span>
+  <h2>Active collapse — sections 01.08 + 01.09</h2>
+  <div class="sublabel">Section id <code>s-f3</code> · dark background. Image: <code>assets/section_collapse.png</code> (section ratio dropping since Aug 2025).</div>
+
+  <h3>What this slide is showing</h3>
+  <p>A red &ldquo;● ACTIVE — collapsing since Aug 2025&rdquo; chip. Big red number: <strong>840 hours</strong> — outage hours over the last 365 days for the worst single inverter. Subline: &ldquo;Outage hours / 365 d, worst unit.&rdquo; Two more chips: revenue at risk <strong>€42.3k/yr</strong>, and the kicker — <em>&ldquo;Why no alarm fired: error telemetry dead since Nov 2019.&rdquo;</em> Final yellow panel: <em>&ldquo;Monday dispatch item #1.&rdquo;</em></p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;Finding three is the live one. Two sections of the plant — zero-one-point-zero-eight and zero-one-point-zero-nine — have been collapsing since August twenty-twenty-five. Their peer ratio is currently between zero-point-three-five and zero-point-five. Fourteen inverters, three hundred sixty-eight kilowatts. The worst single inverter racked up <strong>eight hundred and forty outage hours</strong> in the last year. We size the energy at risk at <strong>forty-two thousand three hundred euros a year</strong>. Now here&rsquo;s the punchline: the plant&rsquo;s error-code telemetry — the system supposed to spot this — went dark in November twenty-nineteen and never covered these sections. So nobody knew. <strong>This is the first thing Enerparc should look at on Monday.</strong>&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: An actionable, current, sizeable problem found from data — this is what they pay a twin for.
+  </div>
+
+  <div class="callout warn">
+    <span class="tag">Precise language</span>
+    <p>Say &ldquo;at risk&rdquo;, not &ldquo;losing&rdquo;. The €42,325/yr figure is the upper-bound risk if the collapse continues across all 14 affected inverters at current peer ratio. Realised so far is closer to <strong>€1,200/yr</strong> (also fine to mention if asked — &ldquo;€1.2k realised, €42.3k/yr if uncorrected&rdquo;). Memory cross-checked: the deck&rsquo;s €42.3k = €42,325/yr in the underlying data. Consistent.</p>
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>How can a telemetry system be &ldquo;dead since 2019&rdquo; and nobody notice?</b> The error-code stream stopped emitting events for sections 08 and 09 — likely a config or a sensor change. The plant continued reporting power, so the SCADA dashboard looked fine. Only the alarm channel went silent. We detected this by checking when each section last produced any error event.</li>
+      <li><b>14 inverters, 368 kWp — where does that come from?</b> Sections 01.08.x and 01.09.x together. Verified against the kWp register (which itself has issues — see Bonus).</li>
+      <li><b>What&rsquo;s causing the collapse?</b> Pattern-wise it looks like progressive string-level degradation in those sections. Without a site visit we can&rsquo;t name the root cause — but pointing maintenance at it is the win. Slide 11 has roadmap items including root-cause classification.</li>
+      <li><b>Why 840 hours? Where does that come from?</b> Cumulative time the worst inverter spent below the outage threshold in the trailing 365 days. Plotted in <code>section_collapse.png</code>.</li>
+      <li><b>How do you size €42.3k/yr?</b> Lost energy × site-realistic feed-in tariff, computed in <code>collapse_cost.py</code>.</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;Quick — three more things we found while we were in there.&rdquo;</div>
+</section>
+
+<!-- ============================== SLIDE 7 ============================== -->
+<section class="slide" id="s7">
+  <span class="badge">Slide 08 · Bonus findings</span>
+  <h2>Stale kWp register + alarm noise</h2>
+  <div class="sublabel">Section id <code>s-bonus</code> · light background. Image: <code>assets/fault_matrix.png</code> (alarm/incident classification).</div>
+
+  <h3>What this slide is showing</h3>
+  <p>Big stat: <strong>~8</strong> — inverters that are always above peer ratio 1.1 (i.e. they look <em>too good</em>). Two chips: <em>&ldquo;The real reason: stale kWp register&rdquo;</em> and <em>&ldquo;Alarm triage: 71% of alarms = nuisance.&rdquo;</em> Body: it&rsquo;s not better hardware — the nameplate data is wrong. And of <strong>9,211 raw alarms, 71% never cost real energy</strong> — so we&rsquo;re proposing a ranked work list, not a noisy inbox. The image is the alarm-to-incident classification.</p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;Two more useful things came out. First — about eight inverters look like they&rsquo;re over-performing, peer ratio above one-point-one. Not because they&rsquo;re magic. Because the plant&rsquo;s record of their nameplate capacity is wrong — for instance one inverter listed at five-point-six kilowatts peaks at twenty-three. Eleven inverters total need their register fixed. Second — alarm noise. The plant generated nine thousand two hundred eleven raw alarms, which we collapsed into eight hundred twenty-three real incidents. Seventy-one percent of those never cost real energy — what we call <em>nuisance</em>. Twenty-five percent are trips, four percent are derates. The expensive one is grid undervoltage, called ENS. So operations should triage, not chase every alarm.&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: Two operations wins in 90 seconds. Fix register data → instant fleet view that&rsquo;s actually accurate. Triage alarms → engineer hours stop going to nuisance events.
+  </div>
+
+  <div class="callout warn">
+    <span class="tag">Minor wording gap</span>
+    <p>The slide says <strong>~8</strong> inverters above ratio 1.1. The underlying file <code>kwp_audit.csv</code> lists <strong>11</strong> inverters with mis-registered nameplate. ~8 is the visible-on-heatmap subset; 11 is the full corrections list. If asked, say: &ldquo;eight are visually obvious, eleven need correction in total — the full list is in <code>kwp_audit.csv</code>.&rdquo;</p>
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>What is &ldquo;kWp&rdquo;?</b> Kilowatts-peak — the rated maximum DC capacity of a string or inverter. The plant&rsquo;s database has the wrong number for 11 of them.</li>
+      <li><b>Example?</b> Inverter 01.05.030 is registered at 5.64 kWp but peaks at ~23 kW — almost 4× the listed value. The record is wrong, the hardware is fine.</li>
+      <li><b>What&rsquo;s ENS?</b> Grid undervoltage — basically the inverter trips because the grid voltage dropped below its safety floor. It&rsquo;s the costliest alarm category because when it fires, real generation is lost.</li>
+      <li><b>How did you classify &ldquo;nuisance&rdquo;?</b> Cross-check each alarm window against actual generation loss. If output didn&rsquo;t fall meaningfully, it&rsquo;s nuisance. Logic is in <code>fault_classify.py</code>.</li>
+      <li><b>What about Plant B?</b> The optional dataset — we also analysed soiling there: 37 of 107 inverters show classic sawtooth soiling patterns; winter inter-row shading hits up to 25%. Validated with pvlib clear-sky. Coverage on the next slide.</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;Now — one honest limitation, and how we fixed it.&rdquo;</div>
+</section>
+
+<!-- ============================== SLIDE 8 ============================== -->
+<section class="slide" id="s8">
+  <span class="badge">Slide 09 · The Twin (Differentiator)</span>
+  <h2>We closed our own limitation — the absolute twin</h2>
+  <div class="sublabel">Section id <code>s-twin</code> · light background. Image: <code>assets/twin_uniform_loss.png</code> (uniform-loss stress test).</div>
+
+  <h3>What this slide is showing</h3>
+  <p>Headline: <em>&ldquo;We closed our own limitation.&rdquo;</em> The argument: peer ratio is <em>relative</em>. If a loss hits <em>every</em> inverter equally (uniform soiling, plant-wide degradation), the peers all move together and the ratio stays at 1.0 — blind. So we also built an <strong>absolute twin</strong>: each inverter compared to its own healthy baseline, computed from irradiance and module temperature. R² = <strong>0.957</strong>. The chart shows a stress test: inject a uniform −10% loss across the whole plant. The peer metric stays at 1.00 (blind). The absolute twin drops from 0.90 to 0.81 (caught). Four cards along the side: plant-wide gap ~7–10%, model fit R² 0.957, bleeding now ~€1.5k/yr, twin section ceiling ~€29k/yr.</p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;One honest limitation of the peer method: it&rsquo;s relative. If a loss hits everyone the same — say uniform dust, or a plant-wide degradation — the peer ratio stays at one-point-zero and we&rsquo;re blind. So we also built an absolute twin. Each inverter has its own healthy baseline modelled from irradiance and module temperature — basically physics. Predicts healthy output at R-squared zero-point-nine-five-seven. To prove it works, we injected a uniform minus-ten-percent loss across every inverter. The peer metric stayed at one-point-zero — confirmed blind. The absolute twin dropped from zero-point-nine-zero to zero-point-eight-one — caught the common-mode loss. On real data the twin surfaces a plant-wide gap of <strong>seven to ten percent</strong>. The peer method gives you the per-inverter story; the twin gives you the plant-wide bottom line. Together: no blind spot.&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: This is the slide that says &ldquo;we know what we built, including its weak spot, and we already addressed it.&rdquo; Juries reward that.
+  </div>
+
+  <div class="callout warn">
+    <span class="tag">Number bookkeeping</span>
+    <p>Three money figures live on this slide — keep them straight: <strong>€42.3k/yr</strong> = the peer-method upper-bound risk for the section 08/09 collapse (slide 7). <strong>€1.5k/yr</strong> = twin-estimated current bleed on the collapse (close cousin of the €1,200/yr &ldquo;realised so far&rdquo;). <strong>€29k/yr</strong> = twin&rsquo;s conservative ceiling for that section if uncorrected. The twin number is conservative; the peer number is the upper bound. Different methods, both valid — that&rsquo;s the point.</p>
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>What is the actual model?</b> P_expected = k_i × G × (1 + γ × (T − 25)). Where G is irradiance, T is module temperature, γ is the temperature coefficient. k_i is fitted per inverter from clean-state windows. kWp-free — doesn&rsquo;t depend on the (broken) nameplate register.</li>
+      <li><b>R² 0.957 — on what data?</b> Held-out clean periods (no tickets, no curtailment, no outages). Per-inverter fits.</li>
+      <li><b>Why doesn&rsquo;t a uniform −10% show as 0.90 → 0.80 cleanly?</b> Because the twin baseline itself isn&rsquo;t a perfect 1.0 — it&rsquo;s closer to 0.90 in this comparison frame. The drop of ~0.09 matches the injected loss within noise.</li>
+      <li><b>Why both methods? Pick one.</b> They answer different questions. Peer ratio is great for per-inverter triage — &ldquo;which one to fix.&rdquo; Twin is great for plant-wide bookkeeping — &ldquo;how much is the whole plant losing.&rdquo; Operations needs both.</li>
+      <li><b>Where can I see the proof?</b> <code>runs/plant_a/twin/TWIN.md</code> — full validation with numbers.</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;Quick stocktake — we covered the whole challenge brief, not just one slice.&rdquo;</div>
+</section>
+
+<!-- ============================== SLIDE 9 ============================== -->
+<section class="slide" id="s9">
+  <span class="badge">Slide 10 · Challenge Coverage</span>
+  <h2>All five directions ✓</h2>
+  <div class="sublabel">Section id <code>s-cover2</code> · light background. Table of brief vs deliverable.</div>
+
+  <h3>What this slide is showing</h3>
+  <p>A coverage table — Enerparc&rsquo;s challenge brief listed five directions; we hit all five.</p>
+  <ul>
+    <li><strong>Anomaly detection</strong> ✓ — active 08/09 collapse + unreported INV 01.03.018, both found from data alone.</li>
+    <li><strong>Soiling detection</strong> ✓ — 37 of 107 inverters with sawtooth patterns; winter shading quantified on Plant B.</li>
+    <li><strong>Fault classification</strong> ✓ — 823 incidents, 25% trip / 4% derate / 71% nuisance; ENS the costliest.</li>
+    <li><strong>Performance-ratio modelling</strong> ✓ — per-inverter peer ratio + absolute twin (R² 0.957).</li>
+    <li><strong>Ticket intelligence</strong> ✓ — 42/46 flagged in advance, median 51.5-day lead.</li>
+  </ul>
+  <p>Tagline at the bottom: &ldquo;Every number is reproducible from <code>runs/</code>; the three headline claims were independently re-checked in <code>VERIFICATION.md</code>.&rdquo;</p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;Quick stocktake against the brief. Enerparc asked for five capabilities — anomaly detection, soiling, fault classification, performance-ratio modelling, and ticket intelligence. We delivered all five, and every headline number on this deck is reproducible from the <em>runs</em> folder in our repo. The three headline claims were also independently re-checked and the receipts are in <em>VERIFICATION dot M-D</em>.&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: Tells the jury we read the brief, didn&rsquo;t cherry-pick, and our numbers are reproducible.
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>What is &ldquo;Plant B&rdquo;?</b> The optional second dataset the organisers shared. Different plant, used for the soiling analysis. Includes a pyranometer (ground-truth irradiance sensor) which we validated against pvlib&rsquo;s clear-sky model.</li>
+      <li><b>What&rsquo;s pvlib?</b> An open-source Python library for solar physics. We used it to compute what irradiance <em>should</em> be on a perfectly clear day for that location; comparing to the pyranometer confirmed the sensor was trustworthy.</li>
+      <li><b>What&rsquo;s the dashboard?</b> Interactive HTML report at <code>runs/plant_a/dashboard/index.html</code> — bundled so anyone can poke around the findings.</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;Last slide — who we are and where this goes next.&rdquo;</div>
+</section>
+
+<!-- ============================== SLIDE 10 ============================== -->
+<section class="slide" id="s10">
+  <span class="badge">Slide 11 · Roadmap + Team</span>
+  <h2>Three next steps with Enerparc · Team Syz</h2>
+  <div class="sublabel">Section id <code>s-close</code> · dark background. Team photos.</div>
+
+  <h3>What this slide is showing</h3>
+  <p>Left column — three roadmap rows:</p>
+  <ol>
+    <li><strong>Live monitoring integration</strong> — wire Plant Sentinel into the existing SCADA feed so flags happen in real time, not on a batch.</li>
+    <li><strong>Root-cause classification</strong> — extend the method beyond &ldquo;something&rsquo;s wrong&rdquo; to &ldquo;here&rsquo;s why,&rdquo; using the alarm + telemetry signal.</li>
+    <li><strong>Auto-drafted service tickets</strong> — when a flag is high-confidence, generate the ticket pre-filled for the engineer.</li>
+  </ol>
+  <p>Closing chip: <em>&ldquo;Found in one day: 1 live failure + 1 invisible fault + 7 weeks warning.&rdquo;</em> Right column — team photos, names: <strong>Orkhan</strong>, <strong>Maxat</strong>. Big yellow-highlighted &ldquo;Team Syz.&rdquo; Footer: full names, email, challenge tag.</p>
+
+  <div class="callout say">
+    <span class="tag">Say this</span>
+    <p>&ldquo;Three next steps if Enerparc wants to take this further. One — live integration: this runs on the data they already have, no new sensors. Two — root-cause classification: go beyond &lsquo;something&rsquo;s wrong&rsquo; to &lsquo;here&rsquo;s why.&rsquo; Three — auto-drafted tickets: when a flag is high-confidence, hand maintenance a pre-filled ticket. To remind you what we did in a day on this dataset: one live failure caught, one invisible fault surfaced, seven weeks of warning on the existing log. We&rsquo;re Orkhan and Maxat — Team Syz. Thanks.&rdquo;</p>
+  </div>
+
+  <div class="why">
+    Why it matters: Closes the loop. The roadmap is concrete and uses data Enerparc already owns — there&rsquo;s no &ldquo;and now please buy a sensor package&rdquo; ask.
+  </div>
+
+  <div class="callout qa">
+    <span class="tag">If asked</span>
+    <ul>
+      <li><b>How long would step 1 take to wire up?</b> Honest answer: weeks, not months. The method is already running off the same five-minute SCADA columns Enerparc has on the existing system.</li>
+      <li><b>What&rsquo;s the business model?</b> Out of scope for a hackathon answer — &ldquo;that&rsquo;s the conversation we&rsquo;d love to have with Enerparc next week.&rdquo;</li>
+      <li><b>What did you actually run on a Mac?</b> Whole pipeline reproduces from <code>src/twin/run_plant_a.py</code>; verified end-to-end on 990,442 rows × 65 inverters. README has the run steps.</li>
+      <li><b>Can you scale this to a fleet?</b> Yes — the per-plant compute is small (minutes per plant). It&rsquo;s a Python pipeline with pandas + numpy + a small physics layer. Embarrassingly parallel across plants.</li>
+    </ul>
+  </div>
+
+  <div class="transition">&ldquo;Stop talking. Q&amp;A.&rdquo;</div>
+</section>
+
+<!-- ============================== GLOSSARY ============================== -->
+<section class="slide" id="glossary">
+  <span class="badge">Reference</span>
+  <h2>Glossary &amp; Numbers Cheatsheet</h2>
+  <div class="sublabel">Skim before you walk on stage. The numbers below cross-checked against the project memory file.</div>
+
+  <h3>Words to know</h3>
+  <ul>
+    <li><strong>Inverter</strong> — box that turns DC from solar strings into AC for the grid. Plant A has 65.</li>
+    <li><strong>kWp</strong> — kilowatts-peak. The rated peak DC capacity of an inverter or string. Important here because 11 entries in the plant register are wrong.</li>
+    <li><strong>Peer ratio</strong> — inverter output ÷ plant median output at the same timestamp. 1.0 = healthy. Below = trouble.</li>
+    <li><strong>Curtailment (EVU / DV)</strong> — grid operator orders the plant to throttle output. Looks like a fault if you don&rsquo;t filter it. Only ~0.27% of timesteps but high impact if ignored.</li>
+    <li><strong>Digital twin</strong> — our usage: peer-ratio layer (relative) + absolute physics layer (irradiance × temperature) = no blind spots.</li>
+    <li><strong>Irradiance / module temperature</strong> — inputs to the absolute twin. Irradiance = how much sun is hitting the panels. Module temperature affects efficiency (panels lose ~0.4%/°C above 25°C — that&rsquo;s the γ in the formula).</li>
+    <li><strong>ENS</strong> — grid undervoltage alarm. Costliest alarm category because real energy is lost when it fires.</li>
+    <li><strong>pvlib</strong> — open-source Python solar physics library. Used to validate Plant B&rsquo;s irradiance sensor against clear-sky theory.</li>
+    <li><strong>SCADA</strong> — the plant&rsquo;s control/monitoring system. Where the five-minute data comes from.</li>
+  </ul>
+
+  <h3>Numbers to never get wrong</h3>
+  <ul>
+    <li><strong>42 / 46</strong> tickets flagged in advance. <strong>Median 51.5 days</strong> = ~7 weeks.</li>
+    <li><strong>9.4 years × 65 inverters × 5-min</strong> ≈ 990,442 rows. Plant A.</li>
+    <li><strong>Sections 01.08.x + 01.09.x</strong> collapsing since <strong>Aug 2025</strong>. <strong>14 inverters, 368 kWp.</strong> Realised ~€1,200/yr, <strong>€42,325/yr at risk</strong> (slide rounds to €42.3k).</li>
+    <li><strong>840 hours</strong> outage / 365 d for the worst single inverter in those sections.</li>
+    <li><strong>Error telemetry dead since Nov 2019</strong> for those sections — that&rsquo;s why no alarm fired.</li>
+    <li><strong>INV 01.03.018</strong> = ~70% of peers for a year, no ticket. <strong>~€500/yr</strong> (independent check) / <strong>€432/yr</strong> (chart — conservative). README footnote explains the gap.</li>
+    <li><strong>€64,247</strong> plant-wide underperformance with no inverter ticket. <strong>Only 7% ticketed.</strong></li>
+    <li><strong>9,211 raw alarms → 823 incidents</strong>. <strong>25% trip / 4% derate / 71% nuisance.</strong> ENS the costliest.</li>
+    <li><strong>11 inverters</strong> with stale kWp register (slide visually shows ~8). Example: INV 01.05.030 listed 5.64 kWp, peaks 23 kW.</li>
+    <li><strong>Plant B soiling:</strong> 37/107 inverters with sawtooths. Headline case INV 05.08.106/107. Winter inter-row shading up to 25%.</li>
+    <li><strong>Absolute twin:</strong> P_exp = k_i · G · (1 + γ·(T−25)). <strong>R² = 0.957.</strong> Uniform −10% test: peer stays 1.00 (blind), twin drops 0.90 → 0.81 (caught). Plant-wide gap ~7–10%.</li>
+  </ul>
+
+  <h3>Three flags to keep in your pocket</h3>
+  <ol>
+    <li>If asked &ldquo;why does the chart say €432 but the slide say €500&rdquo; — answer: <em>two methods, both shown. €432 is the conservative original; €500 is the independent re-check. README footnote.</em></li>
+    <li>If asked &ldquo;the slide says ~8 stale registers but the file says 11&rdquo; — answer: <em>~8 are visually obvious on the heatmap; 11 are in the full corrections CSV. <code>kwp_audit.csv</code> has the lot.</em></li>
+    <li>If asked &ldquo;why did you miss 4 of 46 tickets&rdquo; — answer: <em>partial single-string outages under our 0.8 threshold. Roadmap fix is string-level monitoring via <code>I_DC_SUM</code>.</em></li>
+  </ol>
+</section>
+
+<footer>
+  Plant Sentinel · Team Syz · presenter notes generated for slide deck commit <code>f320bdc</code>.
+</footer>
+
+</main>
+</div>
+
+</body>
+</html>
