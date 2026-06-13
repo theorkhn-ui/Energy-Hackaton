@@ -185,6 +185,5 @@ reproducible line by line.
 
 **Team Syz**: Orkhan Karimov · Maxat Issaliyev · contact: theorkhn@gmail.com
 
-Built in one weekend by the two of us, working in parallel with small commits and frequent
-pushes. Video storyboard: [`docs/VIDEO_STORYBOARD.md`](docs/VIDEO_STORYBOARD.md) · One-page
-summary: [`docs/ONE_PAGER.md`](docs/ONE_PAGER.md).
+Built over the hackathon by the two of us, working in parallel with small commits and frequent
+pushes. One-page summary: [`docs/ONE_PAGER.md`](docs/ONE_PAGER.md).

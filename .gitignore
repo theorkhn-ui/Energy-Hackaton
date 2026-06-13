@@ -9,12 +9,8 @@ data/raw/
 runs/plant_b/cache_*
 runs/plant_a/faults/cache_*
 runs/plant_a/twin/twin_input_cache.parquet
-video/node_modules/
 
 # large regenerable intermediates
 runs/plant_a/error_events.csv
 runs/plant_a/verify_cache*.parquet
 *.log
-video/out/
-video/render.log
-video/npminstall.log

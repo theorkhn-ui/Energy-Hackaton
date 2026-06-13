@@ -803,41 +803,6 @@ def choose_plot(stem: str) -> str:
     return f"{stem}.svg"
 
 
-def write_storyboard(events: pd.DataFrame, under: pd.DataFrame, ticket_leads: pd.DataFrame) -> None:
-    active = events[events["active_now"]].head(4)["inverter"].tolist() if not events.empty else []
-    missed = under.loc[under.index == "01.03.018"].iloc[0] if "01.03.018" in under.index else None
-    lines = [
-        "# 4-Minute Video Storyboard",
-        "",
-        "## 0:00-0:30 - Hook",
-        "Show the heatmap. Say: this is a living model of 65 inverters over 9.4 years, not a static dashboard.",
-        "",
-        "## 0:30-1:30 - Live issue",
-        "Zoom into the active red block near the latest months.",
-        f"Call out active inverters: {', '.join(active) if active else 'see events_ranked.csv'}.",
-        "",
-        "## 1:30-2:30 - Missed issue",
-    ]
-    if missed is not None:
-        lines.append(
-            f"Show INV 01.03.018: mean ratio {missed['mean_ratio']:.2f}, "
-            f"{missed['days_below_95']:.0f} days below 0.95, "
-            f"about EUR {missed['lost_eur_365d']:.0f}/yr lost."
-        )
-    else:
-        lines.append("Show the top un-ticketed chronic underperformer from underperformers.csv.")
-    lines.extend([
-        "",
-        "## 2:30-3:20 - Validation",
-        f"Show ticket lead-time table: {len(ticket_leads)} matched tickets have prior model flags.",
-        "Explain that known ticket-heavy inverters also rank high in the model.",
-        "",
-        "## 3:20-4:00 - Why it matters",
-        "Close on the EUR-ranked event table: operators get where, when, likely cause, and money impact.",
-    ])
-    (OUT / "VIDEO_STORYBOARD.md").write_text("\n".join(lines), encoding="utf-8")
-
-
 def classify_event(err_code: int | None, ticket: dict, active: bool) -> str:
     if err_code:
         return "Known fault from inverter error code"
