@@ -1,18 +1,19 @@
 import React from "react";
 import {
   AbsoluteFill,
+  Easing,
   interpolate,
   spring,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
-import { COLORS, FONT_MONO, GRID, label } from "../theme";
+import { COLORS, GRID, label } from "../theme";
 
 /**
  * Neo-Grid Bold universal frame: putty background, the 12x8 grid drawing in
- * as hairlines, an animated page-number tag bottom-left ("03 / 09") and a
- * 2x2 corner mark top-right whose squares pop in staggered. Every scene
- * wraps its content in this.
+ * as hairlines, an animated scene-kicker chip top-left and a 2x2 corner mark
+ * top-right whose squares pop in staggered. Every scene wraps its content in
+ * this. The bottom edge stays empty on purpose: the caption bar owns it.
  */
 
 const W = 1920;
@@ -21,9 +22,9 @@ const INNER_W = W - 2 * GRID.inset;
 const INNER_H = H - 2 * GRID.inset;
 
 type Props = {
-  /** 1-based scene index for the page tag. */
+  /** 1-based scene index (kept for callers; no longer rendered on screen). */
   index: number;
-  /** Mono kicker shown next to the page tag, e.g. "METHOD". */
+  /** Mono kicker chip shown top-left, e.g. "METHOD". */
   tag?: string;
   /** "paper" (default) or "ink" for dark scenes. */
   mode?: "paper" | "ink";
@@ -121,7 +122,7 @@ export const CornerMark: React.FC<{
 };
 
 export const NeoFrame: React.FC<Props> = ({
-  index,
+  index: _index,
   tag,
   mode = "paper",
   staticGrid = false,
@@ -143,53 +144,62 @@ export const NeoFrame: React.FC<Props> = ({
     config: { damping: 200 },
   });
 
+  // Signature lemon header rule: draws left->right across the top inset on
+  // entry, then holds. Lives in the margin band so it never touches content,
+  // but gives every scene a bold animated Neo-Grid accent.
+  const accent = staticGrid
+    ? 1
+    : interpolate(frame, [4, 30], [0, 1], {
+        easing: Easing.bezier(0.16, 1, 0.3, 1),
+        extrapolateLeft: "clamp",
+        extrapolateRight: "clamp",
+      });
+
   const bg = mode === "ink" ? COLORS.stage : COLORS.bg;
-  const tagBg = mode === "ink" ? COLORS.lemon : COLORS.ink;
-  const tagFg = mode === "ink" ? COLORS.ink : COLORS.paper;
 
   return (
     <AbsoluteFill style={{ background: bg }}>
       <GridLines mode={mode} draw={draw} />
-      {children}
 
-      {/* Page-number tag, bottom-left, slides up from the frame edge. */}
+      {/* Top header rule (drawn-in lemon accent). */}
       <div
         style={{
           position: "absolute",
-          left: 0,
-          bottom: 0,
-          display: "flex",
-          alignItems: "stretch",
-          transform: `translateY(${(1 - tagIn) * 70}px)`,
+          top: GRID.inset - 6,
+          left: GRID.inset,
+          height: 6,
+          width: (W - 2 * GRID.inset) * accent,
+          background: COLORS.lemon,
         }}
-      >
+      />
+
+      {children}
+
+      {/* Scene-kicker chip, top-left, drops down from the frame edge.
+          (The old bottom-left page number is gone: that strip belongs to
+          the caption bar now.) */}
+      {tag ? (
         <div
           style={{
-            background: tagBg,
-            color: tagFg,
-            fontFamily: FONT_MONO,
-            fontSize: 24,
-            letterSpacing: "0.04em",
-            padding: "14px 22px",
+            position: "absolute",
+            left: GRID.inset,
+            top: 0,
+            transform: `translateY(${(1 - tagIn) * -50}px)`,
           }}
         >
-          {String(index).padStart(2, "0")} / 09
-        </div>
-        {tag ? (
           <div
             style={{
               ...label(16),
               background: mode === "ink" ? COLORS.paper : COLORS.lemon,
               color: COLORS.ink,
-              padding: "14px 22px",
-              display: "flex",
-              alignItems: "center",
+              padding: "9px 20px",
+              borderBottom: `1.5px solid ${COLORS.ink}`,
             }}
           >
             {tag}
           </div>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
 
       <CornerMark color={mode === "ink" ? COLORS.paper : COLORS.ink} />
     </AbsoluteFill>

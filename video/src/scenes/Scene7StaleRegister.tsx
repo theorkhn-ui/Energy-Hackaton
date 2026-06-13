@@ -7,8 +7,6 @@ import { StatPill } from "../components/StatPill";
 import { COLORS } from "../theme";
 import { sec } from "../timing";
 
-const DURATION = sec(20);
-
 /**
  * Scene 7 (2:50-3:10) — Bonus findings.
  * Heatmap zoomed on the top rows with an ink rectangle drawn around the
@@ -21,14 +19,12 @@ export const Scene7StaleRegister: React.FC = () => {
       <AbsoluteFill>
         <ChartBlock
           src={staticFile("heatmap_monthly_ratio.png")}
-          durationInFrames={DURATION}
           wipeFrom="right"
           wipeDuration={26}
-          startScale={1.35}
-          endScale={1.5}
-          panY={40}
-          width={1150}
-          height={660}
+          scale={1.42}
+          offsetY={44}
+          width={1040}
+          height={650}
           caption="Permanently above 1.1"
           highlights={[
             {
@@ -45,8 +41,7 @@ export const Scene7StaleRegister: React.FC = () => {
           style={{
             justifyContent: "flex-start",
             alignItems: "center",
-            paddingLeft: 90,
-            paddingTop: 20,
+            paddingLeft: 52,
           }}
         />
 
@@ -55,6 +50,9 @@ export const Scene7StaleRegister: React.FC = () => {
           <BigNumeral
             delay={sec(2)}
             value="~8"
+            countTo={8}
+            prefix="~"
+            countDuration={sec(1.6)}
             size={170}
             color={COLORS.ink}
             sub="Inverters always above ratio 1.1"

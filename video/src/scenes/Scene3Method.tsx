@@ -277,7 +277,7 @@ const FreezeBeat: React.FC = () => {
           style={{
             position: "absolute",
             left: 150,
-            top: 180,
+            top: 140,
             opacity: Math.min(1, numIn * 1.4),
             transform: `scale(${0.6 + 0.4 * numIn})`,
             transformOrigin: "left top",
@@ -285,7 +285,7 @@ const FreezeBeat: React.FC = () => {
         >
           <div
             style={{
-              ...display(290),
+              ...display(280),
               lineHeight: 0.85,
               color: COLORS.fault,
               fontVariantNumeric: "tabular-nums",
@@ -295,12 +295,13 @@ const FreezeBeat: React.FC = () => {
           </div>
         </div>
 
-        {/* Bold tag underneath. */}
+        {/* Bold tag underneath. Sits ABOVE the pulsing red outline around
+            the bar (halo top is ~y509) so the flagged bar stays visible. */}
         <div
           style={{
             position: "absolute",
             left: 158,
-            top: 470,
+            top: 408,
             opacity: Math.min(1, tagIn * 1.4),
             transform: `translateY(${(1 - tagIn) * 50}px)`,
           }}
@@ -310,8 +311,8 @@ const FreezeBeat: React.FC = () => {
               display: "inline-block",
               background: COLORS.ink,
               color: COLORS.paper,
-              padding: "18px 30px",
-              ...display(56),
+              padding: "14px 26px",
+              ...display(50),
             }}
           >
             Below{" "}
@@ -320,7 +321,7 @@ const FreezeBeat: React.FC = () => {
             </span>{" "}
             = trouble
           </div>
-          <div style={{ ...label(20), color: COLORS.ink, marginTop: 16, opacity: 0.8 }}>
+          <div style={{ ...label(20), color: COLORS.ink, marginTop: 14, opacity: 0.8 }}>
             This bar just became a flag
           </div>
         </div>
@@ -369,6 +370,16 @@ export const Scene3Method: React.FC = () => {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+
+  // Judge note: THE TRAP card overlays the bars. Fade a paper scrim over the
+  // diagram as the card lands so the bars read as grayed-out behind it and
+  // the card is clearly the focus.
+  const trapDim = interpolate(
+    frame,
+    [sec(T_TRAP - 0.4), sec(T_TRAP + 0.8)],
+    [0, 0.82],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" },
+  );
 
   return (
     <NeoFrame index={3} tag="The method">
@@ -421,6 +432,11 @@ export const Scene3Method: React.FC = () => {
           Weather cancels out
         </div>
       </div>
+
+      {/* Gray scrim over the bars while THE TRAP card is up. */}
+      {trapDim > 0 ? (
+        <AbsoluteFill style={{ background: COLORS.bg, opacity: trapDim }} />
+      ) : null}
 
       {/* Curtailment trap: ink panel with struck-out rows. */}
       <Panel

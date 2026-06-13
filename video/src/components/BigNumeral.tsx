@@ -17,6 +17,8 @@ type Props = {
   countTo?: number;
   countDecimals?: number;
   countDuration?: number;
+  /** Prefix shown before the counted number, e.g. "~€". */
+  prefix?: string;
   /** Suffix appended after the counted number, e.g. " H". */
   suffix?: string;
   size?: number;
@@ -37,6 +39,7 @@ export const BigNumeral: React.FC<Props> = ({
   countTo,
   countDecimals = 0,
   countDuration = 50,
+  prefix = "",
   suffix = "",
   size = 156,
   color = COLORS.ink,
@@ -60,7 +63,7 @@ export const BigNumeral: React.FC<Props> = ({
       extrapolateLeft: "clamp",
       extrapolateRight: "clamp",
     });
-    text = n.toFixed(countDecimals) + suffix;
+    text = prefix + n.toFixed(countDecimals) + suffix;
   }
 
   return (
@@ -89,7 +92,9 @@ export const BigNumeral: React.FC<Props> = ({
             ...label(22),
             color: subColor ?? color,
             opacity: 0.8,
-            marginTop: 14,
+            // Clear gap below the numeral so glyphs like "/" never clip
+            // into the label (judge feedback: 42/46 touched its sub-line).
+            marginTop: 28,
           }}
         >
           {sub}

@@ -25,15 +25,18 @@ type HighlightShape = {
 
 type Props = {
   src: string;
-  durationInFrames: number;
   /** Wipe direction for the masked reveal. */
   wipeFrom?: "left" | "right" | "top" | "bottom";
   /** Frames the wipe takes (starts at frame 0 of the parent sequence). */
   wipeDuration?: number;
-  startScale?: number;
-  endScale?: number;
-  panX?: number;
-  panY?: number;
+  /**
+   * Static zoom/offset applied to the PNG inside the frame. The image does
+   * NOT drift over time: judges asked for rock-still charts, so the only
+   * motion is the entrance wipe and the highlight strokes.
+   */
+  scale?: number;
+  offsetX?: number;
+  offsetY?: number;
   width?: number;
   height?: number;
   /** Bold outlines drawn around key regions of the PNG. */
@@ -45,19 +48,17 @@ type Props = {
 
 /**
  * Neo-Grid Bold chart block: the matplotlib PNG sits in a paper panel with a
- * thick ink frame. It enters with a masked wipe (animated clip-path), then
- * pans/zooms inside the frame, and bold highlight shapes draw themselves
- * around the key region of the image (stroke-dash animation).
+ * thick ink frame. It enters with a masked wipe (animated clip-path) and then
+ * holds perfectly still; bold highlight shapes draw themselves around the key
+ * region of the image (stroke-dash animation).
  */
 export const ChartBlock: React.FC<Props> = ({
   src,
-  durationInFrames,
   wipeFrom = "left",
   wipeDuration = 28,
-  startScale = 1.0,
-  endScale = 1.08,
-  panX = 0,
-  panY = 0,
+  scale = 1,
+  offsetX = 0,
+  offsetY = 0,
   width = 1560,
   height = 760,
   highlights = [],
@@ -81,18 +82,17 @@ export const ChartBlock: React.FC<Props> = ({
           ? `inset(0 0 ${remain}% 0)`
           : `inset(${remain}% 0 0 0)`;
 
-  const progress = interpolate(frame, [0, durationInFrames], [0, 1], {
-    easing: Easing.bezier(0.45, 0, 0.55, 1),
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const scale = interpolate(progress, [0, 1], [startScale, endScale]);
-  const tx = interpolate(progress, [0, 1], [0, panX]);
-  const ty = interpolate(progress, [0, 1], [0, panY]);
-
   return (
     <AbsoluteFill
-      style={{ justifyContent: "center", alignItems: "center", ...style }}
+      style={{
+        // AbsoluteFill defaults to flex-direction: column, which would swap
+        // the placement axes the scenes pass. Force row so justifyContent
+        // means horizontal and alignItems means vertical (intuitive).
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
+        ...style,
+      }}
     >
       <div style={{ position: "relative", clipPath }}>
         <div
@@ -109,7 +109,7 @@ export const ChartBlock: React.FC<Props> = ({
             style={{
               position: "absolute",
               inset: 14,
-              transform: `scale(${scale}) translate(${tx}px, ${ty}px)`,
+              transform: `scale(${scale}) translate(${offsetX}px, ${offsetY}px)`,
             }}
           >
             <Img

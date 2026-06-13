@@ -8,8 +8,6 @@ import { StatPill } from "../components/StatPill";
 import { COLORS, display, FONT, label } from "../theme";
 import { sec } from "../timing";
 
-const DURATION = sec(35);
-
 /**
  * Scene 6 (2:15-2:50) — Finding 3: failure in progress.
  * Section-collapse chart wipes in with a bold rectangle drawn around the
@@ -28,31 +26,27 @@ export const Scene6ActiveCollapse: React.FC = () => {
       <AbsoluteFill>
         <ChartBlock
           src={staticFile("section_collapse.png")}
-          durationInFrames={DURATION}
           wipeFrom="left"
           wipeDuration={30}
-          startScale={1.0}
-          endScale={1.12}
-          panX={-16}
-          width={1160}
-          height={680}
+          width={1040}
+          height={620}
           caption="Sections 01.08 + 01.09"
           highlights={[
             {
               shape: "rect",
               x: 0.55,
-              y: 0.18,
+              y: 0.16,
               w: 0.4,
-              h: 0.62,
+              h: 0.66,
               at: sec(4),
               tag: "Collapsing since Aug 2025",
             },
           ]}
           style={{
             justifyContent: "flex-start",
-            alignItems: "flex-end",
-            paddingLeft: 90,
-            paddingBottom: 120,
+            alignItems: "flex-start",
+            paddingLeft: 52,
+            paddingTop: 150,
           }}
         />
 

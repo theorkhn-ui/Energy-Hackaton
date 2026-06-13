@@ -2,33 +2,27 @@ import React from "react";
 import { AbsoluteFill, staticFile } from "remotion";
 import { ChartBlock } from "../components/ChartBlock";
 import { NeoFrame } from "../components/NeoFrame";
-import { Panel } from "../components/Panel";
 import { StatPill } from "../components/StatPill";
-import { display, label } from "../theme";
 import { sec } from "../timing";
-
-const DURATION = sec(25);
 
 /**
  * Scene 2 (0:10-0:35) — The problem.
- * Monthly heatmap (65 inverters x 113 months) wipes in from the top, then a
- * slow zoom-out; a bold fault-red rectangle draws itself around the failure
- * streaks; the dataset chips stagger in; the team panel slams in last.
+ * Monthly heatmap (65 inverters x 113 months) wipes in from the top and
+ * holds still; a bold fault-red rectangle draws itself around the failure
+ * streaks; the dataset chips stagger in along the top. The heatmap stops
+ * well above the caption bar so subtitles never sit on the chart.
  */
 export const Scene2Problem: React.FC = () => {
   return (
     <NeoFrame index={2} tag="The problem">
       <AbsoluteFill>
+        {/* Panel aspect matches the 1.6 PNG so the heatmap fills its frame. */}
         <ChartBlock
           src={staticFile("heatmap_monthly_ratio.png")}
-          durationInFrames={DURATION}
           wipeFrom="top"
           wipeDuration={34}
-          startScale={1.32}
-          endScale={1.0}
-          panY={-6}
-          width={1500}
-          height={680}
+          width={1060}
+          height={650}
           caption="9.4 years x 65 inverters, monthly peer ratio"
           highlights={[
             {
@@ -41,7 +35,11 @@ export const Scene2Problem: React.FC = () => {
               tag: "Failures nobody caught",
             },
           ]}
-          style={{ paddingTop: 60 }}
+          style={{
+            justifyContent: "center",
+            alignItems: "flex-start",
+            paddingTop: 175,
+          }}
         />
 
         {/* Dataset chips, staggered along the top. */}
@@ -66,28 +64,6 @@ export const Scene2Problem: React.FC = () => {
             5-min readings
           </StatPill>
         </div>
-
-        {/* Team panel slides in near the end. */}
-        <Panel
-          variant="ink"
-          delay={sec(19)}
-          from="right"
-          style={{
-            position: "absolute",
-            right: 0,
-            bottom: 130,
-            padding: "26px 36px",
-            maxWidth: 660,
-          }}
-        >
-          <div style={{ ...label(16), opacity: 0.7, marginBottom: 8 }}>
-            Energy Hack Munich 2026
-          </div>
-          <div style={{ ...display(44) }}>Team Syz</div>
-          <div style={{ ...label(18), marginTop: 10, opacity: 0.85 }}>
-            Challenge #2.1: Digital twin of a solar plant
-          </div>
-        </Panel>
       </AbsoluteFill>
     </NeoFrame>
   );

@@ -8,46 +8,42 @@ import { StatPill } from "../components/StatPill";
 import { COLORS, display, label } from "../theme";
 import { sec } from "../timing";
 
-const DURATION = sec(35);
-
 /**
  * Scene 4 (1:10-1:45) — Finding 1: predictive power.
- * Lead-time chart wipes in and slowly pushes; a bold rectangle draws around
- * the long-lead cluster; oversized 42/46 numeral, ticket-category chips, and
- * the lemon "7 weeks of warning" panel choreograph in sequence.
+ * Lead-time chart wipes in from the bottom and holds still on the LEFT edge;
+ * a fault-red ellipse draws around the long-lead cluster near the median
+ * line (the payload of the scene); the oversized 42/46 numeral, ticket
+ * chips, and lemon "7 weeks of warning" panel choreograph in on the right.
  */
 export const Scene4Leadtime: React.FC = () => {
   return (
     <NeoFrame index={4} tag="Finding 1: it works">
       <AbsoluteFill>
+        {/* Chart pulled to the left border, slightly narrower, so the right
+            rail (42/46 + chips + payoff) has clear room. */}
         <ChartBlock
           src={staticFile("leadtime_chart.png")}
-          durationInFrames={DURATION}
           wipeFrom="bottom"
           wipeDuration={32}
-          startScale={1.0}
-          endScale={1.1}
-          panY={-10}
-          width={1180}
-          height={720}
+          width={1080}
+          height={690}
           caption="Back-test vs real service tickets"
           highlights={[
             {
-              shape: "rect",
-              x: 0.08,
-              y: 0.12,
-              w: 0.55,
-              h: 0.55,
+              shape: "ellipse",
+              x: 0.6,
+              y: 0.1,
+              w: 0.32,
+              h: 0.4,
               at: sec(15),
-              color: COLORS.ink,
-              tag: "Flag raised before the ticket",
+              color: COLORS.fault,
+              tag: "Flags fired ~51 days early",
             },
           ]}
           style={{
             justifyContent: "flex-start",
             alignItems: "center",
-            paddingLeft: 90,
-            paddingTop: 30,
+            paddingLeft: 52,
           }}
         />
 

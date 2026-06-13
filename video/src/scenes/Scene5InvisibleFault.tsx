@@ -194,21 +194,20 @@ export const Scene5InvisibleFault: React.FC = () => {
         <AbsoluteFill>
           <ChartBlock
             src={staticFile("money_chart.png")}
-            durationInFrames={PART_B}
             wipeFrom="left"
             wipeDuration={26}
-            startScale={1.02}
-            endScale={1.1}
-            width={1200}
-            height={700}
+            width={1180}
+            height={690}
             caption="Lost revenue per inverter"
             highlights={[
               {
-                shape: "ellipse",
-                x: 0.06,
-                y: 0.1,
-                w: 0.22,
-                h: 0.3,
+                // Hug the orange "found by our model" bar (top row) instead
+                // of floating off to the left of it (judge: "out of place").
+                shape: "rect",
+                x: 0.12,
+                y: 0.205,
+                w: 0.62,
+                h: 0.085,
                 at: sec(4),
                 tag: "INV 01.03.018",
               },
@@ -216,8 +215,7 @@ export const Scene5InvisibleFault: React.FC = () => {
             style={{
               justifyContent: "flex-start",
               alignItems: "center",
-              paddingLeft: 90,
-              paddingTop: 20,
+              paddingLeft: 52,
             }}
           />
 
@@ -226,6 +224,9 @@ export const Scene5InvisibleFault: React.FC = () => {
             <BigNumeral
               delay={sec(2)}
               value="~€500"
+              countTo={500}
+              prefix="~€"
+              countDuration={sec(2.2)}
               size={150}
               color={COLORS.ink}
               sub="Per year, one inverter"

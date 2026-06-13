@@ -15,8 +15,8 @@ import { sec } from "../timing";
 
 /**
  * Scene 9 (3:20-3:50) — Close: team + next steps.
- * Real photos (public/orkhan.jpg, public/maxat.jpg) in bold ink-framed
- * blocks. If a jpg is missing at render time, <Img onError> flips the card
+ * Real photos (public/orkhan.png, public/maxat.jpg) in bold ink-framed
+ * blocks. If a file is missing at render time, <Img onError> flips the card
  * to the initial-block fallback so the render never breaks (see README).
  * Roadmap blocks spring in staggered; the end card holds the final 3 s.
  */
@@ -167,7 +167,7 @@ export const Scene9Close: React.FC = () => {
       >
         <div style={{ display: "flex", gap: 64 }}>
           <TeamCard
-            file="orkhan.jpg"
+            file="orkhan.png"
             initial="O"
             name="Orkhan"
             role="Team Syz"
