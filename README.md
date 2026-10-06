@@ -2,7 +2,25 @@
 
 **Team Syz · Energy Hack Munich 2026 · Challenge #2.1, Enerparc: Digital Twin of a Solar Plant**
 
-A peer-normalized performance twin for PV plants. We ran it on your real data:
+## About
+
+**Plant Sentinel** is a Python-based digital twin prototype for solar photovoltaic (PV)
+plants. It helps operations and maintenance teams spot inverter underperformance,
+investigate possible soiling and shading, and prioritize repairs by their estimated
+energy and revenue impact.
+
+Built by **Team Syz** for **Energy Hack Munich 2026**, it addresses Enerparc's
+**Digital Twin of a Solar Plant** challenge. The analysis combines comparisons between
+inverters with an absolute expected-output model, classifies alarms by power impact,
+and checks performance flags against historical service tickets.
+
+This repository contains the analysis scripts, generated findings and charts, an
+interactive inverter dashboard, and presentation materials. Raw monitoring data is
+not included; see [Reproduce](#reproduce) for setup and data requirements.
+
+## Results at a glance
+
+We ran it on the challenge's real monitoring data:
 **42 of the last 46 inverter-specific service tickets were visible in the performance data
 before the ticket was opened, with a median lead time of 51.5 days.** Seven weeks of warning,
 validated against your own ticket log.
@@ -187,3 +205,4 @@ reproducible line by line.
 
 Built over the hackathon by the two of us, working in parallel with small commits and frequent
 pushes. One-page summary: [`docs/ONE_PAGER.md`](docs/ONE_PAGER.md).
+
