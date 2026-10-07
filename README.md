@@ -151,6 +151,23 @@ All five suggested directions covered:
 Plus an interactive dashboard: [`runs/plant_a/dashboard/index.html`](runs/plant_a/dashboard/index.html),
 a self-contained HTML page with 65 clickable inverter tiles and per-inverter history with ticket markers.
 
+## React results explorer
+
+Explore the findings in a responsive React dashboard with interactive inverter histories,
+a plant map, alarm triage, ticket validation, energy-impact estimates, capacity audits,
+and soiling analysis. Charts use the committed historical outputs, with links to their
+source evidence and clear distinctions between estimates and modeled scenarios.
+
+```bash
+cd frontend
+npm ci
+npm run dev
+```
+
+See [`frontend/README.md`](frontend/README.md) for build instructions, source-data
+regeneration, and browser checks. No raw monitoring data, backend, or API keys are required
+to view the results.
+
 ## Reproduce
 
 ```bash
@@ -205,4 +222,3 @@ reproducible line by line.
 
 Built over the hackathon by the two of us, working in parallel with small commits and frequent
 pushes. One-page summary: [`docs/ONE_PAGER.md`](docs/ONE_PAGER.md).
-
